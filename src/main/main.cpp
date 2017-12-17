@@ -2,10 +2,10 @@
 #include <vector>
 
 #include <boost/filesystem.hpp>
-#include "proto/message.pb.h"
+#include "proto/input_config.pb.h"
 
 int main() {
-  message::Message m;
+  input_config::Config config;
   std::vector<std::string> temp = {"test1", "test2"};
 
   std::cout << "Hello" << std::endl;
