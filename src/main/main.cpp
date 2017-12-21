@@ -1,17 +1,26 @@
 #include <iostream>
-#include <vector>
 
 #include <boost/filesystem.hpp>
-#include "proto/input_config.pb.h"
+#include <proto/input_config.pb.h>
+#include "../global/GlobalDefinitions.h"
 
-int main() {
+#include "../util/ArgParser.h"
+#include "../logging/TimeLogger.h"
+#include "../factory/Factory.h"
+
+using namespace global_definitions;
+
+int main(int argc, char** argv) {
+  TimeLogger tLogger = TimeLogger::getInstance();
+  tLogger.recordProgramStartTime();
+
+
+  sequential::ode_system_function *equation = factory::equation::getEquation();
+
+  ArgParser::parse(argc, (const char **) argv);
   input_config::Config config;
-  std::vector<std::string> temp = {"test1", "test2"};
 
-  std::cout << "Hello" << std::endl;
-
-  boost::filesystem::path full_path(boost::filesystem::current_path());
-  std::cout << "Current path is : " << full_path << std::endl;
+  std::cout << boost::filesystem::current_path() << std::endl;
 
   return 0;
 }

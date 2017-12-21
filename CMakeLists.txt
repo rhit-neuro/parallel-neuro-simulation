@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 2.8)
-project(CPlusPlusCmakeTemplate)
+
+# Force using RISCV 64bit gcc/g++
+set(CMAKE_C_COMPILER /usr/local/bin/gcc-7)
+set(CMAKE_CXX_COMPILER /usr/local/bin/g++-7)
+# End force compiler definition
+
+project(parallel-neuron-simulation)
 include(CTest)
 include(ExternalProject)
 include(FindBoost)
@@ -10,7 +16,7 @@ include(FindProtobuf)
 #######################
 
 # Turn on C++ 11 support
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #######################
@@ -18,18 +24,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #######################
 
 # All Warnings # -Werror -pedantic
-set(WARNING_FLAGS "-Wall -Wextra ")
-set(SHARED_FLAGS "${WARNING_FLAGS}")
+set(WARNING_FLAGS "-Wall -Wextra")
+set(OPENMP_FLAGS "-fopenmp")
+set(SHARED_FLAGS "${WARNING_FLAGS} ${OPENMP_FLAGS}")
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
   "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
   message(STATUS "Using Clang")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SHARED_FLAGS} -std=c++14 -stdlib=libc++")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SHARED_FLAGS} -std=c++11 -stdlib=libc++")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   message(STATUS "Using GCC")
   set(CMAKE_CXX_FLAGS "-std=c++11")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SHARED_FLAGS} -std=c++14 -pthread")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SHARED_FLAGS} -std=c++11 -pthread")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   message(STATUS "Using MSVC")
@@ -85,9 +92,6 @@ include_directories(lib/gmock-1.7.0/gtest/include)
 #######################
 # Project Sources
 #######################
-
-# Local header files are placed in the include directory.
-include_directories(include)
 
 # Sample Module
 add_subdirectory(src)
