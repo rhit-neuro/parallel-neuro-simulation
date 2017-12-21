@@ -2,11 +2,11 @@
 
 #include <boost/filesystem.hpp>
 #include <proto/input_config.pb.h>
-#include "../global/GlobalDefinitions.h"
+#include "global/GlobalDefinitions.h"
 
-#include "../util/ArgParser.h"
-#include "../logging/TimeLogger.h"
-#include "../factory/Factory.h"
+#include "util/ArgParser.h"
+#include "logging/TimeLogger.h"
+#include "factory/Factory.h"
 
 using namespace global_definitions;
 

@@ -13,28 +13,28 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 #######################
 
 # Local header files are placed in the include directory.
-include_directories(../include)
+include_directories(include)
 set(INCLUDE_SOURCE
-  ../include/json-v3.0.0.hpp
+  include/json-v3.0.0.hpp
 )
 
 set(SOURCE
     main/main.cpp
-    global/GlobalDefinitions.h
+    main/global/GlobalDefinitions.h
 
-    factory/Factory.h
-    factory/EquationFactory.cpp
-    factory/InitialConditionFactory.cpp
-    logging/ResultLogger.cpp
-    logging/ResultLogger.h
-    logging/TimeLogger.cpp
-    logging/TimeLogger.h
-    math/HodgkinHuxley.cpp
-    math/ODE.h
-    util/ArgParser.cpp
-    util/ArgParser.h
-    util/JsonToProtobufConfigConverter.cpp
-    util/JsonToProtobufConfigConverter.h
+    main/factory/Factory.h
+    main/factory/EquationFactory.cpp
+    main/factory/InitialConditionFactory.cpp
+    main/logging/ResultLogger.cpp
+    main/logging/ResultLogger.h
+    main/logging/TimeLogger.cpp
+    main/logging/TimeLogger.h
+    main/math/HodgkinHuxley.cpp
+    main/math/ODE.h
+    main/util/ArgParser.cpp
+    main/util/ArgParser.h
+    main/util/JsonToProtobufConfigConverter.cpp
+    main/util/JsonToProtobufConfigConverter.h
 )
 
 add_executable(main ${SOURCE} ${INCLUDE_SOURCE} ${PROTO_HEADER} ${PROTO_SRC})

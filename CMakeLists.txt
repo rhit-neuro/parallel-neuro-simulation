@@ -95,4 +95,3 @@ include_directories(lib/gmock-1.7.0/gtest/include)
 
 # Sample Module
 add_subdirectory(src)
-
