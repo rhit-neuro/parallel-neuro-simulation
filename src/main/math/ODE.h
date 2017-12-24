@@ -24,18 +24,18 @@ namespace ode {
 
     namespace current {
       // TODO Investigate better design
-      double ina(const double &x[], int neuron_num);
-      double ip(const double &x[], int neuron_num);
-      double icaf(const double &x[], int neuron_num);
-      double icas(const double &x[], int neuron_num);
-      double ik1(const double &x[], int neuron_num);
-      double ik2(const double &x[], int neuron_num);
-      double ika(const double &x[], int neuron_num);
-      double ikf(const double &x[], int neuron_num);
-      double ih(const double &x[], int neuron_num);
-      double il(const double &x[], int neuron_num);
-      double ica(const double &x[], int neuron_num, int synapse_num);
-      double isyns(const double &x[], int synapse_num);
+      double ina(const double &x, int neuron_num);
+      double ip(const double &x, int neuron_num);
+      double icaf(const double &x, int neuron_num);
+      double icas(const double &x, int neuron_num);
+      double ik1(const double &x, int neuron_num);
+      double ik2(const double &x, int neuron_num);
+      double ika(const double &x, int neuron_num);
+      double ikf(const double &x, int neuron_num);
+      double ih(const double &x, int neuron_num);
+      double il(const double &x, int neuron_num);
+      double ica(const double &x, int neuron_num, int synapse_num);
+      double isyns(const double &x, int synapse_num);
     }
   }
 }

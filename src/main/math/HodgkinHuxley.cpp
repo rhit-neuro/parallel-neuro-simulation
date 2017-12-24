@@ -17,12 +17,12 @@ double ode::hodgkinhuxley::curve::fhinf(double v) {
   {
     #pragma omp section
     {
-      firstExp = exp(180.0 * (v + 0.047);
+      firstExp = exp(180.0 * (v + 0.047));
     }
     #pragma omp section
     {
       secondExp = exp(500.0 * (v + 0.047));
-    };
+    }
   };
   return 1.0 / (1.0 + 2.0 * firstExp + secondExp);
 }
@@ -43,7 +43,7 @@ double ode::hodgkinhuxley::curve::tauhna(double v) {
     #pragma omp section
     {
       secondExp = cosh(300 * (v + 0.027));
-    };
+    }
   };
   return 0.004 + 0.006 / (1.0 + firstExp) + 0.01 / secondExp;
 }
@@ -60,7 +60,7 @@ double ode::hodgkinhuxley::curve::taumkf(double v) {
     #pragma omp section
     {
       secondExp = cosh(100.0 * (v + 0.04));
-    };
+    }
   };
   return 1.5 + 8.0 / (1 + firstExp) + -2.2 / secondExp;
 }
