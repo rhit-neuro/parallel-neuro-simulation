@@ -19,22 +19,24 @@ set(INCLUDE_SOURCE
 )
 
 set(SOURCE
-    main/main.cpp
-    main/global/GlobalDefinitions.h
+  main/main.cpp
+  main/global/GlobalDefinitions.h
 
-    main/factory/Factory.h
-    main/factory/EquationFactory.cpp
-    main/factory/InitialConditionFactory.cpp
-    main/logging/ResultLogger.cpp
-    main/logging/ResultLogger.h
-    main/logging/TimeLogger.cpp
-    main/logging/TimeLogger.h
-    main/math/HodgkinHuxley.cpp
-    main/math/ODE.h
-    main/util/ArgParser.cpp
-    main/util/ArgParser.h
-    main/util/JsonToProtobufConfigConverter.cpp
-    main/util/JsonToProtobufConfigConverter.h
+  main/factory/Factory.h
+  main/factory/EquationFactory.cpp
+  main/factory/InitialConditionFactory.cpp
+  main/logging/AsyncBuffer.cpp
+  main/logging/AsyncBuffer.h
+  main/logging/ResultLogger.cpp
+  main/logging/ResultLogger.h
+  main/logging/TimeLogger.cpp
+  main/logging/TimeLogger.h
+  main/math/HodgkinHuxley.cpp
+  main/math/ODE.h
+  main/util/ArgParser.cpp
+  main/util/ArgParser.h
+  main/util/JsonToProtobufConfigConverter.cpp
+  main/util/JsonToProtobufConfigConverter.h
 )
 
 add_executable(main ${SOURCE} ${INCLUDE_SOURCE} ${PROTO_HEADER} ${PROTO_SRC})
@@ -46,7 +48,7 @@ target_link_libraries(main proto ${Boost_LIBRARIES} ${Protobuf_LIBRARIES})
 #######################
 
 set(TEST_SOURCE
-    test/main_test.cpp
+  test/main_test.cpp
 )
 
 add_executable(main_test ${TEST_SOURCE} ${PROTO_HEADER} ${PROTO_SRC})
