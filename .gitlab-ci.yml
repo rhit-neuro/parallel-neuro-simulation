@@ -1,0 +1,29 @@
+image: ubuntu
+
+
+build:
+  stage: build
+  before_script:
+    # Dependencies
+    - apt-get update
+    - apt-get upgrade -y
+    - apt-get install gcc g++ cmake autoconf automake libtool curl make unzip libboost-all-dev=1.58.0.1ubuntu1 git -y
+    # Manually build and install Google Protocol Buffer
+    - git clone --branch v3.5.0 https://github.com/google/protobuf.git
+    - cd protobuf
+    - ./autogen.sh
+    - ./configure
+    - make
+    - make check
+    - make install
+    - ldconfig
+    - cd ..
+    - rm -rf protobuf
+  script:
+    - cmake --target main
+
+# run tests using the binary built before
+test:
+  stage: test
+  script:
+    - cmake --target test
