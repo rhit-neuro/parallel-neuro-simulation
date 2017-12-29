@@ -3,22 +3,25 @@ image: docker:latest
 # When using dind (Docker in Docker), it's wise to use the overlayfs driver for improved performance.
 variables:
   DOCKER_DRIVER: overlay2
+  IMAGE_NAME_AND_TAG: my-docker-hub/$CI_PROJECT_ID:$CI_BUILD_REF_NAME_test
 
 services:
   - docker:dind
 
 before_script:
   - docker info
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN my-docker-hub
+  - docker build -t runtime-env-image:latest .
+  - docker push IMAGE_NAME_AND_TAG
 
 build:
   stage: build
-  before_script:
-    # Build the docker image here
-    - docker build -t runtime-env-image:latest .
+  image: $IMAGE_NAME_AND_TAG
   script:
-    - docker run runtime-env-image:latest cmake --target main
+    - cmake --target main
 
 test:
   stage: test
+  image: $IMAGE_NAME_AND_TAG
   script:
-    - docker run runtime-env-image:latest cmake --target test
+    - cmake --target test
