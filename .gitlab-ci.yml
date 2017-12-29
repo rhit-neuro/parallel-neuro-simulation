@@ -1,29 +1,24 @@
-image: ubuntu
+image: docker:latest
 
+# When using dind (Docker in Docker), it's wise to use the overlayfs driver for improved performance.
+variables:
+  DOCKER_DRIVER: overlay2
+
+services:
+  - docker:dind
+
+before_script:
+  - docker info
 
 build:
   stage: build
   before_script:
-    # Dependencies
-    - apt-get update
-    - apt-get upgrade -y
-    - apt-get install gcc g++ cmake autoconf automake libtool curl make unzip libboost-all-dev=1.58.0.1ubuntu1 git -y
-    # Manually build and install Google Protocol Buffer
-    - git clone --branch v3.5.0 https://github.com/google/protobuf.git
-    - cd protobuf
-    - ./autogen.sh
-    - ./configure
-    - make
-    - make check
-    - make install
-    - ldconfig
-    - cd ..
-    - rm -rf protobuf
+    # Build the docker image here
+    - docker build -t runtime-env-image:latest .
   script:
-    - cmake --target main
+    - docker run runtime-env-image:latest cmake --target main
 
-# run tests using the binary built before
 test:
   stage: test
   script:
-    - cmake --target test
+    - docker run runtime-env-image:latest cmake --target test
