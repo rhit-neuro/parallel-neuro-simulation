@@ -39,7 +39,7 @@ set(SOURCE
   main/util/ArgParser.h
   main/util/JsonToProtobufConfigConverter.cpp
   main/util/JsonToProtobufConfigConverter.h
-)
+  main/state/ConfigAdapterTrivialMethods.cpp)
 
 add_executable(main ${SOURCE} ${INCLUDE_SOURCE} ${PROTO_HEADER} ${PROTO_SRC})
 

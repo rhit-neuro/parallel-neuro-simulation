@@ -56,6 +56,28 @@ namespace state {
       ~ConfigAdapter();
       double *getInitialStateValues();
 
+      // Utility methods to get subarraies
+      double * getVArray(double * allVariables);
+      double * getmk2Array(double * allVariables);
+      double * getMpArray(double * allVariables);
+      double * getMnaArray(double * allVariables);
+      double * getHnaArray(double * allVariables);
+      double * getMcafArray(double * allVariables);
+      double * getHcafArray(double * allVariables);
+      double * getMcasArray(double * allVariables);
+      double * getHcasArray(double * allVariables);
+      double * getMk1Array(double * allVariables);
+      double * getHk1Array(double * allVariables);
+      double * getMkaArray(double * allVariables);
+      double * getHkaArray(double * allVariables);
+      double * getMkfArray(double * allVariables);
+      double * getMhArray(double * allVariables);
+      double * getAArray(double * allVariables);
+      double * getPArray(double * allVariables);
+      double * getMArray(double * allVariables);
+      double * getGArray(double * allVariables);
+      double * getHArray(double * allVariables);
+
     private:
       // Arrays for constant variables and initial state
       Neuron *neurons;
