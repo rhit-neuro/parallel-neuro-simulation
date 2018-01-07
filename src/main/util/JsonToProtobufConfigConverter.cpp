@@ -1,12 +1,9 @@
 #include "JsonToProtobufConfigConverter.h"
 
 #include <fstream>
-#include <iostream>
-#include <map>
 #include <json-v3.0.0.hpp>
 
 using json = nlohmann::json;
-using namespace input_config;
 
 double JsonToProtobufConfigConverter::getRandomNormal(double mean, double deviation) {
   return mean;

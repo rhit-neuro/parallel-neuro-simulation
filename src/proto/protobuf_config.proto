@@ -1,5 +1,5 @@
 syntax = "proto3";
-package input_config;
+package protobuf_config;
 
 message Config {
   message Neuron {

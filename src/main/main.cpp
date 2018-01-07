@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <boost/filesystem.hpp>
-#include <proto/input_config.pb.h>
+#include <proto/protobuf_config.pb.h>
 #include "global/GlobalDefinitions.h"
 
 #include "util/ArgParser.h"
@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
   sequential::ode_system_function *equation = factory::equation::getEquation();
 
   ArgParser::parse(argc, (const char **) argv);
-  input_config::Config config;
+  protobuf_config::Config config;
 
   std::cout << boost::filesystem::current_path() << std::endl;
 

@@ -27,12 +27,16 @@ namespace global_definitions {
     const short OFF_mkf = 13;
     const short OFF_mh = 14;
 
+    const short NUM_OF_NEURON_VARIABLES = 15;
+
     // Offsets for synapses
     const short OFF_A = 0;
     const short OFF_P = 1;
     const short OFF_M = 2;
     const short OFF_g = 3;
     const short OFF_h = 4;
+
+    const short NUM_OF_SYNAPSE_VARIABLES = 5;
   }
 
   struct InitialCondition {

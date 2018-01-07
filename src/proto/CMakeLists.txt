@@ -3,7 +3,7 @@ include_directories(${PROTOBUF_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(PROTOBUF_DEFINITION
-    input_config.proto
+    protobuf_config.proto
 )
 
 protobuf_generate_cpp(PROTO_SRC PROTO_HEADER ${PROTOBUF_DEFINITION})

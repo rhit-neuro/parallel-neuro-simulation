@@ -33,6 +33,8 @@ set(SOURCE
   main/logging/TimeLogger.h
   main/math/HodgkinHuxley.cpp
   main/math/ODE.h
+  main/state/ConfigAdapter.cpp
+  main/state/ConfigAdapter.h
   main/util/ArgParser.cpp
   main/util/ArgParser.h
   main/util/JsonToProtobufConfigConverter.cpp

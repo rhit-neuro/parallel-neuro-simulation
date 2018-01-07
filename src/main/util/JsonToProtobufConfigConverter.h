@@ -2,11 +2,11 @@
 #define __JSONTOCONFIG_H
 
 
-#include "proto/input_config.pb.h"
+#include "proto/protobuf_config.pb.h"
 #include <string>
 
 using namespace std;
-using namespace input_config;
+using namespace protobuf_config;
 
 class JsonToProtobufConfigConverter {
   public:
