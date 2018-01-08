@@ -76,6 +76,13 @@ namespace state {
   class ConfigAdapter {
       // TODO Come up with better names
     public:
+      // Static methods
+      static ConfigAdapter& getInstance() {
+        // Initialization will be done before library call, so no need for critical section
+        static ConfigAdapter adapterInstance;
+        return adapterInstance;
+      }
+
       // Public fields
       double absoluteError;
       double relativeError;
@@ -85,7 +92,7 @@ namespace state {
       int numOfSynapseVariables;
 
       // Public methods
-      explicit ConfigAdapter(protobuf_config::Config &protoConfig);
+      void loadProtobufConfig(protobuf_config::Config &protoConfig);
       storage_type * getInitialStateValues();
 
       // Utility methods to get subarraies
@@ -141,6 +148,7 @@ namespace state {
       int offset_h;
 
       // Private methods
+      ConfigAdapter() = default;
       void initializeNeuronOffsets();
       void initializeSynapseOffsets();
       void initializeNeuronConstantProperties(protobuf_config::Config &protoConfig);

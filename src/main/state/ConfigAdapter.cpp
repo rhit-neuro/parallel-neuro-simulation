@@ -5,7 +5,7 @@ using namespace state;
 using namespace state::offsets;
 using namespace std;
 
-ConfigAdapter::ConfigAdapter(protobuf_config::Config &protoConfig) {
+void ConfigAdapter::loadProtobufConfig(protobuf_config::Config &protoConfig) {
   #pragma omp parallel sections
   {
     #pragma omp section
