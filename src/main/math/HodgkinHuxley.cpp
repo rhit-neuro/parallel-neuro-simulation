@@ -2,7 +2,7 @@
 #include "ODE.h"
 
 
-void ode::hodgkinhuxley::calculateNextState(const double &x, double &dxdt, double t) {
+void ode::hodgkinhuxley::calculateNextState(const storage_type &x, storage_type &dxdt, double t) {
 
 }
 

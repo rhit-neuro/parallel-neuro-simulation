@@ -2,11 +2,15 @@
 #define PARALLEL_NEURON_SIMULATION_GLOBALDEFINITIONS_H
 
 
+#include <vector>
+
 namespace global_definitions {
-  typedef void observer_function(const double &x, const double t);
+  typedef std::vector<double> storage_type;
+
+  typedef void observer_function(const storage_type &x, const double t);
 
   namespace sequential {
-    typedef void ode_system_function(const double &x, double &dxdt, double t);
+    typedef void ode_system_function(const storage_type &x, storage_type &dxdt, double t);
   }
 
   struct InitialCondition {

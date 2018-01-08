@@ -2,6 +2,10 @@
 #define PARALLEL_NEURON_SIMULATION_ODE_H
 
 
+#include "../global/GlobalDefinitions.h"
+
+using namespace global_definitions;
+
 namespace ode {
   namespace hodgkinhuxley {
     /**
@@ -11,7 +15,7 @@ namespace ode {
      * @param dxdt Placeholder for new values for the derivatives
      * @param dt Current time value, might be unused by the calculation
      */
-    void calculateNextState(const double &x, double &dxdt, double t);
+    void calculateNextState(const storage_type &x, storage_type &dxdt, double t);
 
     namespace curve {
       double finf(double a, double b, double v);
@@ -24,18 +28,18 @@ namespace ode {
 
     namespace current {
       // TODO Investigate better design
-      double ina(const double &x, int neuron_num);
-      double ip(const double &x, int neuron_num);
-      double icaf(const double &x, int neuron_num);
-      double icas(const double &x, int neuron_num);
-      double ik1(const double &x, int neuron_num);
-      double ik2(const double &x, int neuron_num);
-      double ika(const double &x, int neuron_num);
-      double ikf(const double &x, int neuron_num);
-      double ih(const double &x, int neuron_num);
-      double il(const double &x, int neuron_num);
-      double ica(const double &x, int neuron_num, int synapse_num);
-      double isyns(const double &x, int synapse_num);
+      double ina(const storage_type &x, int neuron_num);
+      double ip(const storage_type &x, int neuron_num);
+      double icaf(const storage_type &x, int neuron_num);
+      double icas(const storage_type &x, int neuron_num);
+      double ik1(const storage_type &x, int neuron_num);
+      double ik2(const storage_type &x, int neuron_num);
+      double ika(const storage_type &x, int neuron_num);
+      double ikf(const storage_type &x, int neuron_num);
+      double ih(const storage_type &x, int neuron_num);
+      double il(const storage_type &x, int neuron_num);
+      double ica(const storage_type &x, int neuron_num, int synapse_num);
+      double isyns(const storage_type &x, int synapse_num);
     }
   }
 }

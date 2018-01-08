@@ -3,6 +3,9 @@
 
 
 #include <proto/protobuf_config.pb.h>
+#include "../global/GlobalDefinitions.h"
+
+using namespace global_definitions;
 
 namespace state {
   typedef ::google::protobuf::RepeatedField<::google::protobuf::int32> ProtobufRepeatedInt32;
@@ -83,8 +86,7 @@ namespace state {
 
       // Public methods
       explicit ConfigAdapter(protobuf_config::Config &protoConfig);
-      ~ConfigAdapter();
-      double *getInitialStateValues();
+      storage_type * getInitialStateValues();
 
       // Utility methods to get subarraies
       double * getVArray(double * allVariables);
@@ -112,7 +114,7 @@ namespace state {
       // Arrays for constant variables and initial state
       NeuronConstants *neurons;
       SynapseConstants *synapses;
-      double *initialStateValues;
+      storage_type initialStateValues;
 
       // Neuron variable offsets
       int offset_V;

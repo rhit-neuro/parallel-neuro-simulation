@@ -42,7 +42,7 @@ ConfigAdapter::ConfigAdapter(protobuf_config::Config &protoConfig) {
     #pragma omp section
     {
       neurons = static_cast<NeuronConstants *>(malloc(numOfNeurons * sizeof(NeuronConstants)));
-      if (!initialStateValues) {
+      if (!neurons) {
         cerr << "Failed to allocate memory for the NeuronConstants array" << "\n";
         exit(1);
       }
@@ -52,7 +52,7 @@ ConfigAdapter::ConfigAdapter(protobuf_config::Config &protoConfig) {
     #pragma omp section
     {
       synapses = static_cast<SynapseConstants *>(malloc(numOfSynapses * sizeof(SynapseConstants)));
-      if (!initialStateValues) {
+      if (!synapses) {
         cerr << "Failed to allocate memory for the SynapseConstants array" << "\n";
         exit(1);
       }
@@ -61,12 +61,7 @@ ConfigAdapter::ConfigAdapter(protobuf_config::Config &protoConfig) {
 
     #pragma omp section
     {
-      initialStateValues = static_cast<double *>(malloc((numOfNeuronVariables + numOfSynapseVariables) * sizeof(double)));
-      if (!initialStateValues) {
-        cerr << "Failed to allocate memory for the state value array" << "\n";
-        exit(1);
-      }
-
+      // initialStateValues is implicitly constructed
       #pragma omp parallel sections
       {
         #pragma omp section
@@ -83,12 +78,8 @@ ConfigAdapter::ConfigAdapter(protobuf_config::Config &protoConfig) {
   };
 }
 
-ConfigAdapter::~ConfigAdapter() {
-  free(initialStateValues);
-}
-
-double * ConfigAdapter::getInitialStateValues() {
-  return initialStateValues;
+storage_type * ConfigAdapter::getInitialStateValues() {
+  return &initialStateValues;
 }
 
 void ConfigAdapter::initializeNeuronOffsets() {

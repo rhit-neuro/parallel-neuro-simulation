@@ -1,11 +1,11 @@
 #ifndef PARALLEL_NEURON_SIMULATION_FACTORY_H
 #define PARALLEL_NEURON_SIMULATION_FACTORY_H
 
-#include <proto/input_config.pb.h>
+#include <proto/protobuf_config.pb.h>
 #include "../global/GlobalDefinitions.h"
 
 using namespace global_definitions;
-using namespace input_config;
+using namespace protobuf_config;
 
 namespace factory {
   namespace equation {
