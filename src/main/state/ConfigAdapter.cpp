@@ -41,9 +41,9 @@ ConfigAdapter::ConfigAdapter(protobuf_config::Config &protoConfig) {
   {
     #pragma omp section
     {
-      neurons = static_cast<Neuron *>(malloc(numOfNeurons * sizeof(Neuron)));
+      neurons = static_cast<NeuronConstants *>(malloc(numOfNeurons * sizeof(NeuronConstants)));
       if (!initialStateValues) {
-        cerr << "Failed to allocate memory for the Neuron array" << "\n";
+        cerr << "Failed to allocate memory for the NeuronConstants array" << "\n";
         exit(1);
       }
       initializeNeuronConstantProperties(protoConfig);
@@ -51,9 +51,9 @@ ConfigAdapter::ConfigAdapter(protobuf_config::Config &protoConfig) {
 
     #pragma omp section
     {
-      synapses = static_cast<Synapse *>(malloc(numOfSynapses * sizeof(Synapse)));
+      synapses = static_cast<SynapseConstants *>(malloc(numOfSynapses * sizeof(SynapseConstants)));
       if (!initialStateValues) {
-        cerr << "Failed to allocate memory for the Synapse array" << "\n";
+        cerr << "Failed to allocate memory for the SynapseConstants array" << "\n";
         exit(1);
       }
       initializeSynapseConstantProperties(protoConfig);
@@ -122,7 +122,7 @@ void ConfigAdapter::initializeNeuronConstantProperties(protobuf_config::Config &
   for (int i = 0; i < numOfNeurons; i++) {
     const auto &protoNeuron = protoConfig.neurons(i);
     // TODO array access check; we don't want element copy
-    Neuron *neuronPtr = neurons + i;
+    NeuronConstants *neuronPtr = neurons + i;
     neuronPtr->gbarna = protoNeuron.gbarna();
     neuronPtr->gbarp = protoNeuron.gbarp();
     neuronPtr->gbarcaf = protoNeuron.gbarcaf();
@@ -148,7 +148,7 @@ void ConfigAdapter::initializeSynapseConstantProperties(protobuf_config::Config 
   for (int i = 0; i < numOfSynapses; i++) {
     const auto &protoSynapse = protoConfig.synapses(i);
     // TODO array access check; we don't want element copy
-    Synapse *synapsePtr = synapses + i;
+    SynapseConstants *synapsePtr = synapses + i;
     synapsePtr->source = protoSynapse.source();
     synapsePtr->gbarsyng = protoSynapse.gbarsyng();
     synapsePtr->esyn = protoSynapse.esyn();

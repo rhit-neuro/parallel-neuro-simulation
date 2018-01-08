@@ -25,7 +25,7 @@ namespace state {
     double el;
     double capacitance;
     ProtobufRepeatedInt32 &incoming;
-  } Neuron;
+  } NeuronConstants;
 
   typedef struct {
     int source;
@@ -38,7 +38,7 @@ namespace state {
     double tauDecay;
     double tauRise;
     double cGraded;
-  } Synapse;
+  } SynapseConstants;
 
   class ConfigAdapter {
       // TODO Come up with better names
@@ -80,8 +80,8 @@ namespace state {
 
     private:
       // Arrays for constant variables and initial state
-      Neuron *neurons;
-      Synapse *synapses;
+      NeuronConstants *neurons;
+      SynapseConstants *synapses;
       double *initialStateValues;
 
       // Neuron variable offsets
