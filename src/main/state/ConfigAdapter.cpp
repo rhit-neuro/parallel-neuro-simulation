@@ -2,7 +2,7 @@
 #include "../global/GlobalDefinitions.h"
 
 using namespace state;
-using namespace global_definitions::offsets;
+using namespace state::offsets;
 using namespace std;
 
 ConfigAdapter::ConfigAdapter(protobuf_config::Config &protoConfig) {
