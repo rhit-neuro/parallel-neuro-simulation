@@ -1,13 +1,12 @@
 #include "ODE.h"
-#include <cmath>
 
 using namespace state;
-ConfigAdapter c = ConfigAdapter::getInstance();
 
 using namespace ode::hodgkinhuxley::curve;
 using namespace ode::hodgkinhuxley::current;
 
 void ode::hodgkinhuxley::calculateNextState(const storage_type &x, storage_type &dxdt, double t) {
+  ConfigAdapter c = ConfigAdapter::getInstance();
   double* arrV = c.getVArray(const_cast<storage_type &>(x));
   double* arrMk2 = c.getMk2Array(const_cast<storage_type &>(x));
   double* arrMp = c.getMpArray(const_cast<storage_type &>(x));

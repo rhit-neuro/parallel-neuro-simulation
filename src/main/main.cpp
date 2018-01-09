@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
 
   JsonToProtobufConfigConverter converter;
   Config config = converter.readConfig(const_cast<string &>(inputFile));
-  state::ConfigAdapter c = state::ConfigAdapter::getInstance();
+  state::ConfigAdapter &c = state::ConfigAdapter::getInstance();
   try {
     c.loadProtobufConfig(config);
   } catch (exception &e) {
