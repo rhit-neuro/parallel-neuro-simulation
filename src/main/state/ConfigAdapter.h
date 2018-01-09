@@ -94,8 +94,9 @@ namespace state {
       // Public methods
       void loadProtobufConfig(protobuf_config::Config &protoConfig);
       storage_type * getInitialStateValues();
-      NeuronConstants& getNeuronConstantsOf(int neuronIndex);
-      SynapseConstants& getSynapseConstantsOf(int synapseIndex);
+      NeuronConstants& getNeuronConstantAt(int neuronIndex);
+      SynapseConstants& getSynapseConstantAt(int synapseIndex);
+      SynapseConstants* getAllSynapseConstants();
 
       // Utility methods to get subarraies
       double * getVArray(storage_type &allVariables);

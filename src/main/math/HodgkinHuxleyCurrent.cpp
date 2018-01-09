@@ -24,8 +24,8 @@ double ode::hodgkinhuxley::current::ik1(double gbark1, double mk1, double hk1, d
   return gbark1 * pow(mk1, 2) * hk1 * (V - Ek);
 }
 
-double ode::hodgkinhuxley::current::ik2(double gbark2, double mk2, double hk2, double V, double Ek) {
-  return gbark2 * pow(mk2, 2) * hk2 * (V - Ek);
+double ode::hodgkinhuxley::current::ik2(double gbark2, double mk2, double V, double Ek) {
+  return gbark2 * pow(mk2, 2) * (V - Ek);
 }
 
 double ode::hodgkinhuxley::current::ika(double gbarka, double mka, double hka, double V, double Ek) {
@@ -48,17 +48,18 @@ double ode::hodgkinhuxley::current::ica(double icaf, double icas, double A) {
   return fmax(0, -(icaf + icas + A));
 }
 
-double ode::hodgkinhuxley::current::isyn(double cGraded, double Esyn, double V, double P, double M, double g,
-                                         SynapseConstants *allSynapses, ProtobufRepeatedInt32 &ownSynapses,
-                                         int numOfOwnSynapses) {
+double ode::hodgkinhuxley::current::isyn(double V, double P, double M, double g, SynapseConstants *allSynapses,
+                                         ProtobufRepeatedInt32 &ownSynapses, int numOfOwnSynapses) {
   double result = 0;
   // TODO Investigate the formula expressed here. It's not the same as in the paper
   #pragma omp parallel for reduction(+:result)
   for (int i = 0; i < numOfOwnSynapses; i++) {
     const int synapseIndex = ownSynapses[i];
     const SynapseConstants &s = allSynapses[synapseIndex];
+    const double Esyn = s.esyn;
     const double gbarsyng = s.gbarsyng;
     const double gbarsyns = s.gbarsyns;
+    const double cGraded = s.cGraded;
     const double tauDecay = s.tauDecay;
     const double tauRise = s.tauRise;
     const double P3 = pow(P, 3);

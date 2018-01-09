@@ -35,15 +35,14 @@ namespace ode {
       double icaf(double gbarcaf, double mcaf, double hcaf, double V, double Eca);
       double icas(double gbarcas, double mcas, double hcas, double V, double Eca);
       double ik1(double gbark1, double mk1, double hk1, double V, double Ek);
-      double ik2(double gbark2, double mk2, double hk2, double V, double Ek);
+      double ik2(double gbark2, double mk2, double V, double Ek);
       double ika(double gbarka, double mka, double hka, double V, double Ek);
       double ikf(double gbarkf, double mkf, double V, double Ek);
       double ih(double gbarh, double mh, double V, double Eh);
       double il(double gbarl, double V, double El);
       double ica(double icaf, double icas, double A);
-      double isyn(double cGraded, double Esyn, double V, double P, double M, double g,
-                        SynapseConstants *allSynapses, ProtobufRepeatedInt32 &ownSynapses,
-                        int numOfOwnSynapses);
+      double isyn(double V, double P, double M, double g, SynapseConstants *allSynapses,
+                        ProtobufRepeatedInt32 &ownSynapses, int numOfOwnSynapses);
       // Unimplemented
 //      double isyng(double gbarsyng, double P, double C, double V, double Esyn);
 //      double isyns(double x, NeuronConstants &n, SynapseConstants &s, int synapseIndex);

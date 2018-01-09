@@ -83,10 +83,14 @@ double * ConfigAdapter::getHArray(storage_type &allVariables) {
   return &(allVariables[offset_h]);
 }
 
-NeuronConstants &ConfigAdapter::getNeuronConstantsOf(int neuronIndex) {
+NeuronConstants& ConfigAdapter::getNeuronConstantAt(int neuronIndex) {
   return neurons[neuronIndex];
 }
 
-SynapseConstants &ConfigAdapter::getSynapseConstantsOf(int synapseIndex) {
+SynapseConstants& ConfigAdapter::getSynapseConstantAt(int synapseIndex) {
   return synapses[synapseIndex];
+}
+
+SynapseConstants* ConfigAdapter::getAllSynapseConstants(){
+  return synapses;
 }
