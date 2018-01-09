@@ -72,7 +72,7 @@ void ode::hodgkinhuxley::calculateNextState(const storage_type &x, storage_type 
                        ikf(n.gbarkf, arrMkf[i], V, n.ek) +
                        ih(n.gbarh, arrMh[i], V, n.eh) +
                        il(n.gbarl, V, n.el) +
-                       isyn(V, arrP[i], arrM[i], arrG[i], c.getAllSynapseConstants(), n.incoming, n.incoming.size())
+                       isyn(V, arrP[i], arrM[i], arrG[i], c.getAllSynapseConstants(), *(n.incoming), n.incoming->size())
                       ) / n.capacitance;
       }
       #pragma omp section

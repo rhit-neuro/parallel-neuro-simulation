@@ -13,6 +13,10 @@ Config JsonToProtobufConfigConverter::readConfig(string &input_file) {
   // Load from file
   Config c;
   std::ifstream infile(input_file);
+  if (!infile.good()) {
+    cerr << "Failed to open file" << endl;
+    exit(1);
+  }
   json j;
   infile >> j;
   infile.close();

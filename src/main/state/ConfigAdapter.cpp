@@ -1,5 +1,4 @@
 #include "ConfigAdapter.h"
-#include "../global/GlobalDefinitions.h"
 
 using namespace state;
 using namespace state::offsets;
@@ -11,8 +10,11 @@ void ConfigAdapter::loadProtobufConfig(protobuf_config::Config &protoConfig) {
     #pragma omp section
     {
       // Initialize solver info
-      absoluteError = protoConfig.solver().abserror();
-      relativeError = protoConfig.solver().relerror();
+      auto &s = protoConfig.solver();
+      absoluteError = s.abserror();
+      relativeError = s.relerror();
+      startTime = s.starttime();
+      endTime = s.endtime();
     }
 
     #pragma omp section
@@ -61,7 +63,7 @@ void ConfigAdapter::loadProtobufConfig(protobuf_config::Config &protoConfig) {
 
     #pragma omp section
     {
-      // initialStateValues is implicitly constructed
+      initialStateValues = storage_type(static_cast<unsigned long>(numOfNeuronVariables + numOfSynapseVariables));
       #pragma omp parallel sections
       {
         #pragma omp section
@@ -78,8 +80,8 @@ void ConfigAdapter::loadProtobufConfig(protobuf_config::Config &protoConfig) {
   };
 }
 
-storage_type * ConfigAdapter::getInitialStateValues() {
-  return &initialStateValues;
+storage_type & ConfigAdapter::getInitialStateValues() {
+  return initialStateValues;
 }
 
 void ConfigAdapter::initializeNeuronOffsets() {
@@ -130,7 +132,7 @@ void ConfigAdapter::initializeNeuronConstantProperties(protobuf_config::Config &
     neuronPtr->eh = protoNeuron.eh();
     neuronPtr->el = protoNeuron.el();
     neuronPtr->capacitance = protoNeuron.capacitance();
-    neuronPtr->incoming = protoNeuron.incoming();
+    neuronPtr->incoming = const_cast<ProtobufRepeatedInt32 *>(&(protoNeuron.incoming()));
   }
 }
 

@@ -27,7 +27,7 @@ namespace state {
     double eh;
     double el;
     double capacitance;
-    ProtobufRepeatedInt32 &incoming;
+    ProtobufRepeatedInt32 *incoming;
   } NeuronConstants;
 
   typedef struct {
@@ -86,6 +86,8 @@ namespace state {
       // Public fields
       double absoluteError;
       double relativeError;
+      double startTime;
+      double endTime;
       int numOfNeurons;
       int numOfSynapses;
       int numOfNeuronVariables;
@@ -93,7 +95,7 @@ namespace state {
 
       // Public methods
       void loadProtobufConfig(protobuf_config::Config &protoConfig);
-      storage_type * getInitialStateValues();
+      storage_type & getInitialStateValues();
       NeuronConstants& getNeuronConstantAt(int neuronIndex);
       SynapseConstants& getSynapseConstantAt(int synapseIndex);
       SynapseConstants* getAllSynapseConstants();
