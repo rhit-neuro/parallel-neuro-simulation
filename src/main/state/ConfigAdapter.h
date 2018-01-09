@@ -94,28 +94,30 @@ namespace state {
       // Public methods
       void loadProtobufConfig(protobuf_config::Config &protoConfig);
       storage_type * getInitialStateValues();
+      NeuronConstants& getNeuronConstantsOf(int neuronIndex);
+      SynapseConstants& getSynapseConstantsOf(int synapseIndex);
 
       // Utility methods to get subarraies
-      double * getVArray(double * allVariables);
-      double * getmk2Array(double * allVariables);
-      double * getMpArray(double * allVariables);
-      double * getMnaArray(double * allVariables);
-      double * getHnaArray(double * allVariables);
-      double * getMcafArray(double * allVariables);
-      double * getHcafArray(double * allVariables);
-      double * getMcasArray(double * allVariables);
-      double * getHcasArray(double * allVariables);
-      double * getMk1Array(double * allVariables);
-      double * getHk1Array(double * allVariables);
-      double * getMkaArray(double * allVariables);
-      double * getHkaArray(double * allVariables);
-      double * getMkfArray(double * allVariables);
-      double * getMhArray(double * allVariables);
-      double * getAArray(double * allVariables);
-      double * getPArray(double * allVariables);
-      double * getMArray(double * allVariables);
-      double * getGArray(double * allVariables);
-      double * getHArray(double * allVariables);
+      double * getVArray(storage_type &allVariables);
+      double * getMk2Array(storage_type &allVariables);
+      double * getMpArray(storage_type &allVariables);
+      double * getMnaArray(storage_type &allVariables);
+      double * getHnaArray(storage_type &allVariables);
+      double * getMcafArray(storage_type &allVariables);
+      double * getHcafArray(storage_type &allVariables);
+      double * getMcasArray(storage_type &allVariables);
+      double * getHcasArray(storage_type &allVariables);
+      double * getMk1Array(storage_type &allVariables);
+      double * getHk1Array(storage_type &allVariables);
+      double * getMkaArray(storage_type &allVariables);
+      double * getHkaArray(storage_type &allVariables);
+      double * getMkfArray(storage_type &allVariables);
+      double * getMhArray(storage_type &allVariables);
+      double * getAArray(storage_type &allVariables);
+      double * getPArray(storage_type &allVariables);
+      double * getMArray(storage_type &allVariables);
+      double * getGArray(storage_type &allVariables);
+      double * getHArray(storage_type &allVariables);
 
     private:
       // Arrays for constant variables and initial state

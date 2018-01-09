@@ -32,14 +32,17 @@ set(SOURCE
   main/logging/TimeLogger.cpp
   main/logging/TimeLogger.h
   main/math/HodgkinHuxley.cpp
+  main/math/HodgkinHuxleyCurrent.cpp
+  main/math/HodgkinHuxleyCurve.cpp
   main/math/ODE.h
   main/state/ConfigAdapter.cpp
   main/state/ConfigAdapter.h
+  main/state/ConfigAdapterTrivialMethods.cpp
   main/util/ArgParser.cpp
   main/util/ArgParser.h
   main/util/JsonToProtobufConfigConverter.cpp
   main/util/JsonToProtobufConfigConverter.h
-  main/state/ConfigAdapterTrivialMethods.cpp)
+)
 
 add_executable(main ${SOURCE} ${INCLUDE_SOURCE} ${PROTO_HEADER} ${PROTO_SRC})
 
