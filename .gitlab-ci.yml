@@ -4,8 +4,12 @@ build:
   stage: build
   script:
     - cmake --target main
+  tags:
+    - kubernetes
 
 test:
   stage: test
   script:
     - cmake --target test
+  tags:
+      - kubernetes
