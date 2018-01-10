@@ -5,79 +5,79 @@ using namespace state::offsets;
 using namespace std;
 
 void ConfigAdapter::loadProtobufConfig(protobuf_config::Config &protoConfig) {
-  #pragma omp parallel sections
-  {
-    #pragma omp section
-    {
+//  #pragma omp parallel sections
+//  {
+//    #pragma omp section
+//    {
       // Initialize solver info
       auto &s = protoConfig.solver();
       absoluteError = s.abserror();
       relativeError = s.relerror();
       startTime = s.starttime();
       endTime = s.endtime();
-    }
-
-    #pragma omp section
-    {
+//    }
+//
+//    #pragma omp section
+//    {
       numOfNeurons = protoConfig.neurons_size();
       numOfSynapses = protoConfig.synapses_size();
       numOfNeuronVariables = numOfNeurons * NUM_OF_NEURON_VARIABLES;
       numOfSynapseVariables = numOfSynapses * NUM_OF_SYNAPSE_VARIABLES;
-    }
-  };
+//    }
+//  };
 
-  #pragma omp parallel sections
-  {
-    #pragma omp section
-    {
+//  #pragma omp parallel sections
+//  {
+//    #pragma omp section
+//    {
       initializeNeuronOffsets();
-    }
-
-    #pragma omp section
-    {
+//    }
+//
+//    #pragma omp section
+//    {
       initializeSynapseOffsets();
-    }
-  };
+//    }
+//  };
 
-  #pragma omp parallel sections
-  {
-    #pragma omp section
-    {
+//  #pragma omp parallel sections
+//  {
+//    #pragma omp section
+//    {
       neurons = static_cast<NeuronConstants *>(malloc(numOfNeurons * sizeof(NeuronConstants)));
       if (!neurons) {
         cerr << "Failed to allocate memory for the NeuronConstants array" << "\n";
         exit(1);
       }
       initializeNeuronConstantProperties(protoConfig);
-    }
-
-    #pragma omp section
-    {
+//    }
+//
+//    #pragma omp section
+//    {
       synapses = static_cast<SynapseConstants *>(malloc(numOfSynapses * sizeof(SynapseConstants)));
       if (!synapses) {
         cerr << "Failed to allocate memory for the SynapseConstants array" << "\n";
         exit(1);
       }
       initializeSynapseConstantProperties(protoConfig);
-    }
-
-    #pragma omp section
-    {
+//    }
+//
+//    #pragma omp section
+//    {
       initialStateValues = storage_type(static_cast<unsigned long>(numOfNeuronVariables + numOfSynapseVariables));
-      #pragma omp parallel sections
-      {
-        #pragma omp section
-        {
+//      #pragma omp parallel sections
+//      {
+//        #pragma omp section
+//        {
           initializeNeuronVariables(protoConfig);
-        }
-
-        #pragma omp section
-        {
+//        }
+//
+//        #pragma omp section
+//        {
           initializeSynapseVariables(protoConfig);
-        }
-      };
-    }
-  };
+//        }
+//      };
+//    }
+//  };
 }
 
 storage_type & ConfigAdapter::getInitialStateValues() {

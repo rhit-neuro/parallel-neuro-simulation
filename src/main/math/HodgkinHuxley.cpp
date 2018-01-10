@@ -78,69 +78,69 @@ void ode::hodgkinhuxley::calculateNextState(const storage_type &x, storage_type 
       {
         // Calculate dMk2dt
         arrdMk2dt[i] = (finf(-83.0, 0.02, V) - arrMk2[i]) / tau(200.0, 0.035, 0.057, 0.043, V);
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dMpdt
         arrdMpdt[i] = (finf(-120.0, 0.039, V) - arrMp[i]) / tau(400.0, 0.057, 0.01, 0.2, V);
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dMnadt
         arrdMnadt[i] = (finf(-150.0, 0.029, V) - arrMna[i]) / 0.0001;
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dHnadt
         arrdHnadt[i] = (finf(500.0, 0.030, V) - arrHna[i]) / tauhna(V);
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dMcafdt
         arrdMcafdt[i] = (finf(-600.0, 0.0467, V) - arrMcaf[i]) / taumcaf(V);
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dHcafdt
         arrdHcafdt[i] = (finf(350.0, 0.0555, V) - arrHcaf[i]) / tau(270.0, 0.055, 0.06, 0.31, V);
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dMcasdt
         arrdMcasdt[i] = (finf(-420.0, 0.0472, V) - arrMcas[i]) / tau(-400.0, 0.0487, 0.005, 0.134, V);
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dHcasdt
         arrdHcasdt[i] = (finf(360.0, 0.055, V) - arrHcas[i]) / tau(-250.0, 0.043, 0.2, 5.25, V);
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dMk1dt
         arrdMk1dt[i] = (finf(-143.0, 0.021, V) - arrMk1[i]) / tau(150.0, 0.016, 0.001, 0.011, V);
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dHk1dt
         arrdHk1dt[i] = (finf(111.0, 0.028, V) - arrHk1[i]) / tau(-143.0, 0.013, 0.5, 0.2, V);
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dMkadt
         arrdMkadt[i] = (finf(-130.0, 0.044, V) - arrMka[i]) / tau(200.0, 0.03, 0.005, 0.011, V);
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dHkadt
         arrdHkadt[i] = (finf(160.0, 0.063, V) - arrHka[i]) / tau(-300.0, 0.055, 0.026, 0.0085, V);
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dMkfdt
         arrdMkfdt[i] = (finf(-100.0, 0.022, V) - arrMkf[i]) / taumkf(V);
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dMhdt
         arrdMhdt[i] = (fhinf(V) - arrMh[i]) / tau(-100.0, 0.073, 0.7, 1.7, V);
       }
@@ -174,14 +174,14 @@ void ode::hodgkinhuxley::calculateNextState(const storage_type &x, storage_type 
       {
         // Calculate dMdt
         arrdMdt[j] = (0.1 + 0.9 / (1 + exp(-1000.0 * (V + 0.04))) - arrM[j]) / 0.2;
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dGdt
         arrdGdt[j] = -arrG[j] / s.tauDecay + arrH[j];
-      }
-      #pragma omp section
-      {
+//      }
+//      #pragma omp section
+//      {
         // Calculate dHdt
         arrdHdt[j] = -arrH[j] / s.tauRise +
                            (V > s.thresholdV ? s.h0 : 0);
