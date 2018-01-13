@@ -19,6 +19,6 @@ test:
     - cmake ..
     - cd ..
     - cmake --build build_test --target main_test
-    - cmake --build build_test --target test
+    - build_test/src/main_test --gtest_filter=* --gtest_color=no
   tags:
     - kubernetes-test
