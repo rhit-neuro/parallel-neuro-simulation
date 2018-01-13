@@ -9,7 +9,7 @@ build:
     - cd ..
     - cmake --build build --target main
   tags:
-    - kubernetes
+    - kubernetes-test
 
 test:
   stage: test
@@ -21,4 +21,4 @@ test:
     - cmake --build build_test --target main_test
     - cmake --build build_test --target test
   tags:
-    - kubernetes
+    - kubernetes-test
