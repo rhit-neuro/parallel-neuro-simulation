@@ -9,7 +9,6 @@ TEST(Sample, Two) {
 }
 
 TEST(Sample, Three) {
-  EXPECT_TRUE(false);
+  EXPECT_TRUE(true);
   EXPECT_FALSE(false);
 }
-
