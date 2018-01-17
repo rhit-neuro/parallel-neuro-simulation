@@ -44,8 +44,8 @@ int main(int argc, char** argv) {
   const auto bufferSize = numNeuron + 1;
 
   const double START_TIME = 0.0;
-  const double END_TIME = 50.0;
-  const int NUM_OF_RUNS = 3;
+  const double END_TIME = 1.0;
+  const int NUM_OF_RUNS = 6;
 
   cout << "With buffer writing" << "\n\n";
   {

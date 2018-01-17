@@ -262,7 +262,9 @@ void ode::hodgkinhuxley::parallelForInside(const storage_type &x, storage_type &
       using namespace std;
       const NeuronConstants &n = c.getNeuronConstantAt(i);
       const double V = arrV[i];
-      cerr << omp_get_thread_num() << endl;
+      if (t < 0.01) {
+        cerr << omp_get_thread_num() << endl;
+      }
 
       arrdVdt[i] = -(ina(n.gbarna, arrMna[i], arrHna[i], V, n.ena) +
                      ip(n.gbarp, arrMp[i], V, n.ena) +
@@ -367,7 +369,9 @@ void ode::hodgkinhuxley::parallelSingleFor(const storage_type &x, storage_type &
       using namespace std;
       const NeuronConstants &n = c.getNeuronConstantAt(i);
       const double V = arrV[i];
-      cerr << omp_get_thread_num() << endl;
+      if (t < 0.01) {
+        cerr << omp_get_thread_num() << endl;
+      }
       arrdVdt[i] = -(ina(n.gbarna, arrMna[i], arrHna[i], V, n.ena) +
                      ip(n.gbarp, arrMp[i], V, n.ena) +
                      icaf(n.gbarcaf, arrMcaf[i], arrHcaf[i], V, n.eca) +
@@ -588,7 +592,9 @@ void ode::hodgkinhuxley::parallelSingleTaskOutside(const storage_type &x, storag
       const double V = arrV[i];
       #pragma omp task
       {
-        cerr << omp_get_thread_num() << endl;
+        if (t < 0.01) {
+          cerr << omp_get_thread_num() << endl;
+        }
         arrdVdt[i] = -(ina(n.gbarna, arrMna[i], arrHna[i], V, n.ena) +
                        ip(n.gbarp, arrMp[i], V, n.ena) +
                        icaf(n.gbarcaf, arrMcaf[i], arrHcaf[i], V, n.eca) +
@@ -604,7 +610,9 @@ void ode::hodgkinhuxley::parallelSingleTaskOutside(const storage_type &x, storag
       }
       #pragma omp task
       {
-        cerr << omp_get_thread_num() << endl;
+        if (t < 0.01) {
+          cerr << omp_get_thread_num() << endl;
+        }
         arrdMk2dt[i] = (finf(-83.0, 0.02, V) - arrMk2[i]) / tau(200.0, 0.035, 0.057, 0.043, V);
         arrdMpdt[i] = (finf(-120.0, 0.039, V) - arrMp[i]) / tau(400.0, 0.057, 0.01, 0.2, V);
         arrdMnadt[i] = (finf(-150.0, 0.029, V) - arrMna[i]) / 0.0001;
@@ -704,7 +712,9 @@ void ode::hodgkinhuxley::parallelSingleTaskloopInside(const storage_type &x, sto
         using namespace std;
         const NeuronConstants &n = c.getNeuronConstantAt(i);
         const double V = arrV[i];
-        cerr << omp_get_thread_num() << endl;
+        if (t < 0.01) {
+          cerr << omp_get_thread_num() << endl;
+        }
         arrdVdt[i] = -(ina(n.gbarna, arrMna[i], arrHna[i], V, n.ena) +
                        ip(n.gbarp, arrMp[i], V, n.ena) +
                        icaf(n.gbarcaf, arrMcaf[i], arrHcaf[i], V, n.eca) +
@@ -1029,10 +1039,15 @@ void ode::hodgkinhuxley::parallelSingleTaskloopTaskOutside(const storage_type &x
       using namespace std;
       const NeuronConstants &n = c.getNeuronConstantAt(i);
       const double V = arrV[i];
-      cerr << "taskloop before task" << omp_get_thread_num() << endl;
+      if (t < 0.01) {
+        cerr << "taskloop before task" << omp_get_thread_num() << endl;
+        cerr << "taskloop before task" << omp_get_thread_num() << "\n" << endl;
+      }
       #pragma omp task
       {
-        cerr << omp_get_thread_num() << endl;
+        if (t < 0.01) {
+          cerr << omp_get_thread_num() << endl;
+        }
         arrdVdt[i] = -(ina(n.gbarna, arrMna[i], arrHna[i], V, n.ena) +
                        ip(n.gbarp, arrMp[i], V, n.ena) +
                        icaf(n.gbarcaf, arrMcaf[i], arrHcaf[i], V, n.eca) +
@@ -1048,7 +1063,9 @@ void ode::hodgkinhuxley::parallelSingleTaskloopTaskOutside(const storage_type &x
       }
       #pragma omp task
       {
-        cerr << omp_get_thread_num() << endl;
+        if (t < 0.01) {
+          cerr << omp_get_thread_num() << endl;
+        }
         arrdMk2dt[i] = (finf(-83.0, 0.02, V) - arrMk2[i]) / tau(200.0, 0.035, 0.057, 0.043, V);
         arrdMpdt[i] = (finf(-120.0, 0.039, V) - arrMp[i]) / tau(400.0, 0.057, 0.01, 0.2, V);
         arrdMnadt[i] = (finf(-150.0, 0.029, V) - arrMna[i]) / 0.0001;
