@@ -19,6 +19,15 @@ namespace ode {
      */
     void calculateNextState(const storage_type &xs, storage_type &dxdts, double t);
 
+    void parallelForInside(const storage_type &xs, storage_type &dxdts, double t);
+    void parallelSingleFor(const storage_type &xs, storage_type &dxdts, double t);
+    void parallelSingleTaskInside(const storage_type &xs, storage_type &dxdts, double t);
+    void parallelSingleTaskOutside(const storage_type &xs, storage_type &dxdts, double t);
+    void parallelSingleTaskloopInside(const storage_type &xs, storage_type &dxdts, double t);
+    void parallelSingleTaskloopOutside(const storage_type &xs, storage_type &dxdts, double t);
+    void parallelSingleTaskloopTaskInside(const storage_type &xs, storage_type &dxdts, double t);
+    void parallelSingleTaskloopTaskOutside(const storage_type &xs, storage_type &dxdts, double t);
+
     namespace curve {
       double finf(double a, double b, double v);
       double fhinf(double v);
