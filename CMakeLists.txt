@@ -1,10 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
 
-# Force using RISCV 64bit gcc/g++
-set(CMAKE_C_COMPILER /usr/local/bin/gcc-7)
-set(CMAKE_CXX_COMPILER /usr/local/bin/g++-7)
-# End force compiler definition
-
 project(parallel-neuron-simulation)
 include(CTest)
 include(ExternalProject)
