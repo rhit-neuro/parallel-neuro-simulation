@@ -1,12 +1,18 @@
-# Dockerfile for tag 1.1.1
+# Dockerfile for tag 1.2.0
 FROM ubuntu:artful
 
 # Install dependencies
 RUN \
   apt-get update && \
   apt-get upgrade -y && \
-  apt-get install gcc-7 g++-7 autoconf automake libtool curl make unzip cmake libboost-all-dev=1.62.0.1 git -y && \
-  update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+  # Google Protocol Buffer dependencies
+  apt-get install -y autoconf automake libtool curl make g++=4:7.2.0-1ubuntu1 unzip \
+  # Project dependencies
+  gcc=4:7.2.0-1ubuntu1 libboost-all-dev=1.62.0.1 \
+  # Build dependencies
+  git cmake \
+  # Utilities
+  htop
 
 # Install Google Protocol Buffer
 RUN \
