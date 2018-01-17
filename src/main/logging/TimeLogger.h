@@ -25,6 +25,9 @@ class TimeLogger {
     void recordLoadConfigEndTime();
     void recordCalculationStartTime();
     void recordCalculationEndTime();
+    void startArbitraryTimer();
+    void endArbitraryTimer();
+    void printArbitraryTimeDifference();
 
     void printSummary();
 
@@ -35,6 +38,8 @@ class TimeLogger {
     steady_clock::time_point loadConfigEndTime;
     steady_clock::time_point calculationStartTime;
     steady_clock::time_point calculationEndTime;
+    steady_clock::time_point arbitraryStartTime;
+    steady_clock::time_point arbitraryEndTime;
 
     TimeLogger();
 };
