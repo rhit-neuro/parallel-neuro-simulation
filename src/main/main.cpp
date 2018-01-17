@@ -3,6 +3,7 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/numeric/odeint.hpp>
+#include <boost/numeric/odeint/external/openmp/openmp.hpp>
 #include <proto/protobuf_config.pb.h>
 #include "global/GlobalDefinitions.h"
 
@@ -60,7 +61,11 @@ int main(int argc, char** argv) {
         make_controlled(
           c.absoluteError,
           c.relativeError,
-          runge_kutta_dopri5<storage_type>()
+          runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
         ),
         ode::hodgkinhuxley::parallelForInside,
         c.getInitialStateValues(),
@@ -99,7 +104,11 @@ int main(int argc, char** argv) {
             make_controlled(
               c.absoluteError,
               c.relativeError,
-              runge_kutta_dopri5<storage_type>()
+              runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
             ),
             ode::hodgkinhuxley::parallelSingleFor,
             c.getInitialStateValues(),
@@ -136,7 +145,11 @@ int main(int argc, char** argv) {
         make_controlled(
           c.absoluteError,
           c.relativeError,
-          runge_kutta_dopri5<storage_type>()
+          runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
         ),
         ode::hodgkinhuxley::parallelSingleTaskInside,
         c.getInitialStateValues(),
@@ -174,7 +187,11 @@ int main(int argc, char** argv) {
             make_controlled(
               c.absoluteError,
               c.relativeError,
-              runge_kutta_dopri5<storage_type>()
+              runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
             ),
             ode::hodgkinhuxley::parallelSingleTaskOutside,
             c.getInitialStateValues(),
@@ -210,7 +227,11 @@ int main(int argc, char** argv) {
         make_controlled(
           c.absoluteError,
           c.relativeError,
-          runge_kutta_dopri5<storage_type>()
+          runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
         ),
         ode::hodgkinhuxley::parallelSingleTaskloopInside,
         c.getInitialStateValues(),
@@ -248,7 +269,11 @@ int main(int argc, char** argv) {
             make_controlled(
               c.absoluteError,
               c.relativeError,
-              runge_kutta_dopri5<storage_type>()
+              runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
             ),
             ode::hodgkinhuxley::parallelSingleTaskloopOutside,
             c.getInitialStateValues(),
@@ -284,7 +309,11 @@ int main(int argc, char** argv) {
         make_controlled(
           c.absoluteError,
           c.relativeError,
-          runge_kutta_dopri5<storage_type>()
+          runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
         ),
         ode::hodgkinhuxley::parallelSingleTaskloopTaskInside,
         c.getInitialStateValues(),
@@ -322,7 +351,11 @@ int main(int argc, char** argv) {
             make_controlled(
               c.absoluteError,
               c.relativeError,
-              runge_kutta_dopri5<storage_type>()
+              runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
             ),
             ode::hodgkinhuxley::parallelSingleTaskloopTaskOutside,
             c.getInitialStateValues(),
@@ -357,7 +390,11 @@ int main(int argc, char** argv) {
         make_controlled(
           c.absoluteError,
           c.relativeError,
-          runge_kutta_dopri5<storage_type>()
+          runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
         ),
         ode::hodgkinhuxley::parallelForInside,
         c.getInitialStateValues(),
@@ -385,7 +422,11 @@ int main(int argc, char** argv) {
             make_controlled(
               c.absoluteError,
               c.relativeError,
-              runge_kutta_dopri5<storage_type>()
+              runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
             ),
             ode::hodgkinhuxley::parallelSingleFor,
             c.getInitialStateValues(),
@@ -411,7 +452,11 @@ int main(int argc, char** argv) {
         make_controlled(
           c.absoluteError,
           c.relativeError,
-          runge_kutta_dopri5<storage_type>()
+          runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
         ),
         ode::hodgkinhuxley::parallelSingleTaskInside,
         c.getInitialStateValues(),
@@ -438,7 +483,11 @@ int main(int argc, char** argv) {
             make_controlled(
               c.absoluteError,
               c.relativeError,
-              runge_kutta_dopri5<storage_type>()
+              runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
             ),
             ode::hodgkinhuxley::parallelSingleTaskOutside,
             c.getInitialStateValues(),
@@ -463,7 +512,11 @@ int main(int argc, char** argv) {
         make_controlled(
           c.absoluteError,
           c.relativeError,
-          runge_kutta_dopri5<storage_type>()
+          runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
         ),
         ode::hodgkinhuxley::parallelSingleTaskloopInside,
         c.getInitialStateValues(),
@@ -490,7 +543,11 @@ int main(int argc, char** argv) {
             make_controlled(
               c.absoluteError,
               c.relativeError,
-              runge_kutta_dopri5<storage_type>()
+              runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
             ),
             ode::hodgkinhuxley::parallelSingleTaskloopOutside,
             c.getInitialStateValues(),
@@ -515,7 +572,11 @@ int main(int argc, char** argv) {
         make_controlled(
           c.absoluteError,
           c.relativeError,
-          runge_kutta_dopri5<storage_type>()
+          runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
         ),
         ode::hodgkinhuxley::parallelSingleTaskloopTaskInside,
         c.getInitialStateValues(),
@@ -542,7 +603,11 @@ int main(int argc, char** argv) {
             make_controlled(
               c.absoluteError,
               c.relativeError,
-              runge_kutta_dopri5<storage_type>()
+              runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
             ),
             ode::hodgkinhuxley::parallelSingleTaskloopTaskOutside,
             c.getInitialStateValues(),
