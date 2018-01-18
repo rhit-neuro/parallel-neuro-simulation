@@ -1,4 +1,4 @@
-image: nptemp/neuron-simulation:latest
+image: rhneuroprocessor/neuro-simulation-env:latest
 
 build:
   stage: build
