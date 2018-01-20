@@ -1,5 +1,4 @@
 #include <iostream>
-#include <omp.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/numeric/odeint.hpp>
@@ -83,52 +82,6 @@ int main(int argc, char** argv) {
       );
       tLogger.endArbitraryTimer();
       tLogger.printArbitraryTimeDifference();
-      delete buffer;
-    }
-  }
-
-  {
-    // parallelSingleFor
-    cout << "\n" << "parallelSingleFor" << endl;
-    cerr << "\n" << "parallelSingleFor" << endl;
-    for (int _ = 0; _ < NUM_OF_RUNS; _++) {
-      std::string filename = std::string("parallelSingleFor") + std::to_string(_);
-      auto buffer = new AsyncBuffer(bufferSize, filename);
-      omp_set_nested(true);
-      tLogger.startArbitraryTimer();
-      #pragma omp parallel default(shared)
-      {
-        #pragma omp single
-        {
-          integrate_adaptive(
-            make_controlled(
-              c.absoluteError,
-              c.relativeError,
-              runge_kutta_dopri5<
-            storage_type, double,
-            storage_type, double,
-            openmp_range_algebra
-          >()
-            ),
-            ode::hodgkinhuxley::parallelSingleFor,
-            c.getInitialStateValues(),
-            START_TIME,
-            END_TIME,
-            0.1,
-            [&](const storage_type &x, const double t) {
-              storage_type toWrite(bufferSize);
-              toWrite[0] = t;
-              for (int i = 0; i < numNeuron; i++) {
-                toWrite[i+1] = x[i];
-              }
-              buffer->writeData(&(toWrite[0]));
-            }
-          );
-        }
-      };
-      tLogger.endArbitraryTimer();
-      tLogger.printArbitraryTimeDifference();
-      omp_set_nested(false);
       delete buffer;
     }
   }
@@ -404,41 +357,6 @@ int main(int argc, char** argv) {
       );
       tLogger.endArbitraryTimer();
       tLogger.printArbitraryTimeDifference();
-    }
-  }
-
-  {
-    // parallelSingleFor
-    cout << "\n" << "parallelSingleFor" << endl;
-    cerr << "\n" << "parallelSingleFor" << endl;
-    for (int _ = 0; _ < NUM_OF_RUNS; _++) {
-      omp_set_nested(true);
-      tLogger.startArbitraryTimer();
-      #pragma omp parallel default(shared)
-      {
-        #pragma omp single
-        {
-          integrate_adaptive(
-            make_controlled(
-              c.absoluteError,
-              c.relativeError,
-              runge_kutta_dopri5<
-            storage_type, double,
-            storage_type, double,
-            openmp_range_algebra
-          >()
-            ),
-            ode::hodgkinhuxley::parallelSingleFor,
-            c.getInitialStateValues(),
-            START_TIME,
-            END_TIME,
-            0.1
-          );
-        }
-      };
-      tLogger.endArbitraryTimer();
-      tLogger.printArbitraryTimeDifference();
-      omp_set_nested(false);
     }
   }
 
