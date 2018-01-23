@@ -45,9 +45,141 @@ int main(int argc, char** argv) {
 
   const double START_TIME = 0.0;
   const double END_TIME = 1.0;
-  const int NUM_OF_RUNS = 6;
+  const int NUM_OF_RUNS = 3;
 
   cout << "With buffer writing" << "\n\n";
+  {
+    // parallelSingleTaskOutside
+    cout << "\n" << "parallelSingleTaskOutside" << endl;
+    cerr << "\n" << "parallelSingleTaskOutside" << endl;
+    for (int _ = 0; _ < NUM_OF_RUNS; _++) {
+      std::string filename = std::string("parallelSingleTaskOutside") + std::to_string(_);
+      auto buffer = new AsyncBuffer(bufferSize, filename);
+      tLogger.startArbitraryTimer();
+      #pragma omp parallel default(shared)
+      {
+        #pragma omp single
+        {
+          integrate_adaptive(
+            make_controlled(
+              c.absoluteError,
+              c.relativeError,
+              runge_kutta_dopri5<
+            storage_type, double,
+            storage_type, double,
+            openmp_range_algebra
+          >()
+            ),
+            ode::hodgkinhuxley::parallelSingleTaskOutside,
+            c.getInitialStateValues(),
+            START_TIME,
+            END_TIME,
+            0.1,
+            [&](const storage_type &x, const double t) {
+              storage_type toWrite(bufferSize);
+              toWrite[0] = t;
+              for (int i = 0; i < numNeuron; i++) {
+                toWrite[i+1] = x[i];
+              }
+              buffer->writeData(&(toWrite[0]));
+            }
+          );
+        }
+      };
+      tLogger.endArbitraryTimer();
+      tLogger.printArbitraryTimeDifference();
+      delete buffer;
+    }
+  }
+
+  {
+    // parallelSingleTaskloopTaskOutside
+    cout << "\n" << "parallelSingleTaskloopTaskOutside" << endl;
+    cerr << "\n" << "parallelSingleTaskloopTaskOutside" << endl;
+    for (int _ = 0; _ < NUM_OF_RUNS; _++) {
+      std::string filename = std::string("parallelSingleTaskloopTaskOutside") + std::to_string(_);
+      auto buffer = new AsyncBuffer(bufferSize, filename);
+      tLogger.startArbitraryTimer();
+      #pragma omp parallel default(shared)
+      {
+        #pragma omp single
+        {
+          integrate_adaptive(
+            make_controlled(
+              c.absoluteError,
+              c.relativeError,
+              runge_kutta_dopri5<
+                storage_type, double,
+                storage_type, double,
+                openmp_range_algebra
+              >()
+            ),
+            ode::hodgkinhuxley::parallelSingleTaskloopTaskOutside,
+            c.getInitialStateValues(),
+            START_TIME,
+            END_TIME,
+            0.1,
+            [&](const storage_type &x, const double t) {
+              storage_type toWrite(bufferSize);
+              toWrite[0] = t;
+              for (int i = 0; i < numNeuron; i++) {
+                toWrite[i+1] = x[i];
+              }
+              buffer->writeData(&(toWrite[0]));
+            }
+          );
+        }
+      };
+      tLogger.endArbitraryTimer();
+      tLogger.printArbitraryTimeDifference();
+      delete buffer;
+    }
+  }
+
+  {
+    // parallelSingleTaskloopOutside
+    cout << "\n" << "parallelSingleTaskloopOutside" << endl;
+    cerr << "\n" << "parallelSingleTaskloopOutside" << endl;
+    for (int _ = 0; _ < NUM_OF_RUNS; _++) {
+      std::string filename = std::string("parallelSingleTaskloopOutside") + std::to_string(_);
+      auto buffer = new AsyncBuffer(bufferSize, filename);
+      tLogger.startArbitraryTimer();
+      #pragma omp parallel default(shared)
+      {
+        #pragma omp single
+        {
+          integrate_adaptive(
+            make_controlled(
+              c.absoluteError,
+              c.relativeError,
+              runge_kutta_dopri5<
+                storage_type, double,
+                storage_type, double,
+                openmp_range_algebra
+              >()
+            ),
+            ode::hodgkinhuxley::parallelSingleTaskloopOutside,
+            c.getInitialStateValues(),
+            START_TIME,
+            END_TIME,
+            0.1,
+            [&](const storage_type &x, const double t) {
+              storage_type toWrite(bufferSize);
+              toWrite[0] = t;
+              for (int i = 0; i < numNeuron; i++) {
+                toWrite[i+1] = x[i];
+              }
+              buffer->writeData(&(toWrite[0]));
+            }
+          );
+        }
+      };
+      tLogger.endArbitraryTimer();
+      tLogger.printArbitraryTimeDifference();
+      delete buffer;
+    }
+  }
+
   {
     // parallelForInside
     cout << "\n" << "parallelForInside" << endl;
@@ -125,50 +257,6 @@ int main(int argc, char** argv) {
   }
 
   {
-    // parallelSingleTaskOutside
-    cout << "\n" << "parallelSingleTaskOutside" << endl;
-    cerr << "\n" << "parallelSingleTaskOutside" << endl;
-    for (int _ = 0; _ < NUM_OF_RUNS; _++) {
-      std::string filename = std::string("parallelSingleTaskOutside") + std::to_string(_);
-      auto buffer = new AsyncBuffer(bufferSize, filename);
-      tLogger.startArbitraryTimer();
-      #pragma omp parallel default(shared)
-      {
-        #pragma omp single
-        {
-          integrate_adaptive(
-            make_controlled(
-              c.absoluteError,
-              c.relativeError,
-              runge_kutta_dopri5<
-            storage_type, double,
-            storage_type, double,
-            openmp_range_algebra
-          >()
-            ),
-            ode::hodgkinhuxley::parallelSingleTaskOutside,
-            c.getInitialStateValues(),
-            START_TIME,
-            END_TIME,
-            0.1,
-            [&](const storage_type &x, const double t) {
-              storage_type toWrite(bufferSize);
-              toWrite[0] = t;
-              for (int i = 0; i < numNeuron; i++) {
-                toWrite[i+1] = x[i];
-              }
-              buffer->writeData(&(toWrite[0]));
-            }
-          );
-        }
-      };
-      tLogger.endArbitraryTimer();
-      tLogger.printArbitraryTimeDifference();
-      delete buffer;
-    }
-  }
-
-  {
     // parallelSingleTaskloopInside
     cout << "\n" << "parallelSingleTaskloopInside" << endl;
     cerr << "\n" << "parallelSingleTaskloopInside" << endl;
@@ -207,50 +295,6 @@ int main(int argc, char** argv) {
   }
 
   {
-    // parallelSingleTaskloopOutside
-    cout << "\n" << "parallelSingleTaskloopOutside" << endl;
-    cerr << "\n" << "parallelSingleTaskloopOutside" << endl;
-    for (int _ = 0; _ < NUM_OF_RUNS; _++) {
-      std::string filename = std::string("parallelSingleTaskloopOutside") + std::to_string(_);
-      auto buffer = new AsyncBuffer(bufferSize, filename);
-      tLogger.startArbitraryTimer();
-      #pragma omp parallel default(shared)
-      {
-        #pragma omp single
-        {
-          integrate_adaptive(
-            make_controlled(
-              c.absoluteError,
-              c.relativeError,
-              runge_kutta_dopri5<
-            storage_type, double,
-            storage_type, double,
-            openmp_range_algebra
-          >()
-            ),
-            ode::hodgkinhuxley::parallelSingleTaskloopOutside,
-            c.getInitialStateValues(),
-            START_TIME,
-            END_TIME,
-            0.1,
-            [&](const storage_type &x, const double t) {
-              storage_type toWrite(bufferSize);
-              toWrite[0] = t;
-              for (int i = 0; i < numNeuron; i++) {
-                toWrite[i+1] = x[i];
-              }
-              buffer->writeData(&(toWrite[0]));
-            }
-          );
-        }
-      };
-      tLogger.endArbitraryTimer();
-      tLogger.printArbitraryTimeDifference();
-      delete buffer;
-    }
-  }
-
-  {
     // parallelSingleTaskloopTaskInside
     cout << "\n" << "parallelSingleTaskloopTaskInside" << endl;
     cerr << "\n" << "parallelSingleTaskloopTaskInside" << endl;
@@ -282,50 +326,6 @@ int main(int argc, char** argv) {
           buffer->writeData(&(toWrite[0]));
         }
       );
-      tLogger.endArbitraryTimer();
-      tLogger.printArbitraryTimeDifference();
-      delete buffer;
-    }
-  }
-
-  {
-    // parallelSingleTaskloopTaskOutside
-    cout << "\n" << "parallelSingleTaskloopTaskOutside" << endl;
-    cerr << "\n" << "parallelSingleTaskloopTaskOutside" << endl;
-    for (int _ = 0; _ < NUM_OF_RUNS; _++) {
-      std::string filename = std::string("parallelSingleTaskloopTaskOutside") + std::to_string(_);
-      auto buffer = new AsyncBuffer(bufferSize, filename);
-      tLogger.startArbitraryTimer();
-      #pragma omp parallel default(shared)
-      {
-        #pragma omp single
-        {
-          integrate_adaptive(
-            make_controlled(
-              c.absoluteError,
-              c.relativeError,
-              runge_kutta_dopri5<
-            storage_type, double,
-            storage_type, double,
-            openmp_range_algebra
-          >()
-            ),
-            ode::hodgkinhuxley::parallelSingleTaskloopTaskOutside,
-            c.getInitialStateValues(),
-            START_TIME,
-            END_TIME,
-            0.1,
-            [&](const storage_type &x, const double t) {
-              storage_type toWrite(bufferSize);
-              toWrite[0] = t;
-              for (int i = 0; i < numNeuron; i++) {
-                toWrite[i+1] = x[i];
-              }
-              buffer->writeData(&(toWrite[0]));
-            }
-          );
-        }
-      };
       tLogger.endArbitraryTimer();
       tLogger.printArbitraryTimeDifference();
       delete buffer;
