@@ -128,6 +128,7 @@ namespace config {
       NeuronConstants *neurons{nullptr};
       SynapseConstants *synapses{nullptr};
       storage_type initialStateValues;
+      protobuf_config::Config *protoConfig;
 
       // Neuron variable offsets
       int offset_V{0};
