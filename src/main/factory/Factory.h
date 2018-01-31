@@ -11,10 +11,6 @@ namespace factory {
   namespace equation {
     sequential::ode_system_function * getEquation();
   }
-
-  namespace initialcondition {
-    InitialCondition& getInitialCondition(Config config);
-  }
 }
 
 

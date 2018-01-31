@@ -15,11 +15,6 @@ namespace global_definitions {
   }
 
   namespace po = boost::program_options;
-
-  struct InitialCondition {
-    int NUM_OF_NEURONS;
-    double STATE_VARIABLES[];
-  };
 }
 
 

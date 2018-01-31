@@ -24,7 +24,6 @@ set(SOURCE
 
   main/factory/Factory.h
   main/factory/EquationFactory.cpp
-  main/factory/InitialConditionFactory.cpp
   main/logging/AsyncBuffer.cpp
   main/logging/AsyncBuffer.h
   main/logging/ResultLogger.cpp
