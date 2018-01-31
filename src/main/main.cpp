@@ -43,6 +43,8 @@ int main(int argc, char** argv) {
   const auto numNeuron = config.neurons_size();
   const auto bufferSize = numNeuron + 1;
   auto buffer = new AsyncBuffer(bufferSize, const_cast<string &>(outputFile));
+  const auto increment = (c.endTime - c.startTime) / 10;
+  int nextProgress = 1;
 
   sequential::ode_system_function *equation = factory::equation::getEquation();
 
@@ -59,6 +61,10 @@ int main(int argc, char** argv) {
     c.endTime,
     0.1,
     [&](const storage_type &x, const double t) {
+      if ((t-c.startTime)/increment > nextProgress) {
+        cout << "Simulation progress: " << (nextProgress * 10) << "%" << "\n";
+        nextProgress++;
+      }
       storage_type toWrite(bufferSize);
       toWrite[0] = t;
       for (int i = 0; i < numNeuron; i++) {
