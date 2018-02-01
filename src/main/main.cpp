@@ -62,15 +62,15 @@ int main(int argc, char** argv) {
     0.1,
     [&](const storage_type &x, const double t) {
       if ((t-c.startTime)/increment > nextProgress) {
-        cout << "Simulation progress: " << (nextProgress * 10) << "%" << "\n";
+        cerr << "Simulation progress: " << (nextProgress * 10) << "%" << "\n";
         nextProgress++;
       }
-      storage_type toWrite(bufferSize);
-      toWrite[0] = t;
-      for (int i = 0; i < numNeuron; i++) {
-        toWrite[i+1] = x[i];
-      }
-      buffer->writeData(&(toWrite[0]));
+//      storage_type toWrite(bufferSize);
+//      toWrite[0] = t;
+//      for (int i = 0; i < numNeuron; i++) {
+//        toWrite[i+1] = x[i];
+//      }
+//      buffer->writeData(&(toWrite[0]));
     }
   );
   tLogger.recordCalculationEndTime();
