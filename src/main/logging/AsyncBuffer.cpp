@@ -81,7 +81,7 @@ AsyncBuffer::~AsyncBuffer() {
 
 void AsyncBuffer::writeData(const double *data) {
   //check if thread is running
-  std::cout << data[0] << std::endl;
+//  std::cout << data[0] << std::endl;
   if (this->threadRunning == this->currentBuffer) {
     //check if we have room to write data
     if (this->full[this->currentBuffer]) {

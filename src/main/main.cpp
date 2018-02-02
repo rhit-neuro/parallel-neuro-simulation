@@ -65,12 +65,12 @@ int main(int argc, char** argv) {
         cerr << "Simulation progress: " << (nextProgress * 10) << "%" << "\n";
         nextProgress++;
       }
-//      storage_type toWrite(bufferSize);
-//      toWrite[0] = t;
-//      for (int i = 0; i < numNeuron; i++) {
-//        toWrite[i+1] = x[i];
-//      }
-//      buffer->writeData(&(toWrite[0]));
+      storage_type toWrite(bufferSize);
+      toWrite[0] = t;
+      for (int i = 0; i < numNeuron; i++) {
+        toWrite[i+1] = x[i];
+      }
+      buffer->writeData(&(toWrite[0]));
     }
   );
   tLogger.recordCalculationEndTime();
