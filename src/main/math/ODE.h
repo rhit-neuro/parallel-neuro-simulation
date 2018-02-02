@@ -3,10 +3,10 @@
 
 
 #include "../global/GlobalDefinitions.h"
-#include "../state/ConfigAdapter.h"
+#include "../config/ProgramConfig.h"
 
 using namespace global_definitions;
-using namespace state;
+using namespace config;
 
 namespace ode {
   namespace hodgkinhuxley {

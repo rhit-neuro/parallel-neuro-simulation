@@ -7,7 +7,7 @@
 
 using namespace global_definitions;
 
-namespace state {
+namespace config {
   typedef ::google::protobuf::RepeatedField<::google::protobuf::int32> ProtobufRepeatedInt32;
 
   typedef struct {
@@ -73,25 +73,25 @@ namespace state {
     const short NUM_OF_SYNAPSE_VARIABLES = 5;
   }
 
-  class ConfigAdapter {
+  class ProgramConfig {
       // TODO Come up with better names
     public:
       // Static methods
-      static ConfigAdapter& getInstance() {
+      static ProgramConfig& getInstance() {
         // Initialization will be done before library call, so no need for critical section
-        static ConfigAdapter adapterInstance;
-        return adapterInstance;
+        static ProgramConfig configInstance;
+        return configInstance;
       }
 
       // Public fields
-      double absoluteError;
-      double relativeError;
-      double startTime;
-      double endTime;
-      int numOfNeurons;
-      int numOfSynapses;
-      int numOfNeuronVariables;
-      int numOfSynapseVariables;
+      double absoluteError{0.0};
+      double relativeError{0.0};
+      double startTime{0.0};
+      double endTime{0.0};
+      int numOfNeurons{0};
+      int numOfSynapses{0};
+      int numOfNeuronVariables{0};
+      int numOfSynapseVariables{0};
 
       // Public methods
       void loadProtobufConfig(protobuf_config::Config &protoConfig);
@@ -124,42 +124,43 @@ namespace state {
 
     private:
       // Arrays for constant variables and initial state
-      NeuronConstants *neurons;
-      SynapseConstants *synapses;
+      protobuf_config::Config *protoConfigPtr{nullptr};
+      NeuronConstants *neurons{nullptr};
+      SynapseConstants *synapses{nullptr};
       storage_type initialStateValues;
 
       // Neuron variable offsets
-      int offset_V;
-      int offset_mk2;
-      int offset_mp;
-      int offset_mna;
-      int offset_hna;
-      int offset_mcaf;
-      int offset_hcaf;
-      int offset_mcas;
-      int offset_hcas;
-      int offset_mk1;
-      int offset_hk1;
-      int offset_mka;
-      int offset_hka;
-      int offset_mkf;
-      int offset_mh;
+      int offset_V{0};
+      int offset_mk2{0};
+      int offset_mp{0};
+      int offset_mna{0};
+      int offset_hna{0};
+      int offset_mcaf{0};
+      int offset_hcaf{0};
+      int offset_mcas{0};
+      int offset_hcas{0};
+      int offset_mk1{0};
+      int offset_hk1{0};
+      int offset_mka{0};
+      int offset_hka{0};
+      int offset_mkf{0};
+      int offset_mh{0};
 
       // Synapse variable offsets
-      int offset_A;
-      int offset_P;
-      int offset_M;
-      int offset_g;
-      int offset_h;
+      int offset_A{0};
+      int offset_P{0};
+      int offset_M{0};
+      int offset_g{0};
+      int offset_h{0};
 
       // Private methods
-      ConfigAdapter() = default;
+      ProgramConfig() = default;
       void initializeNeuronOffsets();
       void initializeSynapseOffsets();
-      void initializeNeuronConstantProperties(protobuf_config::Config &protoConfig);
-      void initializeSynapseConstantProperties(protobuf_config::Config &protoConfig);
-      void initializeNeuronVariables(protobuf_config::Config &protoConfig);
-      void initializeSynapseVariables(protobuf_config::Config &protoConfig);
+      void initializeNeuronConstantProperties();
+      void initializeSynapseConstantProperties();
+      void initializeNeuronVariables();
+      void initializeSynapseVariables();
   };
 
 }

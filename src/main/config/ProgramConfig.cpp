@@ -1,90 +1,48 @@
-#include "ConfigAdapter.h"
+#include "ProgramConfig.h"
 
-using namespace state;
-using namespace state::offsets;
+using namespace config;
+using namespace config::offsets;
 using namespace std;
 
-void ConfigAdapter::loadProtobufConfig(protobuf_config::Config &protoConfig) {
-//  #pragma omp parallel sections
-//  {
-//    #pragma omp section
-//    {
-      // Initialize solver info
-      auto &s = protoConfig.solver();
-      absoluteError = s.abserror();
-      relativeError = s.relerror();
-      startTime = s.starttime();
-      endTime = s.endtime();
-//    }
-//
-//    #pragma omp section
-//    {
-      numOfNeurons = protoConfig.neurons_size();
-      numOfSynapses = protoConfig.synapses_size();
-      numOfNeuronVariables = numOfNeurons * NUM_OF_NEURON_VARIABLES;
-      numOfSynapseVariables = numOfSynapses * NUM_OF_SYNAPSE_VARIABLES;
-//    }
-//  };
+void ProgramConfig::loadProtobufConfig(protobuf_config::Config &pc) {
+  protoConfigPtr = &pc;
+  auto &s = pc.solver();
+  absoluteError = s.abserror();
+  relativeError = s.relerror();
+  startTime = s.starttime();
+  endTime = s.endtime();
 
-//  #pragma omp parallel sections
-//  {
-//    #pragma omp section
-//    {
-      initializeNeuronOffsets();
-//    }
-//
-//    #pragma omp section
-//    {
-      initializeSynapseOffsets();
-//    }
-//  };
+  numOfNeurons = pc.neurons_size();
+  numOfSynapses = pc.synapses_size();
+  numOfNeuronVariables = numOfNeurons * NUM_OF_NEURON_VARIABLES;
+  numOfSynapseVariables = numOfSynapses * NUM_OF_SYNAPSE_VARIABLES;
 
-//  #pragma omp parallel sections
-//  {
-//    #pragma omp section
-//    {
-      neurons = static_cast<NeuronConstants *>(malloc(numOfNeurons * sizeof(NeuronConstants)));
-      if (!neurons) {
-        cerr << "Failed to allocate memory for the NeuronConstants array" << "\n";
-        exit(1);
-      }
-      initializeNeuronConstantProperties(protoConfig);
-//    }
-//
-//    #pragma omp section
-//    {
-      synapses = static_cast<SynapseConstants *>(malloc(numOfSynapses * sizeof(SynapseConstants)));
-      if (!synapses) {
-        cerr << "Failed to allocate memory for the SynapseConstants array" << "\n";
-        exit(1);
-      }
-      initializeSynapseConstantProperties(protoConfig);
-//    }
-//
-//    #pragma omp section
-//    {
-      initialStateValues = storage_type(static_cast<unsigned long>(numOfNeuronVariables + numOfSynapseVariables));
-//      #pragma omp parallel sections
-//      {
-//        #pragma omp section
-//        {
-          initializeNeuronVariables(protoConfig);
-//        }
-//
-//        #pragma omp section
-//        {
-          initializeSynapseVariables(protoConfig);
-//        }
-//      };
-//    }
-//  };
+  initializeNeuronOffsets();
+  initializeSynapseOffsets();
+
+  neurons = static_cast<NeuronConstants *>(malloc(numOfNeurons * sizeof(NeuronConstants)));
+  if (!neurons) {
+    cerr << "Failed to allocate memory for the NeuronConstants array" << "\n";
+    exit(1);
+  }
+  initializeNeuronConstantProperties();
+
+  synapses = static_cast<SynapseConstants *>(malloc(numOfSynapses * sizeof(SynapseConstants)));
+  if (!synapses) {
+    cerr << "Failed to allocate memory for the SynapseConstants array" << "\n";
+    exit(1);
+  }
+  initializeSynapseConstantProperties();
 }
 
-storage_type & ConfigAdapter::getInitialStateValues() {
+storage_type & ProgramConfig::getInitialStateValues() {
+  initialStateValues = storage_type(static_cast<unsigned long>(numOfNeuronVariables + numOfSynapseVariables));
+  initializeNeuronVariables();
+  initializeSynapseVariables();
   return initialStateValues;
 }
 
-void ConfigAdapter::initializeNeuronOffsets() {
+void ProgramConfig::initializeNeuronOffsets() {
   offset_V = OFF_V * numOfNeurons;
   offset_mk2 = OFF_mk2 * numOfNeurons;
   offset_mp = OFF_mp * numOfNeurons;
@@ -102,7 +60,7 @@ void ConfigAdapter::initializeNeuronOffsets() {
   offset_mh = OFF_mh * numOfNeurons;
 }
 
-void ConfigAdapter::initializeSynapseOffsets() {
+void ProgramConfig::initializeSynapseOffsets() {
   offset_A = numOfNeuronVariables + OFF_A * numOfSynapses;
   offset_P = numOfNeuronVariables + OFF_P * numOfSynapses;
   offset_M = numOfNeuronVariables + OFF_M * numOfSynapses;
@@ -110,11 +68,10 @@ void ConfigAdapter::initializeSynapseOffsets() {
   offset_h = numOfNeuronVariables + OFF_h * numOfSynapses;
 }
 
-void ConfigAdapter::initializeNeuronConstantProperties(protobuf_config::Config &protoConfig) {
-  #pragma omp parallel for
+void ProgramConfig::initializeNeuronConstantProperties() {
+  protobuf_config::Config &pc = *protoConfigPtr;
   for (int i = 0; i < numOfNeurons; i++) {
-    const auto &protoNeuron = protoConfig.neurons(i);
-    // TODO array access check; we don't want element copy
+    const auto &protoNeuron = pc.neurons(i);
     NeuronConstants *neuronPtr = neurons + i;
     neuronPtr->gbarna = protoNeuron.gbarna();
     neuronPtr->gbarp = protoNeuron.gbarp();
@@ -136,11 +93,10 @@ void ConfigAdapter::initializeNeuronConstantProperties(protobuf_config::Config &
   }
 }
 
-void ConfigAdapter::initializeSynapseConstantProperties(protobuf_config::Config &protoConfig) {
-  #pragma omp parallel for
+void ProgramConfig::initializeSynapseConstantProperties() {
+  protobuf_config::Config &pc = *protoConfigPtr;
   for (int i = 0; i < numOfSynapses; i++) {
-    const auto &protoSynapse = protoConfig.synapses(i);
-    // TODO array access check; we don't want element copy
+    const auto &protoSynapse = pc.synapses(i);
     SynapseConstants *synapsePtr = synapses + i;
     synapsePtr->source = protoSynapse.source();
     synapsePtr->gbarsyng = protoSynapse.gbarsyng();
@@ -154,10 +110,10 @@ void ConfigAdapter::initializeSynapseConstantProperties(protobuf_config::Config 
   }
 }
 
-void ConfigAdapter::initializeNeuronVariables(protobuf_config::Config &protoConfig) {
-  #pragma omp parallel for
+void ProgramConfig::initializeNeuronVariables() {
+  protobuf_config::Config &pc = *protoConfigPtr;
   for (int i = 0; i < numOfNeurons; i++) {
-    const auto &protoNeuron = protoConfig.neurons(i);
+    const auto &protoNeuron = pc.neurons(i);
     initialStateValues[offset_V + i] = protoNeuron.ivoltage();
     initialStateValues[offset_mk2 + i] = protoNeuron.imk2();
     initialStateValues[offset_mp + i] = protoNeuron.imp();
@@ -176,10 +132,10 @@ void ConfigAdapter::initializeNeuronVariables(protobuf_config::Config &protoConf
   }
 }
 
-void ConfigAdapter::initializeSynapseVariables(protobuf_config::Config &protoConfig) {
-  #pragma omp parallel for
+void ProgramConfig::initializeSynapseVariables() {
+  protobuf_config::Config &pc = *protoConfigPtr;
   for (int i = 0; i < numOfSynapses; i++) {
-    const auto &protoSynapse = protoConfig.synapses(i);
+    const auto &protoSynapse = pc.synapses(i);
     initialStateValues[offset_A + i] = protoSynapse.ia();
     initialStateValues[offset_P + i] = protoSynapse.ip();
     initialStateValues[offset_M + i] = protoSynapse.im();

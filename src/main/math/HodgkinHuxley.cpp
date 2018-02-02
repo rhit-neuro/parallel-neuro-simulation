@@ -1,14 +1,14 @@
 //#include <omp.h>
 #include "ODE.h"
 
-using namespace state;
+using namespace config;
 
 using namespace ode::hodgkinhuxley::curve;
 using namespace ode::hodgkinhuxley::current;
 
 void ode::hodgkinhuxley::calculateNextState(const storage_type &x, storage_type &dxdt, double t) {
 //  std::cerr << &(x[0]) << std::endl;
-  ConfigAdapter c = ConfigAdapter::getInstance();
+  ProgramConfig c = ProgramConfig::getInstance();
   double* arrV = c.getVArray(const_cast<storage_type &>(x));
   double* arrMk2 = c.getMk2Array(const_cast<storage_type &>(x));
   double* arrMp = c.getMpArray(const_cast<storage_type &>(x));

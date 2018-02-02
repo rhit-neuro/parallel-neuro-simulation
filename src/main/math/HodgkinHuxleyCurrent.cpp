@@ -2,7 +2,7 @@
 #include "ODE.h"
 
 using namespace ode::hodgkinhuxley::current;
-using namespace state;
+using namespace config;
 
 double ode::hodgkinhuxley::current::ina(double gbarna, double mna, double hna, double V, double Ena) {
   return gbarna * pow(mna, 3) * hna * (V - Ena);

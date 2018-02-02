@@ -10,7 +10,7 @@
 #include "factory/Factory.h"
 #include "util/JsonToProtobufConfigConverter.h"
 #include "logging/AsyncBuffer.h"
-#include "state/ConfigAdapter.h"
+#include "config/ProgramConfig.h"
 
 using namespace global_definitions;
 using namespace boost::numeric::odeint;
@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
   tLogger.recordLoadConfigStartTime();
   JsonToProtobufConfigConverter converter;
   Config config = converter.readConfig(const_cast<string &>(inputFile));
-  state::ConfigAdapter &c = state::ConfigAdapter::getInstance();
+  config::ProgramConfig &c = config::ProgramConfig::getInstance();
   try {
     c.loadProtobufConfig(config);
   } catch (exception &e) {
