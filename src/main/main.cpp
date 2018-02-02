@@ -12,6 +12,7 @@
 #include "util/JsonToProtobufConfigConverter.h"
 #include "logging/AsyncBuffer.h"
 #include "config/ProgramConfig.h"
+#include "math/ODE.h"
 
 using namespace global_definitions;
 using namespace boost::numeric::odeint;
@@ -43,8 +44,6 @@ int main(int argc, char** argv) {
   const auto numNeuron = config.neurons_size();
   const auto bufferSize = numNeuron + 1;
 
-  const double START_TIME = 0.0;
-  const double END_TIME = 1.0;
   const int NUM_OF_RUNS = 3;
 
   cout << "With buffer writing" << "\n\n";
@@ -72,8 +71,8 @@ int main(int argc, char** argv) {
             ),
             ode::hodgkinhuxley::parallelSingleTaskOutside,
             c.getInitialStateValues(),
-            START_TIME,
-            END_TIME,
+            c.startTime,
+            c.endTime,
             0.1,
             [&](const storage_type &x, const double t) {
               storage_type toWrite(bufferSize);
@@ -116,8 +115,8 @@ int main(int argc, char** argv) {
             ),
             ode::hodgkinhuxley::parallelSingleTaskloopTaskOutside,
             c.getInitialStateValues(),
-            START_TIME,
-            END_TIME,
+            c.startTime,
+            c.endTime,
             0.1,
             [&](const storage_type &x, const double t) {
               storage_type toWrite(bufferSize);
@@ -160,8 +159,8 @@ int main(int argc, char** argv) {
             ),
             ode::hodgkinhuxley::parallelSingleTaskloopOutside,
             c.getInitialStateValues(),
-            START_TIME,
-            END_TIME,
+            c.startTime,
+            c.endTime,
             0.1,
             [&](const storage_type &x, const double t) {
               storage_type toWrite(bufferSize);
@@ -200,8 +199,8 @@ int main(int argc, char** argv) {
         ),
         ode::hodgkinhuxley::parallelForInside,
         c.getInitialStateValues(),
-        START_TIME,
-        END_TIME,
+        c.startTime,
+        c.endTime,
         0.1,
         [&](const storage_type &x, const double t) {
           storage_type toWrite(bufferSize);
@@ -238,8 +237,8 @@ int main(int argc, char** argv) {
         ),
         ode::hodgkinhuxley::parallelSingleTaskInside,
         c.getInitialStateValues(),
-        START_TIME,
-        END_TIME,
+        c.startTime,
+        c.endTime,
         0.1,
         [&](const storage_type &x, const double t) {
           storage_type toWrite(bufferSize);
@@ -276,8 +275,8 @@ int main(int argc, char** argv) {
         ),
         ode::hodgkinhuxley::parallelSingleTaskloopInside,
         c.getInitialStateValues(),
-        START_TIME,
-        END_TIME,
+        c.startTime,
+        c.endTime,
         0.1,
         [&](const storage_type &x, const double t) {
           storage_type toWrite(bufferSize);
@@ -314,8 +313,8 @@ int main(int argc, char** argv) {
         ),
         ode::hodgkinhuxley::parallelSingleTaskloopTaskInside,
         c.getInitialStateValues(),
-        START_TIME,
-        END_TIME,
+        c.startTime,
+        c.endTime,
         0.1,
         [&](const storage_type &x, const double t) {
           storage_type toWrite(bufferSize);
@@ -351,8 +350,8 @@ int main(int argc, char** argv) {
         ),
         ode::hodgkinhuxley::parallelForInside,
         c.getInitialStateValues(),
-        START_TIME,
-        END_TIME,
+        c.startTime,
+        c.endTime,
         0.1
       );
       tLogger.endArbitraryTimer();
@@ -378,8 +377,8 @@ int main(int argc, char** argv) {
         ),
         ode::hodgkinhuxley::parallelSingleTaskInside,
         c.getInitialStateValues(),
-        START_TIME,
-        END_TIME,
+        c.startTime,
+        c.endTime,
         0.1
       );
       tLogger.endArbitraryTimer();
@@ -409,8 +408,8 @@ int main(int argc, char** argv) {
             ),
             ode::hodgkinhuxley::parallelSingleTaskOutside,
             c.getInitialStateValues(),
-            START_TIME,
-            END_TIME,
+            c.startTime,
+            c.endTime,
             0.1
           );
         }
@@ -438,8 +437,8 @@ int main(int argc, char** argv) {
         ),
         ode::hodgkinhuxley::parallelSingleTaskloopInside,
         c.getInitialStateValues(),
-        START_TIME,
-        END_TIME,
+        c.startTime,
+        c.endTime,
         0.1
       );
       tLogger.endArbitraryTimer();
@@ -469,8 +468,8 @@ int main(int argc, char** argv) {
             ),
             ode::hodgkinhuxley::parallelSingleTaskloopOutside,
             c.getInitialStateValues(),
-            START_TIME,
-            END_TIME,
+            c.startTime,
+            c.endTime,
             0.1
           );
         }
@@ -498,8 +497,8 @@ int main(int argc, char** argv) {
         ),
         ode::hodgkinhuxley::parallelSingleTaskloopTaskInside,
         c.getInitialStateValues(),
-        START_TIME,
-        END_TIME,
+        c.startTime,
+        c.endTime,
         0.1
       );
       tLogger.endArbitraryTimer();
@@ -529,8 +528,8 @@ int main(int argc, char** argv) {
             ),
             ode::hodgkinhuxley::parallelSingleTaskloopTaskOutside,
             c.getInitialStateValues(),
-            START_TIME,
-            END_TIME,
+            c.startTime,
+            c.endTime,
             0.1
           );
         }

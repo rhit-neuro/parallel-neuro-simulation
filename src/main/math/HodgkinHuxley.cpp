@@ -209,7 +209,7 @@ void ode::hodgkinhuxley::calculateNextState(const storage_type &x, storage_type 
 }
 
 void ode::hodgkinhuxley::parallelForInside(const storage_type &x, storage_type &dxdt, double t) {
-  ConfigAdapter c = ConfigAdapter::getInstance();
+  ProgramConfig c = ProgramConfig::getInstance();
   double* arrV = c.getVArray(const_cast<storage_type &>(x));
   double* arrMk2 = c.getMk2Array(const_cast<storage_type &>(x));
   double* arrMp = c.getMpArray(const_cast<storage_type &>(x));
@@ -276,7 +276,7 @@ void ode::hodgkinhuxley::parallelForInside(const storage_type &x, storage_type &
                      ikf(n.gbarkf, arrMkf[i], V, n.ek) +
                      ih(n.gbarh, arrMh[i], V, n.eh) +
                      il(n.gbarl, V, n.el) +
-                     isyn(V, arrP[i], arrM[i], arrG[i], c.getAllSynapseConstants(), *(n.incoming), n.incoming->size())
+                     isyns(V, arrP, arrM, arrG, c.getAllSynapseConstants(), *(n.incoming), n.incoming->size())
       ) / n.capacitance;
 
       arrdMk2dt[i] = (finf(-83.0, 0.02, V) - arrMk2[i]) / tau(200.0, 0.035, 0.057, 0.043, V);
@@ -316,7 +316,7 @@ void ode::hodgkinhuxley::parallelForInside(const storage_type &x, storage_type &
   };
 }
 void ode::hodgkinhuxley::parallelSingleFor(const storage_type &x, storage_type &dxdt, double t) {
-  ConfigAdapter c = ConfigAdapter::getInstance();
+  ProgramConfig c = ProgramConfig::getInstance();
   double* arrV = c.getVArray(const_cast<storage_type &>(x));
   double* arrMk2 = c.getMk2Array(const_cast<storage_type &>(x));
   double* arrMp = c.getMpArray(const_cast<storage_type &>(x));
@@ -382,7 +382,7 @@ void ode::hodgkinhuxley::parallelSingleFor(const storage_type &x, storage_type &
                      ikf(n.gbarkf, arrMkf[i], V, n.ek) +
                      ih(n.gbarh, arrMh[i], V, n.eh) +
                      il(n.gbarl, V, n.el) +
-                     isyn(V, arrP[i], arrM[i], arrG[i], c.getAllSynapseConstants(), *(n.incoming), n.incoming->size())
+                     isyns(V, arrP, arrM, arrG, c.getAllSynapseConstants(), *(n.incoming), n.incoming->size())
       ) / n.capacitance;
       arrdMk2dt[i] = (finf(-83.0, 0.02, V) - arrMk2[i]) / tau(200.0, 0.035, 0.057, 0.043, V);
       arrdMpdt[i] = (finf(-120.0, 0.039, V) - arrMp[i]) / tau(400.0, 0.057, 0.01, 0.2, V);
@@ -422,7 +422,7 @@ void ode::hodgkinhuxley::parallelSingleFor(const storage_type &x, storage_type &
   }
 }
 void ode::hodgkinhuxley::parallelSingleTaskInside(const storage_type &x, storage_type &dxdt, double t) {
-  ConfigAdapter c = ConfigAdapter::getInstance();
+  ProgramConfig c = ProgramConfig::getInstance();
   double* arrV = c.getVArray(const_cast<storage_type &>(x));
   double* arrMk2 = c.getMk2Array(const_cast<storage_type &>(x));
   double* arrMp = c.getMpArray(const_cast<storage_type &>(x));
@@ -489,7 +489,7 @@ void ode::hodgkinhuxley::parallelSingleTaskInside(const storage_type &x, storage
                        ikf(n.gbarkf, arrMkf[i], V, n.ek) +
                        ih(n.gbarh, arrMh[i], V, n.eh) +
                        il(n.gbarl, V, n.el) +
-                       isyn(V, arrP[i], arrM[i], arrG[i], c.getAllSynapseConstants(), *(n.incoming), n.incoming->size())
+                       isyns(V, arrP, arrM, arrG, c.getAllSynapseConstants(), *(n.incoming), n.incoming->size())
         ) / n.capacitance;
       }
       #pragma omp task
@@ -538,7 +538,7 @@ void ode::hodgkinhuxley::parallelSingleTaskInside(const storage_type &x, storage
   };
 }
 void ode::hodgkinhuxley::parallelSingleTaskOutside(const storage_type &x, storage_type &dxdt, double t) {
-  ConfigAdapter c = ConfigAdapter::getInstance();
+  ProgramConfig c = ProgramConfig::getInstance();
   double* arrV = c.getVArray(const_cast<storage_type &>(x));
   double* arrMk2 = c.getMk2Array(const_cast<storage_type &>(x));
   double* arrMp = c.getMpArray(const_cast<storage_type &>(x));
@@ -605,7 +605,7 @@ void ode::hodgkinhuxley::parallelSingleTaskOutside(const storage_type &x, storag
                        ikf(n.gbarkf, arrMkf[i], V, n.ek) +
                        ih(n.gbarh, arrMh[i], V, n.eh) +
                        il(n.gbarl, V, n.el) +
-                       isyn(V, arrP[i], arrM[i], arrG[i], c.getAllSynapseConstants(), *(n.incoming), n.incoming->size())
+                       isyns(V, arrP, arrM, arrG, c.getAllSynapseConstants(), *(n.incoming), n.incoming->size())
         ) / n.capacitance;
       }
       #pragma omp task
@@ -656,7 +656,7 @@ void ode::hodgkinhuxley::parallelSingleTaskOutside(const storage_type &x, storag
   };
 }
 void ode::hodgkinhuxley::parallelSingleTaskloopInside(const storage_type &x, storage_type &dxdt, double t) {
-  ConfigAdapter c = ConfigAdapter::getInstance();
+  ProgramConfig c = ProgramConfig::getInstance();
   double* arrV = c.getVArray(const_cast<storage_type &>(x));
   double* arrMk2 = c.getMk2Array(const_cast<storage_type &>(x));
   double* arrMp = c.getMpArray(const_cast<storage_type &>(x));
@@ -725,7 +725,7 @@ void ode::hodgkinhuxley::parallelSingleTaskloopInside(const storage_type &x, sto
                        ikf(n.gbarkf, arrMkf[i], V, n.ek) +
                        ih(n.gbarh, arrMh[i], V, n.eh) +
                        il(n.gbarl, V, n.el) +
-                       isyn(V, arrP[i], arrM[i], arrG[i], c.getAllSynapseConstants(), *(n.incoming),
+                       isyns(V, arrP, arrM, arrG, c.getAllSynapseConstants(), *(n.incoming),
                             n.incoming->size())
         ) / n.capacitance;
 
@@ -767,7 +767,7 @@ void ode::hodgkinhuxley::parallelSingleTaskloopInside(const storage_type &x, sto
   };
 }
 void ode::hodgkinhuxley::parallelSingleTaskloopOutside(const storage_type &x, storage_type &dxdt, double t) {
-  ConfigAdapter c = ConfigAdapter::getInstance();
+  ProgramConfig c = ProgramConfig::getInstance();
   double* arrV = c.getVArray(const_cast<storage_type &>(x));
   double* arrMk2 = c.getMk2Array(const_cast<storage_type &>(x));
   double* arrMp = c.getMpArray(const_cast<storage_type &>(x));
@@ -831,7 +831,7 @@ void ode::hodgkinhuxley::parallelSingleTaskloopOutside(const storage_type &x, st
                      ikf(n.gbarkf, arrMkf[i], V, n.ek) +
                      ih(n.gbarh, arrMh[i], V, n.eh) +
                      il(n.gbarl, V, n.el) +
-                     isyn(V, arrP[i], arrM[i], arrG[i], c.getAllSynapseConstants(), *(n.incoming),
+                     isyns(V, arrP, arrM, arrG, c.getAllSynapseConstants(), *(n.incoming),
                           n.incoming->size())
       ) / n.capacitance;
 
@@ -872,7 +872,7 @@ void ode::hodgkinhuxley::parallelSingleTaskloopOutside(const storage_type &x, st
   };
 }
 void ode::hodgkinhuxley::parallelSingleTaskloopTaskInside(const storage_type &x, storage_type &dxdt, double t) {
-  ConfigAdapter c = ConfigAdapter::getInstance();
+  ProgramConfig c = ProgramConfig::getInstance();
   double* arrV = c.getVArray(const_cast<storage_type &>(x));
   double* arrMk2 = c.getMk2Array(const_cast<storage_type &>(x));
   double* arrMp = c.getMpArray(const_cast<storage_type &>(x));
@@ -938,7 +938,7 @@ void ode::hodgkinhuxley::parallelSingleTaskloopTaskInside(const storage_type &x,
                        ikf(n.gbarkf, arrMkf[i], V, n.ek) +
                        ih(n.gbarh, arrMh[i], V, n.eh) +
                        il(n.gbarl, V, n.el) +
-                       isyn(V, arrP[i], arrM[i], arrG[i], c.getAllSynapseConstants(), *(n.incoming), n.incoming->size())
+                       isyns(V, arrP, arrM, arrG, c.getAllSynapseConstants(), *(n.incoming), n.incoming->size())
         ) / n.capacitance;
       }
       #pragma omp task
@@ -986,7 +986,7 @@ void ode::hodgkinhuxley::parallelSingleTaskloopTaskInside(const storage_type &x,
   };
 }
 void ode::hodgkinhuxley::parallelSingleTaskloopTaskOutside(const storage_type &x, storage_type &dxdt, double t) {
-  ConfigAdapter c = ConfigAdapter::getInstance();
+  ProgramConfig c = ProgramConfig::getInstance();
   double* arrV = c.getVArray(const_cast<storage_type &>(x));
   double* arrMk2 = c.getMk2Array(const_cast<storage_type &>(x));
   double* arrMp = c.getMpArray(const_cast<storage_type &>(x));
@@ -1058,7 +1058,7 @@ void ode::hodgkinhuxley::parallelSingleTaskloopTaskOutside(const storage_type &x
                        ikf(n.gbarkf, arrMkf[i], V, n.ek) +
                        ih(n.gbarh, arrMh[i], V, n.eh) +
                        il(n.gbarl, V, n.el) +
-                       isyn(V, arrP[i], arrM[i], arrG[i], c.getAllSynapseConstants(), *(n.incoming), n.incoming->size())
+                       isyns(V, arrP, arrM, arrG, c.getAllSynapseConstants(), *(n.incoming), n.incoming->size())
         ) / n.capacitance;
       }
       #pragma omp task
