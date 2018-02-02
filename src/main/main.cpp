@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
   tLogger.recordLoadConfigEndTime();
 
   const auto numNeuron = config.neurons_size();
-  const auto bufferSize = numNeuron + 1;
+  const int bufferSize = numNeuron + 1;
   auto buffer = new AsyncBuffer(bufferSize, const_cast<string &>(outputFile));
 
   sequential::ode_system_function *equation = factory::equation::getEquation();
