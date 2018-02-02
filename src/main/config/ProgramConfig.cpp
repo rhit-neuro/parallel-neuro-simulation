@@ -100,6 +100,7 @@ void ProgramConfig::initializeSynapseConstantProperties() {
     SynapseConstants *synapsePtr = synapses + i;
     synapsePtr->source = protoSynapse.source();
     synapsePtr->gbarsyng = protoSynapse.gbarsyng();
+    synapsePtr->gbarsyns = protoSynapse.gbarsyns();
     synapsePtr->esyn = protoSynapse.esyn();
     synapsePtr->buffering = protoSynapse.buffering();
     synapsePtr->h0 = protoSynapse.h0();

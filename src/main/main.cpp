@@ -55,10 +55,8 @@ int main(int argc, char** argv) {
     ),
     equation,
     c.getInitialStateValues(),
-    0.0,
-    0.01,
-//    c.startTime,
-//    c.endTime,
+    c.startTime,
+    c.endTime,
     0.1,
     [&](const storage_type &x, const double t) {
       storage_type toWrite(bufferSize);

@@ -41,8 +41,8 @@ namespace ode {
       double ih(double gbarh, double mh, double V, double Eh);
       double il(double gbarl, double V, double El);
       double ica(double icaf, double icas, double A);
-      double isyn(double V, double P, double M, double g, SynapseConstants *allSynapses,
-                        ProtobufRepeatedInt32 &ownSynapses, int numOfOwnSynapses);
+      double isyns(double V, double *arrP, double *arrM, double *arrG, SynapseConstants *allSynapses,
+                   ProtobufRepeatedInt32 &ownSynapses, int numOfOwnSynapses);
       // Unimplemented
 //      double isyng(double gbarsyng, double P, double C, double V, double Esyn);
 //      double isyns(double x, NeuronConstants &n, SynapseConstants &s, int synapseIndex);
