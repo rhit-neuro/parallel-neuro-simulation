@@ -1,4 +1,4 @@
-image: rhneuroprocessor/neuro-simulation-env:latest
+image: rhneuroprocessor/neuro-simulation-env:1.2.0
 
 build:
   stage: build
