@@ -1,0 +1,66 @@
+syntax = "proto3";
+package protobuf_config;
+
+message Config {
+  message Neuron {
+    double gbarna = 1;
+    double gbarp = 2;
+    double gbarcaf = 3;
+    double gbarcas = 4;
+    double gbark1 = 5;
+    double gbark2 = 6;
+    double gbarka = 7;
+    double gbarkf = 8;
+    double gbarh = 9;
+    double gbarl = 10;
+    double ena = 11;
+    double eca = 12;
+    double ek = 13;
+    double eh = 14;
+    double el = 15;
+    double capacitance = 16;
+    repeated int32 incoming = 17;
+    double ivoltage = 18;
+    double imk2 = 19;
+    double imp = 20;
+    double imna = 21;
+    double ihna = 22;
+    double imcaf = 23;
+    double ihcaf = 24;
+    double imcas = 25;
+    double ihcas = 26;
+    double imk1 = 27;
+    double ihk1 = 28;
+    double imka = 29;
+    double ihka = 30;
+    double imkf = 31;
+    double imh = 32;
+  }
+  message Synapse {
+    int32 source = 1;
+    double gbarsyng = 2;
+    double gbarsyns = 3;
+    double esyn = 4;
+    double buffering = 5;
+    double h0 = 6;
+    double thresholdV = 7;
+    double tauDecay = 8;
+    double tauRise = 9;
+    double cGraded = 10;
+    double ia = 11;
+    double ip = 12;
+    double im = 13;
+    double ig = 14;
+    double ih = 15;
+  }
+  message Solver {
+    double startTime = 1;
+    double endTime = 2;
+    double absError = 3;
+    double relError = 4;
+    string solver = 5;
+  }
+  repeated Neuron neurons = 1;
+  repeated Synapse synapses = 2;
+  Solver solver = 3;
+}
