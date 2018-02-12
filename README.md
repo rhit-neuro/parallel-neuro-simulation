@@ -83,8 +83,17 @@ However, to prevent CMake from polluting project workspace, people prefer to cre
 ```bash
 mkdir build
 cd build
-cmake .. # Then proceed to use make
+cmake ..
+# Then proceed to use make
+make main # For example, we want to build the executable that runs simulation
 ```
+
+As of now, the CMake configuration of the `src` module (`CMakeLists.txt` inside the `src` folder), there are two make targets:
+- `main`
+- `main_test`
+
+The `main` target builds the main executable to run the neuro-simulation, whereas the `main_test` target builds the GTests to run the unit tests.
+When running `make`, you can specify number of tasks available to run in parallel, so you can do `make main -j 4` to run at most 4 compilation tasks in parallel.
 
 ###### Making New Images
 
