@@ -5,6 +5,7 @@ include(CTest)
 include(ExternalProject)
 include(FindBoost)
 include(FindProtobuf)
+include(FindOpenMP)
 
 #######################
 # Project Setup
@@ -20,8 +21,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # All Warnings # -Werror -pedantic
 set(WARNING_FLAGS "-Wall -Wextra")
-set(OPENMP_FLAGS "-fopenmp")
-set(SHARED_FLAGS "-Ofast ${WARNING_FLAGS} ${OPENMP_FLAGS}")
+set(SHARED_FLAGS "-Ofast ${WARNING_FLAGS} ${OpenMP_CXX_FLAGS}")
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
   "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
