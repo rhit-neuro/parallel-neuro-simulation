@@ -19,6 +19,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Build mode (dev/prod)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   set(BUILD_FOR_DEV TRUE)
+  message("Configuring for dev build")
 endif()
 
 #######################
@@ -32,28 +33,14 @@ find_package(OpenMP)
 set(WARNING_FLAGS "-Wall -Wextra")
 if (BUILD_FOR_DEV)
   set(SHARED_FLAGS "-g ${WARNING_FLAGS} ${OpenMP_CXX_FLAGS}")
+  set(BUILD_SHARED_LIBS ON)
 else ()
   set(SHARED_FLAGS "-Ofast -static ${WARNING_FLAGS} ${OpenMP_CXX_FLAGS}")
+  set(BUILD_SHARED_LIBS OFF)
 endif ()
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
-  "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
-  message(STATUS "Using Clang")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SHARED_FLAGS} -std=c++11 -stdlib=libc++")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-  message(STATUS "Using GCC")
-  set(CMAKE_CXX_FLAGS "-std=c++11")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SHARED_FLAGS} -std=c++11 -pthread")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-  message(STATUS "Using MSVC")
-  add_definitions(/MDd /WX- /Wall /D "_CRT_SECURE_NO_WARNINGS")
-  # Enable multi-process compilation
-  if (NOT MSVC60 AND NOT MSVC70 AND NOT MSVC71)
-    List(APPEND CFLAGS /MP)
-  endif ()
-endif ()
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SHARED_FLAGS} -std=c++11 -pthread")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
 
 #######################
 # Project Dependencies
@@ -68,7 +55,7 @@ else ()
   set(Boost_USE_STATIC_RUNTIME ON)
 endif ()
 
-find_package(Boost REQUIRED)
+find_package(Boost COMPONENTS program_options filesystem system REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS})
 
