@@ -1,4 +1,4 @@
-# Dockerfile for tag 1.2.1
+# Dockerfile for tag 1.3.0
 FROM ubuntu:artful
 
 # Install dependencies
@@ -11,8 +11,8 @@ RUN \
   gcc=4:7.2.0-1ubuntu1 libboost-all-dev=1.62.0.1 \
   # Build dependencies
   git cmake \
-  # Utilities
-  htop
+  # Dev dependencies
+  gdbserver htop
 
 # Install Google Protocol Buffer
 RUN \
@@ -26,6 +26,9 @@ RUN \
   ldconfig && \
   cd .. && \
   rm -rf protobuf
+
+# Expose port for gdbserver
+EXPOSE 9000
 
 VOLUME /project
 WORKDIR /project
