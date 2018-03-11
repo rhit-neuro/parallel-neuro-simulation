@@ -12,7 +12,8 @@ RUN \
   # Build dependencies
   git cmake \
   # Utilities
-  htop
+  htop && \
+  rm -rf /var/lib/apt/lists/*
 
 # Install Google Protocol Buffer
 RUN \
