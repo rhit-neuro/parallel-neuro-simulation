@@ -30,7 +30,7 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
   } catch (po::required_option &e) {
     cerr << e.what() << "\n";
     cerr << "Please add option " << e.get_option_name() << "!" << "\n";
-    return false;
+    throw e;
   }
 
   return true;

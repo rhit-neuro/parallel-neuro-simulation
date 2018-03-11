@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
 
   po::variables_map vm;
   if (!argparser::parse(argc, argv, vm)) {
-    return 1;
+    return 0;
   }
 
   const auto &inputFile = vm["input-file"].as<string>();
