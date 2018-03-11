@@ -14,6 +14,7 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
     ("output-format,of", po::value<string>()->default_value("CSV"), "output file format (CSV, default CSV)")
     ("verbose-level,vl", po::value<int>()->default_value(1), "set verbose level printed to output stream (1 - 3, default 1)")
     ("logging-config,lc", po::value<string>(), "logging configuration file location")
+    ("num-threads,t", po::value<unsigned int>()->default_value(0), "Specify number of threads OpenMP should use. Specify 0 to let OpenMP automatically decide")
   ;
 
   po::store(po::parse_command_line(argc, reinterpret_cast<const char * const *>(argv), desc), vm);

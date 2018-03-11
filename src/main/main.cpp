@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
   const int bufferSize = numNeuron + 1;
   auto buffer = new AsyncBuffer(bufferSize, const_cast<string &>(outputFile));
 
-  sequential::ode_system_function *equation = factory::equation::getEquation();
+  sequential::ode_system_function *equation = factory::equation::getEquation(vm);
 
   tLogger.recordCalculationStartTime();
   integrate_adaptive(
