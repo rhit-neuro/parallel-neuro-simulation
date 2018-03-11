@@ -51,7 +51,10 @@ if (BUILD_FOR_DEV)
   set(Boost_USE_STATIC_LIBS OFF)
   set(Boost_USE_STATIC_RUNTIME OFF)
 else ()
-  set(Boost_USE_STATIC_LIBS ON)
+  # TODO Temporarily disable because even with Protobuf_USE_STATIC_LIBS, Protobuf is linked dynamically
+  # If we force Boost to be linked statically, Protobuf will be explicitly labeled as dynamic
+  # Right neither are labeled explicitly, which actually saves us the hassle
+  #set(Boost_USE_STATIC_LIBS ON)
   set(Boost_USE_STATIC_RUNTIME ON)
 endif ()
 
@@ -69,6 +72,7 @@ endif()
 find_package(Protobuf REQUIRED)
 
 include_directories(${Protobuf_INCLUDE_DIRS})
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 #######################
 # Test Dependencies

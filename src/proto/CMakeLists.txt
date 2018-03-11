@@ -1,7 +1,8 @@
-find_package(Protobuf REQUIRED)
-
-include_directories(${PROTOBUF_INCLUDE_DIRS})
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+# Not running these as they have already been run by root CMakeLists.txt
+#find_package(Protobuf REQUIRED)
+#
+#include_directories(${PROTOBUF_INCLUDE_DIRS})
+#include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(PROTOBUF_DEFINITION
     protobuf_config.proto
