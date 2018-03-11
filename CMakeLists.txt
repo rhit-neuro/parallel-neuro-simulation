@@ -3,9 +3,6 @@ cmake_minimum_required(VERSION 2.8)
 project(parallel-neuron-simulation)
 include(CTest)
 include(ExternalProject)
-include(FindBoost)
-include(FindProtobuf)
-include(FindOpenMP)
 
 #######################
 # Project Setup
@@ -16,12 +13,28 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #######################
+# Project Options
+#######################
+
+# Build mode (dev/prod)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+  set(BUILD_FOR_DEV TRUE)
+endif()
+
+#######################
 # Compiler Setup
 #######################
 
-# All Warnings # -Werror -pedantic
+# OpenMP Support
+find_package(OpenMP)
+
+# Enable all warnings
 set(WARNING_FLAGS "-Wall -Wextra")
-set(SHARED_FLAGS "-Ofast ${WARNING_FLAGS} ${OpenMP_CXX_FLAGS}")
+if (BUILD_FOR_DEV)
+  set(SHARED_FLAGS "-g ${WARNING_FLAGS} ${OpenMP_CXX_FLAGS}")
+else ()
+  set(SHARED_FLAGS "-Ofast -static ${WARNING_FLAGS} ${OpenMP_CXX_FLAGS}")
+endif ()
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
   "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
@@ -46,31 +59,29 @@ endif ()
 # Project Dependencies
 #######################
 
-if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-  # Windows or just missing the library
-  # Boost
-  set(BOOST_ROOT "")
+# Boost
+if (BUILD_FOR_DEV)
+  set(Boost_USE_STATIC_LIBS OFF)
+  set(Boost_USE_STATIC_RUNTIME OFF)
+else ()
   set(Boost_USE_STATIC_LIBS ON)
-  set(Boost_USE_MULTITHREADED ON)
-  # Protobuf
-  set(PROTOBUF_SRC_ROOT_FOLDER "")
+  set(Boost_USE_STATIC_RUNTIME ON)
 endif ()
 
-# Boost
-find_package(Boost COMPONENTS program_options filesystem system)
-if (Boost_FOUND)
-  include_directories(${Boost_INCLUDE_DIRS})
-else()
-  message(FATAL_ERROR, "Boost not found on this system")
-endif ()
+find_package(Boost REQUIRED)
+
+include_directories(${Boost_INCLUDE_DIRS})
 
 # Protobuf
-find_package(Protobuf)
-if (Protobuf_FOUND)
-  include_directories(${Protobuf_INCLUDE_DIRS})
+if (BUILD_FOR_DEV)
+  set(Protobuf_USE_STATIC_LIBS OFF)
 else()
-  message(FATAL_ERROR, "Protobuf not found on this system")
-endif ()
+  set(Protobuf_USE_STATIC_LIBS ON)
+endif()
+
+find_package(Protobuf REQUIRED)
+
+include_directories(${Protobuf_INCLUDE_DIRS})
 
 #######################
 # Test Dependencies
