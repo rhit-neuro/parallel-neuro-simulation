@@ -22,12 +22,21 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   message("Configuring for dev build")
 endif()
 
+# Whether to use OpenMP
+option(
+  USE_OPENMP
+  "Whether OpenMP should be used in this project"
+  TRUE
+)
+
 #######################
 # Compiler Setup
 #######################
 
 # OpenMP Support
-find_package(OpenMP)
+if (USE_OPENMP)
+  include(FindOpenMP)
+endif ()
 
 # Enable all warnings
 set(WARNING_FLAGS "-Wall -Wextra")
