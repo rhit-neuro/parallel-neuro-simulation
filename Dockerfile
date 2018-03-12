@@ -1,4 +1,4 @@
-# Dockerfile for tag 1.2.1
+# Dockerfile for tag 1.3.0
 FROM ubuntu:artful
 
 # Install dependencies
@@ -12,7 +12,8 @@ RUN \
   # Build dependencies
   git cmake \
   # Utilities
-  htop
+  htop && \
+  rm -rf /var/lib/apt/lists/*
 
 # Install Google Protocol Buffer
 RUN \
