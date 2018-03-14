@@ -83,7 +83,7 @@ However, to prevent CMake from polluting project workspace, people prefer to cre
 ```bash
 mkdir build
 cd build
-cmake ..
+cmake .. -DCMAKE_BUILD_TYPE=Debug
 # Then proceed to use make
 make main # For example, we want to build the executable that runs simulation
 ```
@@ -156,3 +156,20 @@ brew install protobuf --build-from-source # Same here, you can add --cc=gcc-7
 ###### Debian (Ubuntu):
 
 You can simply run the commands in the Dockerfile to get the same dependencies installed, except you will have to use sudo for `apt-get`, `make install`, and `ldconfig`
+
+## Project Configuration Options
+
+For each of the configuration options below, if it applies to CMake, you can apply the change by calling
+```bash
+cmake <project path> -D<some key>=<some value>
+# For example
+cmake .. -DCMAKE_BUILD_TYPE=Debug
+```
+
+#### CMAKE_BUILD_TYPE
+This is a CMake default variable. The values we use in this project are `Debug` and `Release`
+This value also affects CMake built-in variables with the suffix convention, such as `CMAKE_CXX_FLAGS_DEBUG`
+(appended after `CMAKE_CXX_FLAGS` if the build type is `Debug`). Other than affecting CMake variable usage,
+when built with the `Debug` build type, we will use dynamic linking, disable optimization and use `-g` option (which
+will generate debug information), but if the project is built with the `Release` build type, we will use static
+linking and use maximum optimization
