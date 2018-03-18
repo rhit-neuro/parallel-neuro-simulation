@@ -32,6 +32,16 @@ if (USE_OPENMP)
   add_definitions(-DUSE_OPENMP)
 endif()
 
+# Include LUT support
+option(
+  INCLUDE_LUT_SUPPORT
+  "Whether to allow custom LUT functionalities to be built"
+  FALSE
+)
+if (INCLUDE_LUT_SUPPORT)
+  add_definitions(-DINCLUDE_LUT_SUPPORT)
+endif()
+
 #######################
 # Compiler Setup
 #######################

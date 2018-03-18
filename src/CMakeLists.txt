@@ -14,12 +14,16 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # Local header files are placed in the include directory.
 include_directories(include)
-set(INCLUDE_SOURCE
+set(
+  INCLUDE_SOURCE
+
   include/json-3.1.2/json.hpp
   include/lut_support-a7d4c9fa7d6a4c1a5c1494d29d99617b392c8255/lut_support.h
 )
 
-set(SOURCE
+set(
+  SOURCE
+
   main/main.cpp
   main/global/GlobalDefinitions.h
 
@@ -37,6 +41,7 @@ set(SOURCE
   main/math/HodgkinHuxley.cpp
   main/math/HodgkinHuxleyCurrent.cpp
   main/math/HodgkinHuxleyCurve.cpp
+  main/math/HodgkinHuxleyLUT.cpp
   main/math/ODE.h
   main/util/ArgParser.cpp
   main/util/ArgParser.h
