@@ -5,11 +5,13 @@ build-dynamic:
   script:
     - mkdir build
     - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Debug
-    - cd ..
-    - cmake --build build --target main
-    # Some test commands to see if the compiled binary really runs'
-    - build/src/main --help
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_OPENMP=ON
+    - make main
+    # Some test commands to see if the compiled binary really runs
+    - src/main --help
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_OPENMP=OFF
+    - make main
+    - src/main --help
   tags:
     - kubernetes-stage
 
@@ -18,11 +20,13 @@ build-static:
   script:
     - mkdir build
     - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Release
-    - cd ..
-    - cmake --build build --target main
-    # Some test commands to see if the compiled binary really runs'
-    - build/src/main --help
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=ON
+    - make main
+    # Some test commands to see if the compiled binary really runs
+    - src/main --help
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=OFF
+    - make main
+    - src/main --help
   tags:
     - kubernetes-stage
 

@@ -174,5 +174,5 @@ when built with the `Debug` build type, we will use dynamic linking, disable opt
 will generate debug information), but if the project is built with the `Release` build type, we will use static
 linking and use maximum optimization
 
-#### OpenMP
+#### USE_OPENMP
 Currently, the project by default builds with OpenMP support, to disable it, configure CMake with `USE_OPENMP=FALSE`
