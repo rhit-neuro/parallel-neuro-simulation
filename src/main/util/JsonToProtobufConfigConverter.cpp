@@ -1,7 +1,7 @@
 #include "JsonToProtobufConfigConverter.h"
 
 #include <fstream>
-#include <json-v3.0.0.hpp>
+#include <json-3.1.2/json.hpp>
 
 using json = nlohmann::json;
 

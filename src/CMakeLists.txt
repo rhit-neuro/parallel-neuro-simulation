@@ -15,7 +15,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 # Local header files are placed in the include directory.
 include_directories(include)
 set(INCLUDE_SOURCE
-  include/json-v3.0.0.hpp
+  include/json-3.1.2/json.hpp
 )
 
 set(SOURCE
