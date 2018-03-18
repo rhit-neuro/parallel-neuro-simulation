@@ -28,6 +28,9 @@ option(
   "Whether OpenMP should be used in this project"
   TRUE
 )
+if (USE_OPENMP)
+  add_definitions(-DUSE_OPENMP)
+endif()
 
 #######################
 # Compiler Setup
