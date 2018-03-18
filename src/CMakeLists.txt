@@ -16,6 +16,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(include)
 set(INCLUDE_SOURCE
   include/json-3.1.2/json.hpp
+  include/lut_support-a7d4c9fa7d6a4c1a5c1494d29d99617b392c8255/lut_support.h
 )
 
 set(SOURCE
