@@ -2,7 +2,9 @@
 #define PARALLEL_NEURON_SIMULATION_FACTORY_H
 
 #include <proto/protobuf_config.pb.h>
+#if USE_OPENMP
 #include <omp.h>
+#endif
 #include "../global/GlobalDefinitions.h"
 #include "../math/ODE.h"
 

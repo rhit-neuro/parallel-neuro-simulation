@@ -8,7 +8,9 @@ class ResultLogger {
   public:
     static ResultLogger& getInstance() {
       ResultLogger* instancePtr;
+#if USE_OPENMP
       #pragma omp critical(singleton_init_resultlogger)
+#endif
       {
         static ResultLogger loggerInstance;
         instancePtr = &loggerInstance;

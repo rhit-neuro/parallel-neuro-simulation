@@ -10,7 +10,9 @@ class TimeLogger {
   public:
     static TimeLogger& getInstance() {
       TimeLogger* instancePtr;
+#if USE_OPENMP
       #pragma omp critical(singleton_init_timelogger)
+#endif
       {
         static TimeLogger loggerInstance;
         instancePtr = &loggerInstance;

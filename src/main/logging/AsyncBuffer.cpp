@@ -93,7 +93,7 @@ void AsyncBuffer::writeData(const double *data) {
       this->startThread(); //Start next thread if we can
     }
   }
-  this->currentBuffer;
+
   int checkValue = this->index + this->size;
   for (int i = 0; this->index < checkValue; i++) {
     this->buffers[this->currentBuffer][this->index] = data[i];

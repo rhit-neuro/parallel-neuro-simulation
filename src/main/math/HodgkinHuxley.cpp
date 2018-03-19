@@ -51,14 +51,17 @@ void ode::hodgkinhuxley::calculateNextState(const storage_type &x, storage_type 
 
   const int numOfNeurons = c.numOfNeurons;
   const int numOfSynapses = c.numOfSynapses;
-
+#if USE_OPENMP
   #pragma omp parallel default(shared)
+#endif
   {
     for (int i = 0; i < numOfNeurons; i++) {
       using namespace std;
       const NeuronConstants &n = c.getNeuronConstantAt(i);
       const double V = arrV[i];
+#if USE_OPENMP
       #pragma omp task
+#endif
       {
         // Calculate dVdt
         arrdVdt[i] = -(ina(n.gbarna, arrMna[i], arrHna[i], V, n.ena) +
@@ -74,8 +77,9 @@ void ode::hodgkinhuxley::calculateNextState(const storage_type &x, storage_type 
                        isyns(V, arrP, arrM, arrG, c.getAllSynapseConstants(), *(n.incoming), n.incoming->size())
         ) / n.capacitance;
       }
-
+#if USE_OPENMP
       #pragma omp task
+#endif
       {
         // Calculate dMk2dt
         arrdMk2dt[i] = (finf(-83.0, 0.02, V) - arrMk2[i]) / tau(200.0, 0.035, 0.057, 0.043, V);
@@ -114,8 +118,9 @@ void ode::hodgkinhuxley::calculateNextState(const storage_type &x, storage_type 
       const int sourceNeuronIndex = s.source;
       const NeuronConstants &n = c.getNeuronConstantAt(sourceNeuronIndex);
       const double V = arrV[sourceNeuronIndex];
-
+#if USE_OPENMP
       #pragma omp task
+#endif
       {
         // Calculate dPdt
         // TODO Cache the result from loop above to save time
@@ -125,8 +130,9 @@ void ode::hodgkinhuxley::calculateNextState(const storage_type &x, storage_type 
           arrA[j]
         ) - s.buffering * arrP[j];
       }
-
+#if USE_OPENMP
       #pragma omp task
+#endif
       {
         // Calculate dAdt
         arrdAdt[j] = (1.0e-10 / (1 + exp(-100.0 * (V + 0.02))) - arrA[j]) / 0.2;
