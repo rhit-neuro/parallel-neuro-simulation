@@ -16,6 +16,9 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
 #endif
     ("output-file,o", po::value<string>()->required(), "output file location")
     ("output-format,of", po::value<string>()->default_value("CSV"), "output file format (CSV, default CSV)")
+#if INCLUDE_LUT_SUPPORT
+    ("use-lut,lut", po::value<bool>()->default_value(false), "Whether to use LUT during computation")
+#endif
     ("verbose-level,vl", po::value<int>()->default_value(1), "set verbose level printed to output stream (1 - 3, default 1)")
   ;
 

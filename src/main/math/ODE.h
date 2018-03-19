@@ -48,6 +48,11 @@ namespace ode {
 //      double isyns(double x, NeuronConstants &n, SynapseConstants &s, int synapseIndex);
     }
   }
+#if INCLUDE_LUT_SUPPORT
+  namespace hodgkinhuxley_lut {
+    void calculateNextState(const storage_type &xs, storage_type &dxdts, double t);
+  }
+#endif
 }
 
 

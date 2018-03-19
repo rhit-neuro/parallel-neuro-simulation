@@ -8,5 +8,11 @@ sequential::ode_system_function * factory::equation::getEquation(po::variables_m
     omp_set_num_threads(num_threads_by_user);
   }
 #endif
+#if INCLUDE_LUT_SUPPORT
+  const bool use_lut = vm["use-lut"].as<bool>();
+  if (use_lut) {
+    return &ode::hodgkinhuxley_lut::calculateNextState;
+  }
+#endif
   return &ode::hodgkinhuxley::calculateNextState;
 }

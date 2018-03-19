@@ -10,7 +10,6 @@
 #include "factory/Factory.h"
 #include "util/JsonToProtobufConfigConverter.h"
 #include "logging/AsyncBuffer.h"
-#include "config/ProgramConfig.h"
 
 using namespace global_definitions;
 using namespace boost::numeric::odeint;
