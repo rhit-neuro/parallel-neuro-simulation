@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "ArgParser.h"
 
 using namespace std;
@@ -21,6 +22,7 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
     ("use-lut,lut", po::value<bool>()->default_value(false), "Whether to use LUT during computation")
 #endif
     ("verbose-level,vl", po::value<int>()->default_value(1), "set verbose level printed to output stream (1 - 3, default 1)")
+	("config-file,c", po::value<string>(), "config file location")
   ;
 
   po::store(po::parse_command_line(argc, reinterpret_cast<const char * const *>(argv), desc), vm);
@@ -28,6 +30,15 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
   if (vm.count("help")) {
     cout << desc << "\n";
     return false;
+  }
+
+  // If "config-file" exits, then read options from the config file. Options passed through the CLI will override
+  // those which are in the config file
+  if (vm.count("config-file")) {
+    const auto &configFile = vm["config-file"].as<string>();
+	ifstream configIStream;
+    configIStream.open (configFile);
+	po::store(po::parse_config_file(configIStream, desc), vm);
   }
 
   try {
