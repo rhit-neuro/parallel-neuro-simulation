@@ -8,21 +8,21 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
   po::options_description desc("Allowed options");
 
   desc.add_options()
+    ("config-file,c", po::value<string>(), "config file location")
     ("help", "produce help message")
     ("input-file,i", po::value<string>()->required(), "input file location")
     ("input-format,if", po::value<string>()->default_value("JSON"), "input file format (JSON, default JSON)")
     ("logging-config,lc", po::value<string>(), "logging configuration file location")
 #if USE_OPENMP
-    ("num-threads,t", po::value<unsigned int>()->default_value(0), "Specify number of threads OpenMP should use. Specify 0 to let OpenMP automatically decide")
+    ("num-threads,t", po::value<unsigned int>()->default_value(0), "specify number of threads OpenMP should use. Specify 0 to let OpenMP automatically decide")
 #endif
     ("output-file,o", po::value<string>()->required(), "output file location")
     ("output-format,of", po::value<string>()->default_value("CSV"), "output file format (CSV, default CSV)")
     ("output-precision,op", po::value<int>()->default_value(7), "number of decimal points to be displayed/written to output")
 #if INCLUDE_LUT_SUPPORT
-    ("use-lut,lut", po::value<bool>()->default_value(false), "Whether to use LUT during computation")
+    ("use-lut,lut", po::value<bool>()->default_value(false), "whether to use LUT during computation")
 #endif
     ("verbose-level,vl", po::value<int>()->default_value(1), "set verbose level printed to output stream (1 - 3, default 1)")
-	("config-file,c", po::value<string>(), "config file location")
   ;
 
   po::store(po::parse_command_line(argc, reinterpret_cast<const char * const *>(argv), desc), vm);
@@ -36,9 +36,13 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
   // those which are in the config file
   if (vm.count("config-file")) {
     const auto &configFile = vm["config-file"].as<string>();
-	ifstream configIStream;
-    configIStream.open (configFile);
-	po::store(po::parse_config_file(configIStream, desc), vm);
+    ifstream configIStream (configFile);
+    if (!configIStream) {
+      cerr << "Configuration file '" << configFile << "' could not be read\n";
+      cerr << "Aborted\n";
+      return false;
+    }
+    po::store(po::parse_config_file(configIStream, desc), vm);
   }
 
   try {
