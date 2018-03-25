@@ -1,5 +1,10 @@
 image: rhneuroprocessor/neuro-simulation-env:1.3.0
 
+stages:
+  - build
+  - test
+  - deploy
+
 build-dynamic:
   stage: build
   script:
@@ -41,3 +46,35 @@ test: # Statically linked main_test has segmentation fault
     - build_test/src/main_test --gtest_filter=* --gtest_color=no
   tags:
     - kubernetes-stage
+
+deploy-omp:
+  stage: deploy
+  script:
+    - mkdir build
+    - mkdir release
+    - cd build
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=ON
+    - make main
+    - mv src/main ../release/neuro-simulation_${CI_COMMIT_TAG}_${CI_JOB_ID}_omp
+  artifacts:
+    paths:
+      - release
+  tags:
+    - kubernetes-stage
+  only: tags
+
+deploy-no-omp:
+  stage: deploy
+  script:
+    - mkdir build
+    - mkdir release
+    - cd build
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=OFF
+    - make main
+    - mv src/main ../release/neuro-simulation_${CI_COMMIT_TAG}_${CI_JOB_ID}_no_omp
+  artifacts:
+    paths:
+      - release
+  tags:
+    - kubernetes-stage
+  only: tags
