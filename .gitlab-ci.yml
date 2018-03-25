@@ -61,7 +61,8 @@ deploy-omp:
       - release
   tags:
     - kubernetes-stage
-  only: tags
+  only:
+    - tags
 
 deploy-no-omp:
   stage: deploy
@@ -77,4 +78,5 @@ deploy-no-omp:
       - release
   tags:
     - kubernetes-stage
-  only: tags
+  only:
+    - tags
