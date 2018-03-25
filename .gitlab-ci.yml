@@ -55,7 +55,7 @@ deploy-omp:
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=ON
     - make main
-    - mv src/main ../release/neuro-simulation_${CI_COMMIT_TAG}_${CI_JOB_ID}_omp
+    - mv src/main ../release/neuro-simulation_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
   artifacts:
     paths:
       - release
@@ -72,7 +72,7 @@ deploy-no-omp:
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=OFF
     - make main
-    - mv src/main ../release/neuro-simulation_${CI_COMMIT_TAG}_${CI_JOB_ID}_no_omp
+    - mv src/main ../release/neuro-simulation_no_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
   artifacts:
     paths:
       - release
