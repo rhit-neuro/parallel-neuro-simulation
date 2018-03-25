@@ -10,12 +10,13 @@ void *printFile(void *arg) {
   //std::cout << "Line Size : " << my_data->lineSize <<std::endl;
   //std::cout << "Number of lines : " << my_data->lines <<std::endl;
   //std::cout << "message: "<< my_data->message[0]<<std::endl;
+  const int precision = my_data->precision;
   int index = 0;
   for (int i = 0; i < my_data->lines; i++) {
-    my_data->ofs << my_data->message[index];
+    my_data->ofs << std::setprecision(precision) << my_data->message[index];
     index++;
     for (int j = 1; j < my_data->lineSize; j++) {
-      my_data->ofs << "," << my_data->message[index];
+      my_data->ofs << "," << std::setprecision(precision) << my_data->message[index];
       index++;
     }
     my_data->ofs << std::endl;
@@ -23,8 +24,9 @@ void *printFile(void *arg) {
   pthread_exit(NULL);
 }
 
-AsyncBuffer::AsyncBuffer(int size, std::string &output_filename) {
+AsyncBuffer::AsyncBuffer(int size, std::string &output_filename, int precision) {
   this->size = size;
+  this->decimalPrecision = precision;
   this->td.ofs.open(output_filename);
   // Initialize and set thread joinable
   pthread_attr_init(&(this->attr));
@@ -59,6 +61,7 @@ AsyncBuffer::~AsyncBuffer() {
   }
   if (this->index > 0) {
     this->td.lineSize = this->size;
+    this->td.precision = this->decimalPrecision;
     this->td.lines = this->index / this->size;
     double *data = (double *) malloc(this->index * size * sizeof(double));
     for (int i = 0; i < this->index; ++i) {
@@ -81,7 +84,7 @@ AsyncBuffer::~AsyncBuffer() {
 
 void AsyncBuffer::writeData(const double *data) {
   //check if thread is running
-  std::cout << data[0] << std::endl;
+  std::cout << std::setprecision(this->decimalPrecision) << data[0] << std::endl;
   if (this->threadRunning == this->currentBuffer) {
     //check if we have room to write data
     if (this->full[this->currentBuffer]) {
@@ -116,6 +119,7 @@ void AsyncBuffer::startThread() {
       if (this->full[i]) {
         this->threadRunning = i;
         this->td.lineSize = this->size;
+        this->td.precision = this->decimalPrecision;
         this->td.lines = BUFFER_SPACE * 1;
         this->td.message = this->buffers[i];
         int rc = pthread_create(&this->thread, &attr, printFile, (void *) &td);

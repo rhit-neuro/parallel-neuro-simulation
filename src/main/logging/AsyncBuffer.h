@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <condition_variable>
 #include <mutex>
 #include <queue>
@@ -14,6 +15,7 @@
 
 struct thread_data {
   int lineSize;
+  int precision;
   int lines;
   std::ofstream ofs;
   double *message;
@@ -21,7 +23,7 @@ struct thread_data {
 
 class AsyncBuffer {
   public:
-    AsyncBuffer(int size, std::string &output_filename);
+    AsyncBuffer(int size, std::string &output_filename, int precision);
     ~AsyncBuffer();
     void writeData(const double *data);
 
@@ -32,6 +34,7 @@ class AsyncBuffer {
     pthread_t thread;
     pthread_attr_t attr;
     int size;
+    int decimalPrecision;
     int index;
     bool *full;// = {false, false};
     int threadRunning;

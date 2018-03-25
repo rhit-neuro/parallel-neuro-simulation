@@ -41,7 +41,8 @@ int main(int argc, char** argv) {
 
   const auto numNeuron = config.neurons_size();
   const int bufferSize = numNeuron + 1;
-  auto buffer = new AsyncBuffer(bufferSize, const_cast<string &>(outputFile));
+  const int precision = vm["output-precision"].as<int>();
+  auto buffer = new AsyncBuffer(bufferSize, const_cast<string &>(outputFile), precision);
 
   sequential::ode_system_function *equation = factory::equation::getEquation(vm);
 
