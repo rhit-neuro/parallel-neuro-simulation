@@ -42,6 +42,7 @@ set(
   main/math/HodgkinHuxleyCurrent.cpp
   main/math/HodgkinHuxleyCurve.cpp
   main/math/HodgkinHuxleyLUT.cpp
+  main/math/HodgkinHuxleyLUTCurve.cpp
   main/math/ODE.h
   main/util/ArgParser.cpp
   main/util/ArgParser.h

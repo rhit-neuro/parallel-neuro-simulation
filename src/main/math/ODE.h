@@ -11,7 +11,6 @@ using namespace config;
 namespace ode {
   namespace hodgkinhuxley {
     using namespace generic_double_math_signatures;
-    using namespace ode::hodgkinhuxley;
 
     void calculateNextState(const storage_type &xs, storage_type &dxdts, double t);
 
@@ -61,7 +60,7 @@ namespace ode {
 
     class HodgkinHuxleyEquation {
       public:
-        explicit HodgkinHuxleyEquation();
+        HodgkinHuxleyEquation();
         /**
          * Calculates the next set of derivatives based on the current state variables and the time differential.
          * This function must exist for all systems of ODEs to be solved by
@@ -71,40 +70,80 @@ namespace ode {
          */
         void calculateNextState(const storage_type &xs, storage_type &dxdts, double t);
 
-        two_args_double_math * dMk2dt = curve::dMk2dt;
-        two_args_double_math * dMpdt = curve::dMpdt;
-        two_args_double_math * dMnadt = curve::dMnadt;
-        two_args_double_math * dHnadt = curve::dHnadt;
-        two_args_double_math * dMcafdt = curve::dMcafdt;
-        two_args_double_math * dHcafdt = curve::dHcafdt;
-        two_args_double_math * dMcasdt = curve::dMcasdt;
-        two_args_double_math * dHcasdt = curve::dHcasdt;
-        two_args_double_math * dMk1dt = curve::dMk1dt;
-        two_args_double_math * dHk1dt = curve::dHk1dt;
-        two_args_double_math * dMkadt = curve::dMkadt;
-        two_args_double_math * dHkadt = curve::dHkadt;
-        two_args_double_math * dMkfdt = curve::dMkfdt;
-        two_args_double_math * dMhdt = curve::dMhdt;
+      protected:
+        // We use function pointers to allow easy composition
+        two_args_double_math * dMk2dt = ::ode::hodgkinhuxley::curve::dMk2dt;
+        two_args_double_math * dMpdt = ::ode::hodgkinhuxley::curve::dMpdt;
+        two_args_double_math * dMnadt = ::ode::hodgkinhuxley::curve::dMnadt;
+        two_args_double_math * dHnadt = ::ode::hodgkinhuxley::curve::dHnadt;
+        two_args_double_math * dMcafdt = ::ode::hodgkinhuxley::curve::dMcafdt;
+        two_args_double_math * dHcafdt = ::ode::hodgkinhuxley::curve::dHcafdt;
+        two_args_double_math * dMcasdt = ::ode::hodgkinhuxley::curve::dMcasdt;
+        two_args_double_math * dHcasdt = ::ode::hodgkinhuxley::curve::dHcasdt;
+        two_args_double_math * dMk1dt = ::ode::hodgkinhuxley::curve::dMk1dt;
+        two_args_double_math * dHk1dt = ::ode::hodgkinhuxley::curve::dHk1dt;
+        two_args_double_math * dMkadt = ::ode::hodgkinhuxley::curve::dMkadt;
+        two_args_double_math * dHkadt = ::ode::hodgkinhuxley::curve::dHkadt;
+        two_args_double_math * dMkfdt = ::ode::hodgkinhuxley::curve::dMkfdt;
+        two_args_double_math * dMhdt = ::ode::hodgkinhuxley::curve::dMhdt;
 
-        five_args_double_math * ina = current::ina;
-        four_args_double_math * ip = current::ip;
-        five_args_double_math * icaf = current::icaf;
-        five_args_double_math * icas = current::icas;
-        five_args_double_math * ik1 = current::ik1;
-        four_args_double_math * ik2 = current::ik2;
-        five_args_double_math * ika = current::ika;
-        four_args_double_math * ikf = current::ikf;
-        four_args_double_math * ih = current::ih;
-        three_args_double_math * il = current::il;
-        three_args_double_math * ica = current::ica;
+        five_args_double_math * ina = ::ode::hodgkinhuxley::current::ina;
+        four_args_double_math * ip = ::ode::hodgkinhuxley::current::ip;
+        five_args_double_math * icaf = ::ode::hodgkinhuxley::current::icaf;
+        five_args_double_math * icas = ::ode::hodgkinhuxley::current::icas;
+        five_args_double_math * ik1 = ::ode::hodgkinhuxley::current::ik1;
+        four_args_double_math * ik2 = ::ode::hodgkinhuxley::current::ik2;
+        five_args_double_math * ika = ::ode::hodgkinhuxley::current::ika;
+        four_args_double_math * ikf = ::ode::hodgkinhuxley::current::ikf;
+        four_args_double_math * ih = ::ode::hodgkinhuxley::current::ih;
+        three_args_double_math * il = ::ode::hodgkinhuxley::current::il;
+        three_args_double_math * ica = ::ode::hodgkinhuxley::current::ica;
         double (* isyns) (double, double *, double *, double *, SynapseConstants *,
-                                                      ProtobufRepeatedInt32 &, int) = current::isyns;
-      private:
+                                                      ProtobufRepeatedInt32 &, int) = ::ode::hodgkinhuxley::current::isyns;
+
+        // Expose config to subclasses
         ProgramConfig *pc;
     };
   }
 #if INCLUDE_LUT_SUPPORT
   namespace hodgkinhuxley_lut {
+    namespace curve {
+      double dMk2dt(double V, double mk2);
+      double dMpdt(double V, double mp);
+      double dMnadt(double V, double mna);
+      double dHnadt(double V, double hna);
+      double dMcafdt(double V, double mcaf);
+      double dHcafdt(double V, double hcaf);
+      double dMcasdt(double V, double mcas);
+      double dHcasdt(double V, double hcas);
+      double dMk1dt(double V, double mk1);
+      double dHk1dt(double V, double hk1);
+      double dMkadt(double V, double mka);
+      double dHkadt(double V, double hka);
+      double dMkfdt(double V, double mkf);
+      double dMhdt(double V, double mh);
+    }
+
+    class HodgkinHuxleyLUTEquation : public ::ode::hodgkinhuxley::HodgkinHuxleyEquation {
+      public:
+        HodgkinHuxleyLUTEquation() {
+          dMk2dt = ::ode::hodgkinhuxley_lut::curve::dMk2dt;
+          dMpdt = ::ode::hodgkinhuxley_lut::curve::dMpdt;
+          dMnadt = ::ode::hodgkinhuxley_lut::curve::dMnadt;
+          dHnadt = ::ode::hodgkinhuxley_lut::curve::dHnadt;
+          dMcafdt = ::ode::hodgkinhuxley_lut::curve::dMcafdt;
+          dHcafdt = ::ode::hodgkinhuxley_lut::curve::dHcafdt;
+          dMcasdt = ::ode::hodgkinhuxley_lut::curve::dMcasdt;
+          dHcasdt = ::ode::hodgkinhuxley_lut::curve::dHcasdt;
+          dMk1dt = ::ode::hodgkinhuxley_lut::curve::dMk1dt;
+          dHk1dt = ::ode::hodgkinhuxley_lut::curve::dHk1dt;
+          dMkadt = ::ode::hodgkinhuxley_lut::curve::dMkadt;
+          dHkadt = ::ode::hodgkinhuxley_lut::curve::dHkadt;
+          dMkfdt = ::ode::hodgkinhuxley_lut::curve::dMkfdt;
+          dMhdt = ::ode::hodgkinhuxley_lut::curve::dMhdt;
+        }
+    };
+
     void calculateNextState(const storage_type &xs, storage_type &dxdts, double t);
   }
 #endif
