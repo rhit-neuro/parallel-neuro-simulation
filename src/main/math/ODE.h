@@ -22,6 +22,21 @@ namespace ode {
       double tauhna(double v);
       double taumkf(double v);
       double taumcaf(double v);
+
+      double dMk2dt(double V, double mk2);
+      double dMpdt(double V, double mp);
+      double dMnadt(double V, double mna);
+      double dHnadt(double V, double hna);
+      double dMcafdt(double V, double mcaf);
+      double dHcafdt(double V, double hcaf);
+      double dMcasdt(double V, double mcas);
+      double dHcasdt(double V, double hcas);
+      double dMk1dt(double V, double mk1);
+      double dHk1dt(double V, double hk1);
+      double dMkadt(double V, double mka);
+      double dHkadt(double V, double hka);
+      double dMkfdt(double V, double mkf);
+      double dMhdt(double V, double mh);
     }
 
     namespace current {
@@ -56,12 +71,20 @@ namespace ode {
          */
         void calculateNextState(const storage_type &xs, storage_type &dxdts, double t);
 
-        three_args_double_math * finf = curve::finf;
-        one_arg_double_math * fhinf = curve::fhinf;
-        five_args_double_math * tau = curve::tau;
-        one_arg_double_math * tauhna = curve::tauhna;
-        one_arg_double_math * taumkf = curve::taumkf;
-        one_arg_double_math * taumcaf = curve::taumcaf;
+        two_args_double_math * dMk2dt = curve::dMk2dt;
+        two_args_double_math * dMpdt = curve::dMpdt;
+        two_args_double_math * dMnadt = curve::dMnadt;
+        two_args_double_math * dHnadt = curve::dHnadt;
+        two_args_double_math * dMcafdt = curve::dMcafdt;
+        two_args_double_math * dHcafdt = curve::dHcafdt;
+        two_args_double_math * dMcasdt = curve::dMcasdt;
+        two_args_double_math * dHcasdt = curve::dHcasdt;
+        two_args_double_math * dMk1dt = curve::dMk1dt;
+        two_args_double_math * dHk1dt = curve::dHk1dt;
+        two_args_double_math * dMkadt = curve::dMkadt;
+        two_args_double_math * dHkadt = curve::dHkadt;
+        two_args_double_math * dMkfdt = curve::dMkfdt;
+        two_args_double_math * dMhdt = curve::dMhdt;
 
         five_args_double_math * ina = current::ina;
         four_args_double_math * ip = current::ip;
