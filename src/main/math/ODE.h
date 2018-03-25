@@ -10,20 +10,8 @@ using namespace config;
 
 namespace ode {
   namespace hodgkinhuxley {
-    class HodgkinHuxleyEquation {
-      public:
-        explicit HodgkinHuxleyEquation();
-        /**
-         * Calculates the next set of derivatives based on the current state variables and the time differential.
-         * This function must exist for all systems of ODEs to be solved by
-         * @param xs Values of current state variables
-         * @param dxdts Placeholder for new values for the derivatives
-         * @param dt Current time value, might be unused by the calculation
-         */
-        void calculateNextState(const storage_type &xs, storage_type &dxdts, double t);
-      private:
-        ProgramConfig *pc;
-    };
+    using namespace generic_double_math_signatures;
+    using namespace ode::hodgkinhuxley;
 
     void calculateNextState(const storage_type &xs, storage_type &dxdts, double t);
 
@@ -55,6 +43,42 @@ namespace ode {
 //      double isyng(double gbarsyng, double P, double C, double V, double Esyn);
 //      double isyns(double x, NeuronConstants &n, SynapseConstants &s, int synapseIndex);
     }
+
+    class HodgkinHuxleyEquation {
+      public:
+        explicit HodgkinHuxleyEquation();
+        /**
+         * Calculates the next set of derivatives based on the current state variables and the time differential.
+         * This function must exist for all systems of ODEs to be solved by
+         * @param xs Values of current state variables
+         * @param dxdts Placeholder for new values for the derivatives
+         * @param dt Current time value, might be unused by the calculation
+         */
+        void calculateNextState(const storage_type &xs, storage_type &dxdts, double t);
+
+        three_args_double_math * finf = curve::finf;
+        one_arg_double_math * fhinf = curve::fhinf;
+        five_args_double_math * tau = curve::tau;
+        one_arg_double_math * tauhna = curve::tauhna;
+        one_arg_double_math * taumkf = curve::taumkf;
+        one_arg_double_math * taumcaf = curve::taumcaf;
+
+        five_args_double_math * ina = current::ina;
+        four_args_double_math * ip = current::ip;
+        five_args_double_math * icaf = current::icaf;
+        five_args_double_math * icas = current::icas;
+        five_args_double_math * ik1 = current::ik1;
+        four_args_double_math * ik2 = current::ik2;
+        five_args_double_math * ika = current::ika;
+        four_args_double_math * ikf = current::ikf;
+        four_args_double_math * ih = current::ih;
+        three_args_double_math * il = current::il;
+        three_args_double_math * ica = current::ica;
+        double (* isyns) (double, double *, double *, double *, SynapseConstants *,
+                                                      ProtobufRepeatedInt32 &, int) = current::isyns;
+      private:
+        ProgramConfig *pc;
+    };
   }
 #if INCLUDE_LUT_SUPPORT
   namespace hodgkinhuxley_lut {

@@ -2,9 +2,6 @@
 
 using namespace config;
 
-using namespace ode::hodgkinhuxley::curve;
-using namespace ode::hodgkinhuxley::current;
-
 void ode::hodgkinhuxley::calculateNextState(const storage_type &xs, storage_type &dxdts, double t)  {
   static HodgkinHuxleyEquation equationInstance;
   return equationInstance.calculateNextState(xs, dxdts, t);
