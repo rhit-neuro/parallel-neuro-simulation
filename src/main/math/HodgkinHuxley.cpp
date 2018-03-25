@@ -5,8 +5,17 @@ using namespace config;
 using namespace ode::hodgkinhuxley::curve;
 using namespace ode::hodgkinhuxley::current;
 
-void ode::hodgkinhuxley::calculateNextState(const storage_type &x, storage_type &dxdt, double t) {
-  ProgramConfig c = ProgramConfig::getInstance();
+void ode::hodgkinhuxley::calculateNextState(const storage_type &xs, storage_type &dxdts, double t)  {
+  static HodgkinHuxleyEquation equationInstance;
+  return equationInstance.calculateNextState(xs, dxdts, t);
+}
+
+ode::hodgkinhuxley::HodgkinHuxleyEquation::HodgkinHuxleyEquation() {
+  this->pc = &(ProgramConfig::getInstance());
+}
+
+void ode::hodgkinhuxley::HodgkinHuxleyEquation::calculateNextState(const storage_type &x, storage_type &dxdt, double t) {
+  ProgramConfig &c = *pc;
   double *arrV = c.getVArray(const_cast<storage_type &>(x));
   double *arrMk2 = c.getMk2Array(const_cast<storage_type &>(x));
   double *arrMp = c.getMpArray(const_cast<storage_type &>(x));

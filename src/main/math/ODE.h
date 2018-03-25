@@ -10,13 +10,21 @@ using namespace config;
 
 namespace ode {
   namespace hodgkinhuxley {
-    /**
-     * Calculates the next set of derivatives based on the current state variables and the time differential.
-     * This function must exist for all systems of ODEs to be solved by
-     * @param xs Values of current state variables
-     * @param dxdts Placeholder for new values for the derivatives
-     * @param dt Current time value, might be unused by the calculation
-     */
+    class HodgkinHuxleyEquation {
+      public:
+        explicit HodgkinHuxleyEquation();
+        /**
+         * Calculates the next set of derivatives based on the current state variables and the time differential.
+         * This function must exist for all systems of ODEs to be solved by
+         * @param xs Values of current state variables
+         * @param dxdts Placeholder for new values for the derivatives
+         * @param dt Current time value, might be unused by the calculation
+         */
+        void calculateNextState(const storage_type &xs, storage_type &dxdts, double t);
+      private:
+        ProgramConfig *pc;
+    };
+
     void calculateNextState(const storage_type &xs, storage_type &dxdts, double t);
 
     namespace curve {
