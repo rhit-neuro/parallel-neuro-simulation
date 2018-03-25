@@ -10,8 +10,6 @@ using namespace config;
 
 namespace ode {
   namespace hodgkinhuxley {
-    using namespace generic_double_math_signatures;
-
     void calculateNextState(const storage_type &xs, storage_type &dxdts, double t);
 
     namespace curve {
@@ -72,34 +70,34 @@ namespace ode {
 
       protected:
         // We use function pointers to allow easy composition
-        two_args_double_math * dMk2dt = ::ode::hodgkinhuxley::curve::dMk2dt;
-        two_args_double_math * dMpdt = ::ode::hodgkinhuxley::curve::dMpdt;
-        two_args_double_math * dMnadt = ::ode::hodgkinhuxley::curve::dMnadt;
-        two_args_double_math * dHnadt = ::ode::hodgkinhuxley::curve::dHnadt;
-        two_args_double_math * dMcafdt = ::ode::hodgkinhuxley::curve::dMcafdt;
-        two_args_double_math * dHcafdt = ::ode::hodgkinhuxley::curve::dHcafdt;
-        two_args_double_math * dMcasdt = ::ode::hodgkinhuxley::curve::dMcasdt;
-        two_args_double_math * dHcasdt = ::ode::hodgkinhuxley::curve::dHcasdt;
-        two_args_double_math * dMk1dt = ::ode::hodgkinhuxley::curve::dMk1dt;
-        two_args_double_math * dHk1dt = ::ode::hodgkinhuxley::curve::dHk1dt;
-        two_args_double_math * dMkadt = ::ode::hodgkinhuxley::curve::dMkadt;
-        two_args_double_math * dHkadt = ::ode::hodgkinhuxley::curve::dHkadt;
-        two_args_double_math * dMkfdt = ::ode::hodgkinhuxley::curve::dMkfdt;
-        two_args_double_math * dMhdt = ::ode::hodgkinhuxley::curve::dMhdt;
+        double (* dMk2dt) (double V, double mk2) = ::ode::hodgkinhuxley::curve::dMk2dt;
+        double (* dMpdt) (double V, double mp) = ::ode::hodgkinhuxley::curve::dMpdt;
+        double (* dMnadt) (double V, double mna) = ::ode::hodgkinhuxley::curve::dMnadt;
+        double (* dHnadt) (double V, double hna) = ::ode::hodgkinhuxley::curve::dHnadt;
+        double (* dMcafdt) (double V, double mcaf) = ::ode::hodgkinhuxley::curve::dMcafdt;
+        double (* dHcafdt) (double V, double hcaf) = ::ode::hodgkinhuxley::curve::dHcafdt;
+        double (* dMcasdt) (double V, double mcas) = ::ode::hodgkinhuxley::curve::dMcasdt;
+        double (* dHcasdt) (double V, double hcas) = ::ode::hodgkinhuxley::curve::dHcasdt;
+        double (* dMk1dt) (double V, double mk1) = ::ode::hodgkinhuxley::curve::dMk1dt;
+        double (* dHk1dt) (double V, double hk1) = ::ode::hodgkinhuxley::curve::dHk1dt;
+        double (* dMkadt) (double V, double mka) = ::ode::hodgkinhuxley::curve::dMkadt;
+        double (* dHkadt) (double V, double hka) = ::ode::hodgkinhuxley::curve::dHkadt;
+        double (* dMkfdt) (double V, double mkf) = ::ode::hodgkinhuxley::curve::dMkfdt;
+        double (* dMhdt) (double V, double mh) = ::ode::hodgkinhuxley::curve::dMhdt;
 
-        five_args_double_math * ina = ::ode::hodgkinhuxley::current::ina;
-        four_args_double_math * ip = ::ode::hodgkinhuxley::current::ip;
-        five_args_double_math * icaf = ::ode::hodgkinhuxley::current::icaf;
-        five_args_double_math * icas = ::ode::hodgkinhuxley::current::icas;
-        five_args_double_math * ik1 = ::ode::hodgkinhuxley::current::ik1;
-        four_args_double_math * ik2 = ::ode::hodgkinhuxley::current::ik2;
-        five_args_double_math * ika = ::ode::hodgkinhuxley::current::ika;
-        four_args_double_math * ikf = ::ode::hodgkinhuxley::current::ikf;
-        four_args_double_math * ih = ::ode::hodgkinhuxley::current::ih;
-        three_args_double_math * il = ::ode::hodgkinhuxley::current::il;
-        three_args_double_math * ica = ::ode::hodgkinhuxley::current::ica;
-        double (* isyns) (double, double *, double *, double *, SynapseConstants *,
-                                                      ProtobufRepeatedInt32 &, int) = ::ode::hodgkinhuxley::current::isyns;
+        double (* ina) (double gbarna, double mna, double hna, double V, double Ena) = ::ode::hodgkinhuxley::current::ina;
+        double (* ip) (double gbarp, double mp, double V, double Ena) = ::ode::hodgkinhuxley::current::ip;
+        double (* icaf) (double gbarcaf, double mcaf, double hcaf, double V, double Eca) = ::ode::hodgkinhuxley::current::icaf;
+        double (* icas) (double gbarcas, double mcas, double hcas, double V, double Eca) = ::ode::hodgkinhuxley::current::icas;
+        double (* ik1) (double gbark1, double mk1, double hk1, double V, double Ek) = ::ode::hodgkinhuxley::current::ik1;
+        double (* ik2) (double gbark2, double mk2, double V, double Ek) = ::ode::hodgkinhuxley::current::ik2;
+        double (* ika) (double gbarka, double mka, double hka, double V, double Ek) = ::ode::hodgkinhuxley::current::ika;
+        double (* ikf) (double gbarkf, double mkf, double V, double Ek) = ::ode::hodgkinhuxley::current::ikf;
+        double (* ih) (double gbarh, double mh, double V, double Eh) = ::ode::hodgkinhuxley::current::ih;
+        double (* il) (double gbarl, double V, double El) = ::ode::hodgkinhuxley::current::il;
+        double (* ica) (double icaf, double icas, double A) = ::ode::hodgkinhuxley::current::ica;
+        double (* isyns) (double V, double *arrP, double *arrM, double *arrG, SynapseConstants *allSynapses,
+                          ProtobufRepeatedInt32 &ownSynapses, int numOfOwnSynapses) = ::ode::hodgkinhuxley::current::isyns;
 
         // Expose config to subclasses
         ProgramConfig *pc;

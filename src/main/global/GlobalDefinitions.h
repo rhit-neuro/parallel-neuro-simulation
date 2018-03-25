@@ -14,14 +14,6 @@ namespace global_definitions {
     typedef void ode_system_function(const storage_type &x, storage_type &dxdt, double t);
   }
 
-  namespace generic_double_math_signatures {
-    typedef double one_arg_double_math(double);
-    typedef double two_args_double_math(double, double);
-    typedef double three_args_double_math(double, double, double);
-    typedef double four_args_double_math(double, double, double, double);
-    typedef double five_args_double_math(double, double, double, double, double);
-  }
-
   namespace po = boost::program_options;
 }
 
