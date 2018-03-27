@@ -2,11 +2,17 @@
 
 using namespace config;
 
-using namespace ode::hodgkinhuxley::curve;
-using namespace ode::hodgkinhuxley::current;
+void ode::hodgkinhuxley::calculateNextState(const storage_type &xs, storage_type &dxdts, double t)  {
+  static HodgkinHuxleyEquation equationInstance;
+  return equationInstance.calculateNextState(xs, dxdts, t);
+}
 
-void ode::hodgkinhuxley::calculateNextState(const storage_type &x, storage_type &dxdt, double t) {
-  ProgramConfig c = ProgramConfig::getInstance();
+ode::hodgkinhuxley::HodgkinHuxleyEquation::HodgkinHuxleyEquation() {
+  this->pc = &(ProgramConfig::getInstance());
+}
+
+void ode::hodgkinhuxley::HodgkinHuxleyEquation::calculateNextState(const storage_type &x, storage_type &dxdt, double t) {
+  ProgramConfig &c = *pc;
   double *arrV = c.getVArray(const_cast<storage_type &>(x));
   double *arrMk2 = c.getMk2Array(const_cast<storage_type &>(x));
   double *arrMp = c.getMpArray(const_cast<storage_type &>(x));
@@ -82,33 +88,33 @@ void ode::hodgkinhuxley::calculateNextState(const storage_type &x, storage_type 
 #endif
       {
         // Calculate dMk2dt
-        arrdMk2dt[i] = (finf(-83.0, 0.02, V) - arrMk2[i]) / tau(200.0, 0.035, 0.057, 0.043, V);
+        arrdMk2dt[i] = dMk2dt(V, arrMk2[i]);
         // Calculate dMpdt
-        arrdMpdt[i] = (finf(-120.0, 0.039, V) - arrMp[i]) / tau(400.0, 0.057, 0.01, 0.2, V);
+        arrdMpdt[i] = dMpdt(V, arrMp[i]);
         // Calculate dMnadt
-        arrdMnadt[i] = (finf(-150.0, 0.029, V) - arrMna[i]) / 0.0001;
+        arrdMnadt[i] = dMnadt(V, arrMna[i]);
         // Calculate dHnadt
-        arrdHnadt[i] = (finf(500.0, 0.030, V) - arrHna[i]) / tauhna(V);
+        arrdHnadt[i] = dHnadt(V, arrHna[i]);
         // Calculate dMcafdt
-        arrdMcafdt[i] = (finf(-600.0, 0.0467, V) - arrMcaf[i]) / taumcaf(V);
+        arrdMcafdt[i] = dMcafdt(V, arrMcaf[i]);
         // Calculate dHcafdt
-        arrdHcafdt[i] = (finf(350.0, 0.0555, V) - arrHcaf[i]) / tau(270.0, 0.055, 0.06, 0.31, V);
+        arrdHcafdt[i] = dHcafdt(V, arrHcaf[i]);
         // Calculate dMcasdt
-        arrdMcasdt[i] = (finf(-420.0, 0.0472, V) - arrMcas[i]) / tau(-400.0, 0.0487, 0.005, 0.134, V);
+        arrdMcasdt[i] = dMcasdt(V, arrMcas[i]);
         // Calculate dHcasdt
-        arrdHcasdt[i] = (finf(360.0, 0.055, V) - arrHcas[i]) / tau(-250.0, 0.043, 0.2, 5.25, V);
+        arrdHcasdt[i] = dHcasdt(V, arrHcas[i]);
         // Calculate dMk1dt
-        arrdMk1dt[i] = (finf(-143.0, 0.021, V) - arrMk1[i]) / tau(150.0, 0.016, 0.001, 0.011, V);
+        arrdMk1dt[i] = dMk1dt(V, arrMk1[i]);
         // Calculate dHk1dt
-        arrdHk1dt[i] = (finf(111.0, 0.028, V) - arrHk1[i]) / tau(-143.0, 0.013, 0.5, 0.2, V);
+        arrdHk1dt[i] = dHk1dt(V, arrHk1[i]);
         // Calculate dMkadt
-        arrdMkadt[i] = (finf(-130.0, 0.044, V) - arrMka[i]) / tau(200.0, 0.03, 0.005, 0.011, V);
+        arrdMkadt[i] = dMkadt(V, arrMka[i]);
         // Calculate dHkadt
-        arrdHkadt[i] = (finf(160.0, 0.063, V) - arrHka[i]) / tau(-300.0, 0.055, 0.026, 0.0085, V);
+        arrdHkadt[i] = dHkadt(V, arrHka[i]);
         // Calculate dMkfdt
-        arrdMkfdt[i] = (finf(-100.0, 0.022, V) - arrMkf[i]) / taumkf(V);
+        arrdMkfdt[i] = dMkfdt(V, arrMkf[i]);
         // Calculate dMhdt
-        arrdMhdt[i] = (fhinf(V) - arrMh[i]) / tau(-100.0, 0.073, 0.7, 1.7, V);
+        arrdMhdt[i] = dMhdt(V, arrMh[i]);
       }
     }
 

@@ -14,5 +14,5 @@ sequential::ode_system_function * factory::equation::getEquation(po::variables_m
     return &ode::hodgkinhuxley_lut::calculateNextState;
   }
 #endif
-  return &ode::hodgkinhuxley::calculateNextState;
+  return ode::hodgkinhuxley::calculateNextState;
 }
