@@ -1,4 +1,4 @@
-image: rhneuroprocessor/neuro-simulation-env:1.3.0
+image: rhneuroprocessor/neuro-simulation-env:2.0.0-dev
 
 variables:
     MAIN_NAME: "parallel-neuro-sim"
