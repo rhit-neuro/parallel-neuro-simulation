@@ -5,6 +5,7 @@
 #include <vector>
 #include <boost/program_options.hpp>
 
+
 namespace global_definitions {
   typedef std::vector<double> storage_type;
 
@@ -12,6 +13,9 @@ namespace global_definitions {
 
   namespace sequential {
     typedef void ode_system_function(const storage_type &x, storage_type &dxdt, double t);
+    
+    // TODO: FIX 
+    // typedef ???? ode_integrator;
   }
 
   namespace po = boost::program_options;

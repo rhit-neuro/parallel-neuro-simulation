@@ -15,6 +15,11 @@ namespace factory {
   namespace equation {
     sequential::ode_system_function * getEquation(po::variables_map &vm);
   }
+
+  // TODO: FIX 
+  // namespace integrator {
+  // 	sequential::ode_integrator * getIntegrator(po::variables_map &vm);
+  // }
 }
 
 

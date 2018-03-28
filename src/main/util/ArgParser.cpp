@@ -11,6 +11,9 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
     ("input-file,i", po::value<string>()->required(), "input file location")
     ("input-format,if", po::value<string>()->default_value("JSON"), "input file format (JSON, default JSON)")
     ("logging-config,lc", po::value<string>(), "logging configuration file location")
+    ("integration-type,it", po::value<string>()->default_value("constant"), "constant or adaptive integration (default constant)")
+    ("stepper,s", po::value<string>()->default_value("runge_kutta_dopri5"), "ODE solver selection (default runge_kutta_dopri5")
+    ("step-size,dt", po::value<double>()->default_value(0.0001), "step size to be taken by integrator (default 0.0001)")
 #if USE_OPENMP
     ("num-threads,t", po::value<unsigned int>()->default_value(0), "Specify number of threads OpenMP should use. Specify 0 to let OpenMP automatically decide")
 #endif

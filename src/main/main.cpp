@@ -2,6 +2,8 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/numeric/odeint.hpp>
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
 #include <proto/protobuf_config.pb.h>
 #include "global/GlobalDefinitions.h"
 
@@ -44,19 +46,19 @@ int main(int argc, char** argv) {
   auto buffer = new AsyncBuffer(bufferSize, const_cast<string &>(outputFile));
 
   sequential::ode_system_function *equation = factory::equation::getEquation(vm);
+  
+  // TODO: FIX 
+  // sequential::ode_integrator *integrator = factory::integrator::getIntegrator(vm);
 
   tLogger.recordCalculationStartTime();
-  integrate_adaptive(
-    make_controlled(
-      c.absoluteError,
-      c.relativeError,
-      runge_kutta_dopri5<storage_type>()
-    ),
+
+  integrate_const(
+    runge_kutta4<storage_type>(),
     equation,
     c.getInitialStateValues(),
     c.startTime,
     c.endTime,
-    0.1,
+    vm["step-size"].as<double>(),
     [&](const storage_type &x, const double t) {
       storage_type toWrite(bufferSize);
       toWrite[0] = t;
@@ -66,6 +68,32 @@ int main(int argc, char** argv) {
       buffer->writeData(&(toWrite[0]));
     }
   );
+
+
+  // boost::bind(integrate_adaptive,
+  //   _1, _2, _3, _4, _5, _6, _7)(
+  // // integrate_adaptive(
+  // // integrator(
+  //   make_controlled(
+  //     c.absoluteError,
+  //     c.relativeError,
+  //     runge_kutta_dopri5<storage_type>()
+  //   ),
+  //   equation,
+  //   c.getInitialStateValues(),
+  //   c.startTime,
+  //   c.endTime,
+  //   0.1,
+  //   [&](const storage_type &x, const double t) {
+  //     storage_type toWrite(bufferSize);
+  //     toWrite[0] = t;
+  //     for (int i = 0; i < numNeuron; i++) {
+  //       toWrite[i+1] = x[i];
+  //     }
+  //     buffer->writeData(&(toWrite[0]));
+  //   }
+  // );
+
   tLogger.recordCalculationEndTime();
 
   delete buffer;
@@ -74,3 +102,4 @@ int main(int argc, char** argv) {
 
   return 0;
 }
+      
