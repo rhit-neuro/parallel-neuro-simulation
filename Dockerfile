@@ -104,25 +104,31 @@ ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$RISCV/lib
 RUN \
   cd $TOP && \
   git clone --depth 1 --branch 'boost-1.66.0' https://github.com/boostorg/boost.git && \
-  cd boost && \
+  cd $TOP/boost && \
   git submodule update --depth 1 --init --recursive && \
   # Build for gcc
   ./bootstrap.sh --without-libraries=python && \
+  # For source code on GitHub, need to run ./b2 headers before running ./b2 install
+  ./b2 headers && \
   ./b2 install && \
   # Build for risc-gcc
   git clean -fxd && \
   git submodule foreach --recursive git clean -fxd && \
   ./bootstrap.sh --prefix=$RISCV --without-libraries=python && \
   echo 'using gcc : : riscv64-unknown-linux-gnu-g++ ;' > tools/build/src/user-config.jam && \
+  ./b2 headers && \
   ./b2 install && \
   cd $TOP && \
-  rm -rf boost
+  rm -rf $TOP/boost
 
 ## Install Google Protocol Buffer
 RUN \
   cd $TOP && \
-  git clone --depth 1 --branch 'v3.5.1' https://github.com/google/protobuf.git && \
-  cd protobuf && \
+  git clone https://github.com/google/protobuf.git && \
+  cd $TOP/protobuf && \
+  # Since this is not released, we check out a specific branch
+  git checkout '7bf47a6b5d10382a4b427677cf7ca9288f4e2833' && \
+  git submodule update --init --recursive && \
   # Build for gcc
   ./autogen.sh && \
   ./configure && \
@@ -132,15 +138,21 @@ RUN \
   ldconfig && \
   # Build for risc-gcc
   git clean -fxd && \
+  git submodule foreach --recursive git clean -fxd && \
+  # Set up fake user information to allow git revert
+  git config --global user.email "you@example.com" && \
+  git config --global user.name "Your Name" && \
+  # Revert the commit that upgrades from ACX_PTHREAD to AC_PTHREAD
+  git revert 'cab5eae3e0dc8cc13d06b8d94bf4759d14e1c20e' --no-edit && \
   ./autogen.sh && \
   CC=riscv64-unknown-linux-gnu-gcc CXX=riscv64-unknown-linux-gnu-g++ \
-    ./configure --prefix=$RISCV --target=riscv64-unknown-linux-gnu --host=x86_64-pc-linux-gnu && \
-  # Does not compile for now
-#  make && \
+    ./configure --prefix=$RISCV --with-protoc=protoc --target=riscv64-unknown-linux-gnu --host=x86_64-pc-linux-gnu && \
+  make && \
+  # Currently fails checking because protoc itself is cross-compiled
 #  make check && \
-#  make install && \
+  make install && \
   cd $TOP && \
-  rm -rf protobuf
+  rm -rf $TOP/protobuf
 
 VOLUME /project
 WORKDIR /project
