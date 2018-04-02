@@ -32,6 +32,17 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   message("Configuring for dev build")
 endif()
 
+# Whether to use hardcoded variables for build RISC-V targets in Docker
+option(USE_RISCV_DOCKER_PRESETS
+  "Whether to use hardcoded variables for build RISC-V targets in Docker"
+  FALSE
+  )
+if (USE_RISCV_DOCKER_PRESETS)
+  set(CMAKE_C_COMPILER riscv64-unknown-linux-gnu-gcc)
+  set(CMAKE_CXX_COMPILER riscv64-unknown-linux-gnu-g++)
+  set(CMAKE_PREFIX_PATH /riscv)
+endif (USE_RISCV_DOCKER_PRESETS)
+
 # Whether to use OpenMP
 option(
   USE_OPENMP
@@ -51,6 +62,18 @@ option(
 if (INCLUDE_LUT_SUPPORT)
   add_definitions(-DINCLUDE_LUT_SUPPORT)
 endif()
+
+#######################
+# Project Setup
+#######################
+
+project(parallel-neuron-simulation)
+include(CTest)
+include(ExternalProject)
+
+# Turn on C++ 11 support
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #######################
 # Compiler Setup
@@ -101,7 +124,6 @@ if (BUILD_FOR_DEV)
 else()
   set(Protobuf_USE_STATIC_LIBS ON)
 endif()
-set(Protobuf_USE_STATIC_LIBS ON)
 
 find_package(Protobuf REQUIRED)
 
