@@ -180,3 +180,6 @@ to use a RISC-V toolchain before turning this on.
 
 #### USE_OPENMP
 Currently, the project by default builds with OpenMP support, to disable it, configure CMake with `USE_OPENMP=FALSE`
+
+## Running the Project
+For details on running the project, see [sample-configs/README.md](sample-configs/README.md).
