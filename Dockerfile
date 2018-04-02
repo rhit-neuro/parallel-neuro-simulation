@@ -1,4 +1,4 @@
-# Dockerfile for tag 2.0.0-dev
+# Dockerfile for tag neuro-simulation-env:2.0.0-dev_01
 FROM ubuntu:artful
 
 # Install dependencies
