@@ -97,9 +97,6 @@ RUN \
 #  spike pk hello && \
   rm hello hello.c
 
-# Update linked library path
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$RISCV/lib
-
 # Install Boost
 RUN \
   cd $TOP && \

@@ -14,7 +14,15 @@ set(TEST_SUFFIX "_test")
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#######################
+option(TESTABC "123" OFF)
+if (TESTABC)
+#  include_directories(/riscv/include)
+#  link_directories(/riscv/lib)
+#  set(BOOST_ROOT /riscv)
+  set(CMAKE_PREFIX_PATH /riscv)
+endif (TESTABC)
+
+######################
 # Project Options
 #######################
 
@@ -79,10 +87,7 @@ if (BUILD_FOR_DEV)
   set(Boost_USE_STATIC_LIBS OFF)
   set(Boost_USE_STATIC_RUNTIME OFF)
 else ()
-  # TODO Temporarily disable because even with Protobuf_USE_STATIC_LIBS, Protobuf is linked dynamically
-  # If we force Boost to be linked statically, Protobuf will be explicitly labeled as dynamic
-  # Right neither are labeled explicitly, which actually saves us the hassle
-  #set(Boost_USE_STATIC_LIBS ON)
+  set(Boost_USE_STATIC_LIBS ON)
   set(Boost_USE_STATIC_RUNTIME ON)
 endif ()
 
