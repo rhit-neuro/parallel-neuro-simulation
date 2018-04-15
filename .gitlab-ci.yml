@@ -70,39 +70,53 @@ test: # Statically linked ${MAIN_NAME}${TEST_SUFFIX} has segmentation fault
   tags:
     - kubernetes-stage
 
-deploy-omp:
+deploy:
   stage: deploy
   script:
     - mkdir build
     - mkdir release
     - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON
+    # x86_64, OpenMP On, LUT On
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=ON
     - make ${MAIN_NAME}
-    - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_omp_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
     - rm -rf *
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON
-    - mv src/${MAIN_NAME} ../release/neuro-simulation_riscv64_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
-  artifacts:
-    paths:
-      - release
-  tags:
-    - kubernetes-stage
-  only:
-    - tags
-
-deploy-no-omp:
-  stage: deploy
-  script:
-    - mkdir build
-    - mkdir release
-    - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF
+    # x86_64, OpenMP On, LUT Off
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
     - make ${MAIN_NAME}
-    - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_no_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_omp_no_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
     - rm -rf *
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON
-    - mv src/${MAIN_NAME} ../release/neuro-simulation_riscv64_no_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
-  artifacts:
+    # x86_64, OpenMP Off, LUT On
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
+    - make ${MAIN_NAME}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_no_omp_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - rm -rf *
+    # x86_64, OpenMP Off, LUT Off
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_no_omp_no_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - rm -rf *
+    # riscv64, OpenMP On, LUT On
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=ON
+    - make ${MAIN_NAME}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_riscv64_omp_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - rm -rf *
+    # riscv64, OpenMP On, LUT Off
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_riscv64_omp_no_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - rm -rf *
+    # riscv64, OpenMP Off, LUT On
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
+    - make ${MAIN_NAME}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_riscv64_no_omp_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - rm -rf *
+    # riscv64, OpenMP Off, LUT Off
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_riscv64_no_omp_no_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - rm -rf *
+artifacts:
     paths:
       - release
   tags:
