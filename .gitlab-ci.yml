@@ -14,23 +14,39 @@ build-x86_64:
   script:
     - mkdir build
     - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=ON
     - make ${MAIN_NAME}
     # Some test commands to see if the compiled binary really runs
     - src/${MAIN_NAME} --help
     - rm -rf *
-    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
     - make ${MAIN_NAME}
     - src/${MAIN_NAME} --help
     - rm -rf *
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
     - make ${MAIN_NAME}
     - src/${MAIN_NAME} --help
-    # TODO Find out why this causes segmentation fault
-#    - rm -rf *
-#    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF
-#    - make ${MAIN_NAME}
-#    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=ON
+    - make ${MAIN_NAME}
+    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
+    - make ${MAIN_NAME}
+    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+    - src/${MAIN_NAME} --help
+    - rm -rf *
   tags:
     - kubernetes-stage
 
@@ -39,22 +55,39 @@ build-riscv:
   script:
     - mkdir build
     - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=ON
     - make ${MAIN_NAME}
     # Cannot run the binary yet because it is built for a different target
 #    - src/${MAIN_NAME} --help
     - rm -rf *
-    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
     - make ${MAIN_NAME}
 #    - src/${MAIN_NAME} --help
     - rm -rf *
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
     - make ${MAIN_NAME}
 #    - src/${MAIN_NAME} --help
     - rm -rf *
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
     - make ${MAIN_NAME}
 #    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=ON
+    - make ${MAIN_NAME}
+#    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
+    - make ${MAIN_NAME}
+#    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+#    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+#    - src/${MAIN_NAME} --help
+    - rm -rf *
   tags:
     - kubernetes-stage
 
