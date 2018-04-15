@@ -181,5 +181,14 @@ to use a RISC-V toolchain before turning this on.
 #### USE_OPENMP
 Currently, the project by default builds with OpenMP support, to disable it, configure CMake with `USE_OPENMP=FALSE`
 
+#### USE_RISCV_DOCKER_PRESETS
+When this option is set to true, CMake will use hardcoded variables for the following:
+  - `CMAKE_C_COMPILER` - Path to C compiler, comparable to the `CC` environment variable
+  - `CMAKE_CXX_COMPILER` - Path to C++ compiler, comparable to the `CXX` environment variable
+  - `CMAKE_PREFIX_PATH` - Library path prefix used when searching for libraries
+  
+These variables are consistent with the setup in the Docker image, but not necessary with 
+your own setup. Therefore, if you don't use the Docker image, consider supplying these variables yourself
+
 ## Running the Project
 For details on running the project, see [sample-configs/README.md](sample-configs/README.md).
