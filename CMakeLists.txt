@@ -106,6 +106,9 @@ endif ()
 # Project Dependencies
 #######################
 
+# Threads
+find_package(Threads REQUIRED)
+
 # Boost
 if (BUILD_FOR_DEV)
   set(Boost_USE_STATIC_LIBS OFF)
