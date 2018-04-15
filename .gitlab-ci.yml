@@ -16,28 +16,12 @@ build-x86_64:
   script:
     - mkdir build
     - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=ON
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
     - make ${MAIN_NAME}
     # Some test commands to see if the compiled binary really runs
     - src/${MAIN_NAME} --help
     - rm -rf *
-    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
-    - make ${MAIN_NAME}
-    - src/${MAIN_NAME} --help
-    - rm -rf *
-    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
-    - make ${MAIN_NAME}
-    - src/${MAIN_NAME} --help
-    - rm -rf *
     - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
-    - make ${MAIN_NAME}
-    - src/${MAIN_NAME} --help
-    - rm -rf *
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=ON
-    - make ${MAIN_NAME}
-    - src/${MAIN_NAME} --help
-    - rm -rf *
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
     - make ${MAIN_NAME}
     - src/${MAIN_NAME} --help
     - rm -rf *
@@ -115,20 +99,10 @@ deploy:
     - mkdir build
     - mkdir release
     - cd build
-    # x86_64, OpenMP On, LUT On
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=ON
-    - make ${MAIN_NAME}
-    - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_omp_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
-    - rm -rf *
     # x86_64, OpenMP On, LUT Off
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
     - make ${MAIN_NAME}
     - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_omp_no_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
-    - rm -rf *
-    # x86_64, OpenMP Off, LUT On
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
-    - make ${MAIN_NAME}
-    - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_no_omp_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
     - rm -rf *
     # x86_64, OpenMP Off, LUT Off
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
