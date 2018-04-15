@@ -167,7 +167,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Debug
 ```
 
 #### CMAKE_BUILD_TYPE
-This is a CMake default variable. The values we use in this project are `Debug` and `Release`
+This is a CMake built-in variable. The values we use in this project are `Debug` and `Release`
 This value also affects CMake built-in variables with the suffix convention, such as `CMAKE_CXX_FLAGS_DEBUG`
 (appended after `CMAKE_CXX_FLAGS` if the build type is `Debug`). Other than affecting CMake variable usage,
 when built with the `Debug` build type, we will use dynamic linking, disable optimization and use `-g` option (which
