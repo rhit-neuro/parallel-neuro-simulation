@@ -36,7 +36,7 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
   // those which are in the config file
   if (vm.count("config-file")) {
     const auto &configFile = vm["config-file"].as<string>();
-    ifstream configIStream (configFile);
+    ifstream configIStream(configFile);
     if (!configIStream) {
       cerr << "Configuration file '" << configFile << "' could not be read\n";
       cerr << "Aborted\n";
