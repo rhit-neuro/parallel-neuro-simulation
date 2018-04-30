@@ -69,31 +69,6 @@ int main(int argc, char** argv) {
     }
   );
 
-
-  // boost::bind(integrate_adaptive,
-  //   _1, _2, _3, _4, _5, _6, _7)(
-  // // integrate_adaptive(
-  // // integrator(
-  //   make_controlled(
-  //     c.absoluteError,
-  //     c.relativeError,
-  //     runge_kutta_dopri5<storage_type>()
-  //   ),
-  //   equation,
-  //   c.getInitialStateValues(),
-  //   c.startTime,
-  //   c.endTime,
-  //   0.1,
-  //   [&](const storage_type &x, const double t) {
-  //     storage_type toWrite(bufferSize);
-  //     toWrite[0] = t;
-  //     for (int i = 0; i < numNeuron; i++) {
-  //       toWrite[i+1] = x[i];
-  //     }
-  //     buffer->writeData(&(toWrite[0]));
-  //   }
-  // );
-
   tLogger.recordCalculationEndTime();
 
   delete buffer;
