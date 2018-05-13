@@ -29,9 +29,11 @@ It takes significant amount of space to build and run the image, so
 be prepared to use around 120 GB disk space. Therefore, we only build it
 to extract the rootfs and bbl for use with the Spike simulator.
 A built copy is in /resources folder. To extract it yourself, consider
-mounting a volume and run the following commands:
-```bash
-
+mounting a volume and copy the files to that volume. The `/scripts/runspike` script
+contains code to identify rootfs and bbl locations, and as of now, they are located at:
+```
+ROOTFS: /build/tmp/deploy/images/riscv64/core-image-riscv-riscv64-<build date and time>.rootfs.ext2
+BBL: /riscv-poky/build/tmp/work/riscv64-poky-linux/riscv-pk/1.0-r0/build/bbl
 ```
 
 To build this image, run the following commands:
