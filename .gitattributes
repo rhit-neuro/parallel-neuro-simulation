@@ -1,0 +1,2 @@
+*.ext2 filter=lfs diff=lfs merge=lfs -text
+resources/bbl filter=lfs diff=lfs merge=lfs -text
