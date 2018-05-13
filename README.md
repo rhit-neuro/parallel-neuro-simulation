@@ -85,15 +85,15 @@ mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Debug
 # Then proceed to use make
-make main # For example, we want to build the executable that runs simulation
+make parallel-neuro-sim # For example, we want to build the executable that runs simulation
 ```
 
 As of now, the CMake configuration of the `src` module (`CMakeLists.txt` inside the `src` folder), there are two make targets:
-- `main`
+- `parallel-neuro-sim`
 - `main_test`
 
-The `main` target builds the main executable to run the neuro-simulation, whereas the `main_test` target builds the GTests to run the unit tests.
-When running `make`, you can specify number of tasks available to run in parallel, so you can do `make main -j 4` to run at most 4 compilation tasks in parallel.
+The `parallel-neuro-sim` target builds the parallel-neuro-sim executable to run the neuro-simulation, whereas the `main_test` target builds the GTests to run the unit tests.
+When running `make`, you can specify number of tasks available to run in parallel, so you can do `make parallel-neuro-sim -j 4` to run at most 4 compilation tasks in parallel.
 
 ###### Making New Images
 
