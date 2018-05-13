@@ -1,0 +1,140 @@
+{
+  "configuration": {
+    "solver": {
+      "startTime": 0,
+      "endTime": 100,
+      "solver": "runge_kutta_dopri5",
+      "absoluteError": 1e-6,
+      "relativeError": 1e-6,
+      "useLUT": false
+    },
+    "neurons": {
+      "N1": {
+        "neuronType": "neuronType1",
+        "iVoltage": -70.0e-3,
+        "imk2": 0.1,
+        "imp": 0.1,
+        "imna": 0.1,
+        "ihna": 0.8,
+        "imcaf": 0.1,
+        "ihcaf": 0.8,
+        "imcas": 0.1,
+        "ihcas": 0.8,
+        "imk1": 0.1,
+        "ihk1": 0.8,
+        "imka": 0.1,
+        "ihka": 0.8,
+        "imkf": 0.0,
+        "imh": 0.8,
+        "inputCurrent": "none",
+        "synapses": {
+          "synapseType1": [
+            "N2"
+          ]
+        }
+      },
+      "N2": {
+        "neuronType": "neuronType1",
+        "iVoltage": -50e-3,
+        "imk2": 0.2,
+        "imp": 0.2,
+        "imna": 0.2,
+        "ihna": 0.7,
+        "imcaf": 0.2,
+        "ihcaf": 0.7,
+        "imcas": 0.2,
+        "ihcas": 0.7,
+        "imk1": 0.2,
+        "ihk1": 0.7,
+        "imka": 0.2,
+        "ihka": 0.7,
+        "imkf": 0.0,
+        "imh": 0.7,
+        "inputCurrent": "none",
+        "synapses": {
+          "synapseType1": [
+            "N1"
+          ]
+        }
+      }
+    },
+    "neuronParameters": {
+      "neuronType1": {
+        "gbarna": 200.0e-9,
+        "gbarna_dev": 0,
+        "gbarp": 7.0e-9,
+        "gbarp_dev": 0,
+        "gbarcaf": 5.0e-9,
+        "gbarcaf_dev": 0,
+        "gbarcas": 3.2e-9,
+        "gbarcas_dev": 0,
+        "gbark1": 100.0e-9,
+        "gbark1_dev": 0,
+        "gbark2": 80.0e-9,
+        "gbark2_dev": 0,
+        "gbarka": 80.0e-9,
+        "gbarka_dev": 0,
+        "gbarkf": 0.0e-9,
+        "gbarkf_dev": 0,
+        "gbarh": 4.0e-9,
+        "gbarh_dev": 0,
+        "gbarl": 8.0e-9,
+        "gbarl_dev": 0,
+        "ena": 0.045,
+        "ena_dev": 0,
+        "eca": 0.135,
+        "eca_dev": 0,
+        "ek": -0.07,
+        "ek_dev": 0,
+        "eh": -0.021,
+        "eh_dev": 0,
+        "el": -0.06,
+        "el_dev": 0,
+        "capacitance": 5.0e-10,
+        "capacitance_dev": 0
+      }
+    },
+    "synapseParameters": {
+      "synapseType1": {
+        "gbarsyng": 30.0e-9,
+        "gbarsyng_dev": 0,
+        "gbarsyns": 60.0e-9,
+        "gbarsyns_dev": 0,
+        "esyn": -0.0625,
+        "esyn_dev": 0,
+        "buffering": 10.0,
+        "buffering_dev": 0,
+        "h0": 600.0e3,
+        "h0_dev": 0,
+        "thresholdV": -0.1e-3,
+        "thresholdV_dev": 0,
+        "tauDecay": 0.011,
+        "tauDecay_dev": 0,
+        "tauRise": 0.002,
+        "tauRise_dev": 0,
+        "cGraded": 1.0e-32,
+        "cGraded_dev": 0,
+        "iA": 0,
+        "iP": 0,
+        "iM": 1,
+        "ig": 0,
+        "ih": 0
+      }
+    },
+    "inputCurrents": {
+      "none": {
+        "initialCurrent": 0.0,
+        "steps": []
+      },
+      "step1": {
+        "initialCurrent": 0.0,
+        "steps": [
+          {
+            "time": 10,
+            "delta": 0.001
+          }
+        ]
+      }
+    }
+  }
+}
