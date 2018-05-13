@@ -11,12 +11,12 @@ build-dynamic:
     - mkdir build
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_OPENMP=ON
-    - make main
+    - make parallel-neuro-sim
     # Some test commands to see if the compiled binary really runs
-    - src/main --help
+    - src/parallel-neuro-sim --help
     - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_OPENMP=OFF
-    - make main
-    - src/main --help
+    - make parallel-neuro-sim
+    - src/parallel-neuro-sim --help
   tags:
     - kubernetes-stage
 
@@ -26,12 +26,12 @@ build-static:
     - mkdir build
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=ON
-    - make main
+    - make parallel-neuro-sim
     # Some test commands to see if the compiled binary really runs
-    - src/main --help
+    - src/parallel-neuro-sim --help
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=OFF
-    - make main
-    - src/main --help
+    - make parallel-neuro-sim
+    - src/parallel-neuro-sim --help
   tags:
     - kubernetes-stage
 
@@ -54,8 +54,8 @@ deploy-omp:
     - mkdir release
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=ON
-    - make main
-    - mv src/main ../release/neuro-simulation_x86_64_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - make parallel-neuro-sim
+    - mv src/parallel-neuro-sim ../release/neuro-simulation_x86_64_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
   artifacts:
     paths:
       - release
@@ -71,8 +71,8 @@ deploy-no-omp:
     - mkdir release
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=OFF
-    - make main
-    - mv src/main ../release/neuro-simulation_x86_64_no_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - make parallel-neuro-sim
+    - mv src/parallel-neuro-sim ../release/neuro-simulation_x86_64_no_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
   artifacts:
     paths:
       - release
