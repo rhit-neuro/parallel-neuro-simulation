@@ -59,7 +59,9 @@ target_link_libraries(main proto ${Boost_LIBRARIES} ${Protobuf_LIBRARIES})
 #######################
 
 set(TEST_SOURCE
-  test/main_test.cpp
+  test/ConfigFileTest.cpp
+  main/util/ArgParser.cpp
+  main/util/ArgParser.h
 )
 
 add_executable(main_test ${TEST_SOURCE} ${PROTO_HEADER} ${PROTO_SRC})
