@@ -3,7 +3,7 @@
 
 using namespace std;
 
-char *convert(const string &s) {
+char *convertStringToChar(const string &s) {
    return const_cast<char*>(s.c_str());
 }
 
@@ -11,7 +11,7 @@ TEST(ConfigFile, DoesNotExist) {
   po::variables_map vm;
   vector<string> argStrings = {"./main", "--config-file", "not-found.ini"};
   vector<char*> argChars;
-  transform(argStrings.begin(), argStrings.end(), back_inserter(argChars), convert);
+  transform(argStrings.begin(), argStrings.end(), back_inserter(argChars), convertStringToChar);
 
   EXPECT_FALSE(argparser::parse(argChars.size(), &argChars[0], vm));
 }
@@ -22,7 +22,7 @@ TEST(ConfigFile, Exists) {
   vector<string> argStrings = 
       {"./main", "--config-file", "../../src/test/run-configs/test-config.ini"};
   vector<char*> argChars;
-  transform(argStrings.begin(), argStrings.end(), back_inserter(argChars), convert);
+  transform(argStrings.begin(), argStrings.end(), back_inserter(argChars), convertStringToChar);
 
   EXPECT_TRUE(argparser::parse(argChars.size(), &argChars[0], vm));
   EXPECT_EQ("from/config/file/in.json", vm["input-file"].as<string>());
@@ -37,7 +37,7 @@ TEST(ConfigFile, OverriddenByCommandLine) {
        "--input-file", "cmdline.json", "--output-file", "cmdline.csv",
        "--output-format", "CMD"};
   vector<char*> argChars;
-  transform(argStrings.begin(), argStrings.end(), back_inserter(argChars), convert);
+  transform(argStrings.begin(), argStrings.end(), back_inserter(argChars), convertStringToChar);
 
   EXPECT_TRUE(argparser::parse(argChars.size(), &argChars[0], vm));
   EXPECT_EQ("cmdline.json", vm["input-file"].as<string>());
