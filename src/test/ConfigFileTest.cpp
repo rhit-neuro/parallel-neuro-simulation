@@ -20,7 +20,7 @@ TEST(ConfigFile, Exists) {
   po::variables_map vm;
   // Note that the path to a config file is relative to the directory this test is run in
   vector<string> argStrings = 
-      {"./main", "--config-file", "../../src/test/run-configs/test-config.ini"};
+      {"./main", "--config-file", "src/test/run-configs/test-config.ini"};
   vector<char*> argChars;
   transform(argStrings.begin(), argStrings.end(), back_inserter(argChars), convertStringToChar);
 
@@ -33,7 +33,7 @@ TEST(ConfigFile, OverriddenByCommandLine) {
   po::variables_map vm;
   // Note that the path to a config file is relative to the directory this test is run in
   vector<string> argStrings = 
-      {"./main", "--config-file", "../../src/test/run-configs/test-config.ini",
+      {"./main", "--config-file", "src/test/run-configs/test-config.ini",
        "--input-file", "cmdline.json", "--output-file", "cmdline.csv",
        "--output-format", "CMD"};
   vector<char*> argChars;
