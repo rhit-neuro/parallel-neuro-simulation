@@ -38,7 +38,8 @@ RUN apt-get update && \
 USER riscv_poky_user
 RUN cd /riscv-poky && \
     . /riscv-poky/oe-init-build-env && \
-    bitbake meta-toolchain core-image-riscv && \
+    bitbake core-image-riscv && \
+    bitbake meta-toolchain && \
     # Some effort to reduce the image size
     cd /riscv-poky/build && \
     rm -rf cache downloads sstate-cache && \
