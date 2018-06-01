@@ -5,6 +5,27 @@ There are currently two docker images we use:
 * neuro-simulation-env
 * riscv-poky-build
 
+## Making New Images
+
+The commands to build the image and push them to Docker Hub are the following:
+
+```bash
+docker build . -t rhneuroprocessor/<image name>:latest
+docker tag rhneuroprocessor/<image name>:latest rhneuroprocessor/<image name>:mx.my.mz # mx.my.mz is your new version number
+docker push rhneuroprocessor/<image name>:latest
+docker push rhneuroprocessor/<image name>:mx.my.mz
+```
+
+We use [Semantic Versioning/SemVer](https://semver.org/) scheme to bump the version of the container.
+The rules of thumb to bump the version are:
+  - If the new image only has new versions of secondary dependencies (dependencies except gcc, Boost, and Protobuf), bump patch
+  - If the new image has new versions of primary dependencies (gcc, Boost, and Protobuf, their versions are hardcoded), bump the version according to their version change (if they bump major, we bump major, and so on)
+  - If the new image adds or removes secondary dependencies (tools, utilities, etc.), bump minor
+  - If the new image adds or removes primary dependencies (compile-time libraries), bump major
+  
+Make sure you update the version in the first line of `Dockerfile` and `.gitlab-ci.yml` too.
+We use specific versions in `.gitlab-ci.yml` to prevent mistakes like forgetting to push the image which leads to inconsistent environment.
+
 ## neuro-simulation-env
 This is the environment that you want to develop the code with.
 It has the toolchain for x86_64 and riscv64 built and ready to use.
