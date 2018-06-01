@@ -1,4 +1,4 @@
-# Dockerfile for tag rhneuroprocessor/riscv-poky-build:cd3cba2bb49b9366ed10f2b81bffed071da5dc85-dev_01
+# Dockerfile for tag rhneuroprocessor/riscv-poky-build:1.0.0
 FROM ubuntu:xenial
 
 ENV LANG=en_US.UTF-8

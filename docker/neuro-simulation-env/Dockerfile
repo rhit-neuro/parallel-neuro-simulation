@@ -1,4 +1,4 @@
-# Dockerfile for tag rhneuroprocessor/neuro-simulation-env:2.0.0-dev_08
+# Dockerfile for tag rhneuroprocessor/neuro-simulation-env:2.0.0
 FROM ubuntu:artful
 
 # Install dependencies
