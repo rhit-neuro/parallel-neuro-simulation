@@ -1,5 +1,9 @@
 image: rhneuroprocessor/neuro-simulation-env:1.3.0
 
+variables:
+    MAIN_NAME: "parallel-neuro-sim"
+    TEST_SUFFIX: "_test"
+
 stages:
   - build
   - test
@@ -11,12 +15,12 @@ build-dynamic:
     - mkdir build
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_OPENMP=ON
-    - make main
+    - make ${MAIN_NAME}
     # Some test commands to see if the compiled binary really runs
-    - src/main --help
+    - src/${MAIN_NAME} --help
     - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_OPENMP=OFF
-    - make main
-    - src/main --help
+    - make ${MAIN_NAME}
+    - src/${MAIN_NAME} --help
   tags:
     - kubernetes-stage
 
@@ -26,24 +30,24 @@ build-static:
     - mkdir build
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=ON
-    - make main
+    - make ${MAIN_NAME}
     # Some test commands to see if the compiled binary really runs
-    - src/main --help
+    - src/${MAIN_NAME} --help
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=OFF
-    - make main
-    - src/main --help
+    - make ${MAIN_NAME}
+    - src/${MAIN_NAME} --help
   tags:
     - kubernetes-stage
 
-test: # Statically linked main_test has segmentation fault
+test: # Statically linked ${MAIN_NAME}${TEST_SUFFIX} has segmentation fault
   stage: test
   script:
     - mkdir build_test
     - cd build_test
     - cmake .. -DCMAKE_BUILD_TYPE=Debug
     - cd ..
-    - cmake --build build_test --target main_test
-    - build_test/src/main_test --gtest_filter=* --gtest_color=no
+    - cmake --build build_test --target ${MAIN_NAME}${TEST_SUFFIX}
+    - build_test/src/${MAIN_NAME}${TEST_SUFFIX} --gtest_filter=* --gtest_color=no
   tags:
     - kubernetes-stage
 
@@ -54,8 +58,8 @@ deploy-omp:
     - mkdir release
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=ON
-    - make main
-    - mv src/main ../release/neuro-simulation_x86_64_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - make ${MAIN_NAME}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
   artifacts:
     paths:
       - release
@@ -71,8 +75,8 @@ deploy-no-omp:
     - mkdir release
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=OFF
-    - make main
-    - mv src/main ../release/neuro-simulation_x86_64_no_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - make ${MAIN_NAME}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_no_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
   artifacts:
     paths:
       - release

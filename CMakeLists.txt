@@ -4,6 +4,8 @@ project(parallel-neuron-simulation)
 include(CTest)
 include(ExternalProject)
 
+set(MAIN_NAME "parallel-neuro-sim")
+set(TEST_SUFFIX "_test")
 #######################
 # Project Setup
 #######################
@@ -54,13 +56,13 @@ endif ()
 # Enable all warnings
 set(WARNING_FLAGS "-Wall -Wextra")
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -pthread ${WARNING_FLAGS} ${OpenMP_CXX_FLAGS}")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-Ofast")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread ${WARNING_FLAGS} ${OpenMP_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
 
-set(CMAKE_EXE_LINKER_FLAGS "-pthread")
-set(CMAKE_EXE_LINKER_FLAGS_DEBUG "")
-set(CMAKE_EXE_LINKER_FLAGS_RELEASE "-static")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
+set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
+set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -static")
 
 if (BUILD_FOR_DEV)
   set(BUILD_SHARED_LIBS ON)
