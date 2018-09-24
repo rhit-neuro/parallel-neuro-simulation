@@ -1,7 +1,8 @@
 image: rhneuroprocessor/neuro-simulation-env:1.3.0
 
-MAIN_NAME="parallel-neuro-sim"
-TEST_SUFFIX="_test"
+variables:
+    MAIN_NAME: "parallel-neuro-sim"
+    TEST_SUFFIX: "_test"
 
 stages:
   - build
