@@ -50,9 +50,9 @@ set(
   main/util/JsonToProtobufConfigConverter.h
 )
 
-add_executable(parallel-neuro-sim ${SOURCE} ${INCLUDE_SOURCE} ${PROTO_HEADER} ${PROTO_SRC})
+add_executable(${MAIN_NAME} ${SOURCE} ${INCLUDE_SOURCE} ${PROTO_HEADER} ${PROTO_SRC})
 
-target_link_libraries(parallel-neuro-sim proto ${Boost_LIBRARIES} ${Protobuf_LIBRARIES})
+target_link_libraries(${MAIN_NAME} proto ${Boost_LIBRARIES} ${Protobuf_LIBRARIES})
 
 #######################
 # Main Tests
@@ -62,10 +62,10 @@ set(TEST_SOURCE
   test/main_test.cpp
 )
 
-add_executable(main_test ${TEST_SOURCE} ${PROTO_HEADER} ${PROTO_SRC})
+add_executable(${MAIN_NAME}${TEST_SUFFIX} ${TEST_SOURCE} ${PROTO_HEADER} ${PROTO_SRC})
 
-target_link_libraries(main_test proto ${Boost_LIBRARIES} ${Protobuf_LIBRARIES} gmock gmock_main gtest gtest_main)
+target_link_libraries(${MAIN_NAME}${TEST_SUFFIX} proto ${Boost_LIBRARIES} ${Protobuf_LIBRARIES} gmock gmock_main gtest gtest_main)
 
-add_test(main_test main_test)
+add_test(${MAIN_NAME}${TEST_SUFFIX} ${MAIN_NAME}${TEST_SUFFIX})
 
-install(TARGETS parallel-neuro-sim DESTINATION bin)
+install(TARGETS ${MAIN_NAME} DESTINATION bin)

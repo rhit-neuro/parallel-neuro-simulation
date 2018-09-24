@@ -4,6 +4,8 @@ project(parallel-neuron-simulation)
 include(CTest)
 include(ExternalProject)
 
+set(MAIN_NAME "parallel-neuro-sim")
+set(TEST_SUFFIX "_test")
 #######################
 # Project Setup
 #######################
