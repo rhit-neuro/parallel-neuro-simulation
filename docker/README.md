@@ -34,6 +34,7 @@ To launch the Spike simulator to run riscv64 Linux, run the following command:
 # Inside the container
 spike +disk=/project/resources/core-image-riscv-riscv64-20180503081258.rootfs.ext2 /project/resources/bbl
 ```
+Then when you see the `riscv64 login:` prompt, type `root` and press enter.
 
 To run the project, refer to the `README.md` file in the root directory.
 
