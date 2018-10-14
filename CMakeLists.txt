@@ -38,8 +38,6 @@ option(USE_RISCV_DOCKER_PRESETS
   FALSE
   )
 if (USE_RISCV_DOCKER_PRESETS)
-  set(CMAKE_C_COMPILER riscv64-unknown-linux-gnu-gcc)
-  set(CMAKE_CXX_COMPILER riscv64-unknown-linux-gnu-g++)
   set(CMAKE_PREFIX_PATH /riscv)
 endif (USE_RISCV_DOCKER_PRESETS)
 
