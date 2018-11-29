@@ -1,4 +1,4 @@
-# Dockerfile for tag rhneuroprocessor/neuro-simulation-env:2.1.0
+# Dockerfile for tag rhneuroprocessor/neuro-simulation-env:2.0.0
 FROM ubuntu:artful
 
 # Install dependencies
@@ -43,7 +43,7 @@ RUN \
   # Project dependencies
   gcc=4:7.2.0-1ubuntu1 \
   # Build dependencies
-  git git-lfs cmake \
+  git cmake \
   # Utilities
   htop && \
   rm -rf /var/lib/apt/lists/*

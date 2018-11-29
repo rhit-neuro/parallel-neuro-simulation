@@ -1,4 +1,4 @@
-image: rhneuroprocessor/neuro-simulation-env:2.1.0
+image: rhneuroprocessor/neuro-simulation-env:2.0.0
 
 variables:
     MAIN_NAME: "parallel-neuro-sim"
@@ -9,16 +9,10 @@ stages:
   - test
   - deploy
 
-
 build-x86_64:
   stage: build
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
-  before_script:
-    ## LFS
-    - git lfs pull
-    # Remove lfs hook (https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/issues/2245)
-    - rm .git/hooks/post-checkout || true
   script:
     - mkdir build
     - cd build
@@ -46,11 +40,6 @@ build-riscv:
   stage: build
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
-  before_script:
-    ## LFS
-    - git lfs pull
-    # Remove lfs hook (https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/issues/2245)
-    - rm .git/hooks/post-checkout || true
   script:
     - mkdir build
     - cd build
@@ -92,29 +81,24 @@ build-riscv:
 
 test: # Statically linked ${MAIN_NAME}${TEST_SUFFIX} has segmentation fault
   stage: test
-  before_script:
-    ## LFS
-    - git lfs pull
-    # Remove lfs hook (https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/issues/2245)
-    - rm .git/hooks/post-checkout || true
   script:
     - mkdir build_test
     - cd build_test
     - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
-    - make main_test
-    - src/main_test
+    - make ${MAIN_NAME}${TEST_SUFFIX}
+    - src/${MAIN_NAME}${TEST_SUFFIX}
     - rm -rf *
     - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
-    - make main_test
-    - src/main_test
+    - make ${MAIN_NAME}${TEST_SUFFIX}
+    - src/${MAIN_NAME}${TEST_SUFFIX}
     - rm -rf *
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
-    - make main_test
-    - src/main_test
+    - make ${MAIN_NAME}${TEST_SUFFIX}
+    - src/${MAIN_NAME}${TEST_SUFFIX}
     - rm -rf *
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
-    - make main_test
-    - src/main_test
+    - make ${MAIN_NAME}${TEST_SUFFIX}
+    - src/${MAIN_NAME}${TEST_SUFFIX}
     - rm -rf *
   tags:
     - kubernetes-stage
@@ -123,11 +107,6 @@ deploy:
   stage: deploy
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
-  before_script:
-    ## LFS
-    - git lfs pull
-    # Remove lfs hook (https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/issues/2245)
-    - rm .git/hooks/post-checkout || true
   script:
     - mkdir build
     - mkdir release
