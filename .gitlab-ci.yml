@@ -1,4 +1,4 @@
-image: rhneuroprocessor/neuro-simulation-env:1.3.0
+image: rhneuroprocessor/neuro-simulation-env:2.0.0
 
 variables:
     MAIN_NAME: "parallel-neuro-sim"
@@ -9,33 +9,73 @@ stages:
   - test
   - deploy
 
-build-dynamic:
+build-x86_64:
   stage: build
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
   script:
     - mkdir build
     - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_OPENMP=ON
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
     - make ${MAIN_NAME}
     # Some test commands to see if the compiled binary really runs
     - src/${MAIN_NAME} --help
-    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_OPENMP=OFF
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
     - make ${MAIN_NAME}
     - src/${MAIN_NAME} --help
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+    - src/${MAIN_NAME} --help
+    - rm -rf *
   tags:
     - kubernetes-stage
 
-build-static:
+build-riscv:
   stage: build
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
   script:
     - mkdir build
     - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=ON
+    - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=ON
     - make ${MAIN_NAME}
-    # Some test commands to see if the compiled binary really runs
-    - src/${MAIN_NAME} --help
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=OFF
+    # Cannot run the binary yet because it is built for a different target
+#    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
     - make ${MAIN_NAME}
-    - src/${MAIN_NAME} --help
+#    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+#    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+#    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=ON
+    - make ${MAIN_NAME}
+#    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
+    - make ${MAIN_NAME}
+#    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+#    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+#    - src/${MAIN_NAME} --help
+    - rm -rf *
   tags:
     - kubernetes-stage
 
@@ -44,39 +84,63 @@ test: # Statically linked ${MAIN_NAME}${TEST_SUFFIX} has segmentation fault
   script:
     - mkdir build_test
     - cd build_test
-    - cmake .. -DCMAKE_BUILD_TYPE=Debug
-    - cd ..
-    - cmake --build build_test --target ${MAIN_NAME}${TEST_SUFFIX}
-    - build_test/src/${MAIN_NAME}${TEST_SUFFIX} --gtest_filter=* --gtest_color=no
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}${TEST_SUFFIX}
+    - src/${MAIN_NAME}${TEST_SUFFIX}
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}${TEST_SUFFIX}
+    - src/${MAIN_NAME}${TEST_SUFFIX}
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}${TEST_SUFFIX}
+    - src/${MAIN_NAME}${TEST_SUFFIX}
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}${TEST_SUFFIX}
+    - src/${MAIN_NAME}${TEST_SUFFIX}
+    - rm -rf *
   tags:
     - kubernetes-stage
 
-deploy-omp:
+deploy:
   stage: deploy
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
   script:
     - mkdir build
     - mkdir release
     - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=ON
+    # x86_64, OpenMP On, LUT Off
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
     - make ${MAIN_NAME}
-    - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
-  artifacts:
-    paths:
-      - release
-  tags:
-    - kubernetes-stage
-  only:
-    - tags
-
-deploy-no-omp:
-  stage: deploy
-  script:
-    - mkdir build
-    - mkdir release
-    - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_OPENMP=OFF
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_omp_no_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - rm -rf *
+    # x86_64, OpenMP Off, LUT Off
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
     - make ${MAIN_NAME}
-    - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_no_omp_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_x86_64_no_omp_no_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - rm -rf *
+    # riscv64, OpenMP On, LUT On
+    - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=ON
+    - make ${MAIN_NAME}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_riscv64_omp_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - rm -rf *
+    # riscv64, OpenMP On, LUT Off
+    - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_riscv64_omp_no_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - rm -rf *
+    # riscv64, OpenMP Off, LUT On
+    - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
+    - make ${MAIN_NAME}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_riscv64_no_omp_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - rm -rf *
+    # riscv64, OpenMP Off, LUT Off
+    - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+    - mv src/${MAIN_NAME} ../release/neuro-simulation_riscv64_no_omp_no_lut_${CI_JOB_ID}_${CI_COMMIT_TAG}
+    - rm -rf *
   artifacts:
     paths:
       - release

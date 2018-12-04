@@ -4,10 +4,8 @@
 
 using namespace config;
 
-using namespace ode::hodgkinhuxley_lut;
-
-void calculateNextState(const storage_type &xs, storage_type &dxdts, double t) {
-  static HodgkinHuxleyLUTEquation equationInstance;
+void ode::hodgkinhuxley_lut::calculateNextState(const storage_type &xs, storage_type &dxdts, double t) {
+  static ode::hodgkinhuxley_lut::HodgkinHuxleyLUTEquation equationInstance;
   equationInstance.calculateNextState(xs, dxdts, t);
 }
 #endif

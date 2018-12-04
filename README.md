@@ -95,27 +95,6 @@ As of now, the CMake configuration of the `src` module (`CMakeLists.txt` inside 
 The `parallel-neuro-sim` target builds the parallel-neuro-sim executable to run the neuro-simulation, whereas the `parallel-neuro-sim_test` target builds the GTests to run the unit tests.
 When running `make`, you can specify number of tasks available to run in parallel, so you can do `make parallel-neuro-sim -j 4` to run at most 4 compilation tasks in parallel.
 
-###### Making New Images
-
-The commands to build the image and push them to Docker Hub are the following:
-
-```bash
-docker build . -t rhneuroprocessor/neuro-simulation-env:latest
-docker tag rhneuroprocessor/neuro-simulation-env:latest rhneuroprocessor/neuro-simulation-env:mx.my.mz # mx.my.mz is your new version number
-docker push rhneuroprocessor/neuro-simulation-env:latest
-docker push rhneuroprocessor/neuro-simulation-env:mx.my.mz
-```
-
-We use [Semantic Versioning/SemVer](https://semver.org/) scheme to bump the version of the container.
-The rules of thumb to bump the version are:
-  - If the new image only has new versions of secondary dependencies (dependencies except gcc, Boost, and Protobuf), bump patch
-  - If the new image has new versions of primary dependencies (gcc, Boost, and Protobuf, their versions are hardcoded), bump the version according to their version change (if they bump major, we bump major, and so on)
-  - If the new image adds or removes secondary dependencies (tools, utilities, etc.), bump minor
-  - If the new image adds or removes primary dependencies (compile-time libraries), bump major
-  
-Make sure you update the version in the first line of `Dockerfile` and `.gitlab-ci.yml` too.
-We use specific versions in `.gitlab-ci.yml` to prevent mistakes like forgetting to push the image which leads to inconsistent environment.
-
 ###### Note on GitLab CI/CD Pipeline
 
 The `.gitlab-ci.yml` records the configuration for GitLab CI/CD Pipeline on Ada.
@@ -167,7 +146,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Debug
 ```
 
 #### CMAKE_BUILD_TYPE
-This is a CMake default variable. The values we use in this project are `Debug` and `Release`
+This is a CMake built-in variable. The values we use in this project are `Debug` and `Release`
 This value also affects CMake built-in variables with the suffix convention, such as `CMAKE_CXX_FLAGS_DEBUG`
 (appended after `CMAKE_CXX_FLAGS` if the build type is `Debug`). Other than affecting CMake variable usage,
 when built with the `Debug` build type, we will use dynamic linking, disable optimization and use `-g` option (which
@@ -180,6 +159,15 @@ to use a RISC-V toolchain before turning this on.
 
 #### USE_OPENMP
 Currently, the project by default builds with OpenMP support, to disable it, configure CMake with `USE_OPENMP=FALSE`
+
+#### USE_RISCV_DOCKER_PRESETS
+When this option is set to true, CMake will use hardcoded variables for the following:
+  - `CMAKE_C_COMPILER` - Path to C compiler, comparable to the `CC` environment variable
+  - `CMAKE_CXX_COMPILER` - Path to C++ compiler, comparable to the `CXX` environment variable
+  - `CMAKE_PREFIX_PATH` - Library path prefix used when searching for libraries
+  
+These variables are consistent with the setup in the Docker image, but not necessary with 
+your own setup. Therefore, if you don't use the Docker image, consider supplying these variables yourself
 
 ## Running the Project
 For details on running the project, see [sample-configs/README.md](sample-configs/README.md).

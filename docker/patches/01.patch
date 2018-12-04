@@ -1,0 +1,25 @@
+diff --git a/bitbake/lib/bb/fetch2/git.py b/bitbake/lib/bb/fetch2/git.py
+index 534c93d3c5..0ee8cf3182 100644
+--- a/bitbake/lib/bb/fetch2/git.py
++++ b/bitbake/lib/bb/fetch2/git.py
+@@ -485,7 +485,7 @@ class Git(FetchMethod):
+                 branchname =  ud.branches[ud.names[0]]
+                 runfetchcmd("%s checkout -B %s %s" % (ud.basecmd, branchname, \
+                             ud.revisions[ud.names[0]]), d, workdir=destdir)
+-                runfetchcmd("%s branch --set-upstream %s origin/%s" % (ud.basecmd, branchname, \
++                runfetchcmd("%s branch -u origin/%s %s" % (ud.basecmd, branchname, \
+                             branchname), d, workdir=destdir)
+             else:
+                 runfetchcmd("%s checkout %s" % (ud.basecmd, ud.revisions[ud.names[0]]), d, workdir=destdir)
+diff --git a/meta-riscv/recipes-devtools/qemu/qemu_2.5.0.bb b/meta-riscv/recipes-devtools/qemu/qemu_2.5.0.bb
+index 578c74dd51..1d1e1cc77c 100644
+--- a/meta-riscv/recipes-devtools/qemu/qemu_2.5.0.bb
++++ b/meta-riscv/recipes-devtools/qemu/qemu_2.5.0.bb
+@@ -1,6 +1,6 @@
+ require recipes-devtools/qemu/qemu.inc
+ 
+-SRC_URI = "gitsm://github.com/riscv/riscv-qemu.git;destsuffix=${S}"
++SRC_URI = "gitsm://github.com/riscv/riscv-qemu.git;branch=glibc-tests;destsuffix=${S}"
+ SRCREV_pn-qemu-native = "9bfcd4717b3010eb7efc50057232e92ecb741cac"
+ SRCREV_pn-nativesdk-qemu = "9bfcd4717b3010eb7efc50057232e92ecb741cac"
+ 

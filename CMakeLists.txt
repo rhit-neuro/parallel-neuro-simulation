@@ -14,7 +14,15 @@ set(TEST_SUFFIX "_test")
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#######################
+option(TESTABC "123" OFF)
+if (TESTABC)
+#  include_directories(/riscv/include)
+#  link_directories(/riscv/lib)
+#  set(BOOST_ROOT /riscv)
+  set(CMAKE_PREFIX_PATH /riscv)
+endif (TESTABC)
+
+######################
 # Project Options
 #######################
 
@@ -23,6 +31,15 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   set(BUILD_FOR_DEV TRUE)
   message("Configuring for dev build")
 endif()
+
+# Whether to use hardcoded variables for build RISC-V targets in Docker
+option(USE_RISCV_DOCKER_PRESETS
+  "Whether to use hardcoded variables for build RISC-V targets in Docker"
+  FALSE
+  )
+if (USE_RISCV_DOCKER_PRESETS)
+  set(CMAKE_PREFIX_PATH /riscv)
+endif (USE_RISCV_DOCKER_PRESETS)
 
 # Whether to use OpenMP
 option(
@@ -45,6 +62,18 @@ if (INCLUDE_LUT_SUPPORT)
 endif()
 
 #######################
+# Project Setup
+#######################
+
+project(parallel-neuron-simulation)
+include(CTest)
+include(ExternalProject)
+
+# Turn on C++ 11 support
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+#######################
 # Compiler Setup
 #######################
 
@@ -62,7 +91,8 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
-set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -static")
+# Need whole archive linking to bypass a bug that leads to segmentation fault on Debian Linux
+set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -static -Wl,--whole-archive -lpthread -Wl,--no-whole-archive")
 
 if (BUILD_FOR_DEV)
   set(BUILD_SHARED_LIBS ON)
@@ -74,15 +104,15 @@ endif ()
 # Project Dependencies
 #######################
 
+# Threads
+find_package(Threads REQUIRED)
+
 # Boost
 if (BUILD_FOR_DEV)
   set(Boost_USE_STATIC_LIBS OFF)
   set(Boost_USE_STATIC_RUNTIME OFF)
 else ()
-  # TODO Temporarily disable because even with Protobuf_USE_STATIC_LIBS, Protobuf is linked dynamically
-  # If we force Boost to be linked statically, Protobuf will be explicitly labeled as dynamic
-  # Right neither are labeled explicitly, which actually saves us the hassle
-  #set(Boost_USE_STATIC_LIBS ON)
+  set(Boost_USE_STATIC_LIBS ON)
   set(Boost_USE_STATIC_RUNTIME ON)
 endif ()
 
@@ -96,7 +126,6 @@ if (BUILD_FOR_DEV)
 else()
   set(Protobuf_USE_STATIC_LIBS ON)
 endif()
-set(Protobuf_USE_STATIC_LIBS ON)
 
 find_package(Protobuf REQUIRED)
 
