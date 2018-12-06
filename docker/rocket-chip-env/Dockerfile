@@ -1,5 +1,13 @@
-# Dockerfile for tag rhneuroprocessor/rocket-chip-env:1.0.0_dev01
-# docker build . -t rhneuroprocessor/rocket-chip-env:1.0.0_dev01
+# Dockerfile for tag docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/rocket-chip-env:1.0.0
+# docker build . -t docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/rocket-chip-env:1.0.0
+FROM ubuntu:artful as install-vivado
+
+COPY install_config.txt /
+ADD Xilinx_Vivado_SDK_2016.2_0605_1.tar.gz /
+
+RUN /Xilinx_Vivado_SDK_2016.2_0605_1/xsetup --agree 3rdPartyEULA,WebTalkTerms,XilinxEULA --batch Install --config /install_config.txt
+
+
 FROM ubuntu:artful
 
 # Install dependencies
@@ -8,9 +16,6 @@ RUN \
   apt-get upgrade -y && \
   apt-get install -y \
   # riscv-tools dependencies
-  g++=4:7.2.0-1ubuntu1 \
-  make \
-  unzip \
   autoconf \
   automake \
   autotools-dev \
@@ -18,22 +23,31 @@ RUN \
   bison \
   build-essential \
   curl \
+  default-jdk \
   device-tree-compiler \
   flex \
   gawk \
+  git \
   gperf \
+  g++=4:7.2.0-1ubuntu1 \
   libgmp-dev \
   libmpc-dev \
   libmpfr-dev \
   libtool \
   libusb-1.0-0-dev \
+  make \
   patchutils \
   pkg-config \
+  python \
+  sudo \
   texinfo \
-  zlib1g-dev \
-  git \
-  default-jdk wget && \
-  rm -rf /var/lib/apt/lists/*
+  unzip \
+  wget \
+  zlib1g-dev && \
+  rm -rf /var/lib/apt/lists/* && \
+  useradd -ms /bin/bash rose && \
+  usermod -aG sudo rose && \
+  echo "rose:Docker!" | chpasswd
 
 # Set up RISC-V Toolchain environment variables and directory
 ENV TOP /
@@ -51,11 +65,8 @@ RUN \
   # This hash uses risc-qemu 1.x, which is not compatible with riscv-glibc; manualy bump version
   cd $TOP/riscv-tools/riscv-gnu-toolchain/riscv-qemu && \
   git checkout 'v2.11.1' && \
-  # Revert riscv-fesvr version so it supports +disk option
-  # This hash comes from riscv-poky at cd3cba2bb49b9366ed10f2b81bffed071da5dc85
-  # In the riscv-fesvr recipe at riscv-poky/meta-riscv/recipes-devtools/riscv-tools/riscv-fesvr.bb
-  cd $TOP/riscv-tools/riscv-fesvr && \
-  git checkout 'f683e01542acf60e50774d061bcb396b628e3e67' && \
+  # neuro-simulation-env reverts riscv-fesvr version so it supports +disk option
+  # don't do this here as it breaks the verilator
   cd $TOP/riscv-tools && \
   ./build.sh && \
   # Testing Your Toolchain
@@ -89,7 +100,14 @@ RUN \
 #  spike pk hello && \
   rm hello hello.c
 
+# Copy Vivado files from first build stage
+COPY --from=install-vivado /opt/Xilinx /opt/Xilinx
+# Source Vivado's settings in rose user's bashrc
+RUN echo "source /opt/Xilinx/Vivado/2016.2/settings64.sh" >> /home/rose/.bashrc
+
 VOLUME /project
 WORKDIR /project
+
+USER rose
 
 CMD bash
