@@ -5,6 +5,54 @@ There are currently two docker images we use:
 * neuro-simulation-env
 * riscv-poky-build
 
+## Setting up Docker
+First, you'll want to install docker
+```bash
+sudo apt install docker
+```
+Now you need to add your user to the `docker` group so that you don't need to be root to run docker commands
+```bash
+sudo groupadd docker
+# replace <username> with your username below
+sudo usermod -aG docker <username>
+```
+Now logout and log back in for your group membership to be re-evaluated. Now you can start up the docker daemon with
+```bash
+sudo systemctl start docker
+```
+docker can be stopped similarly with
+```bash
+sudo systemctl stop docker
+```
+
+## Using Docker
+If you want to use one of the docker images hosted in this repository's registry, you must first login
+```bash
+docker login docker.csse.rose-hulman.edu
+```
+note: you only need to login one time
+
+To download a docker image
+```bash
+# replace <image name> with something like rocket-chip-env
+docker pull docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/<image name>:latest
+```
+See this directory's sub directories for specific instructions on running containers based on each image for the first time.
+
+Once you've created a container, you can start it with
+```bash
+docker start <container name>
+```
+and stop it with
+```bash
+docker stop <container name>
+```
+
+To open start a shell in a running container, run
+```bash
+docker exec -it <container name> bash
+```
+
 ## Making New Images
 
 The commands to build the image and push them to Docker Hub are the following:
