@@ -27,6 +27,13 @@ sudo systemctl stop docker
 ```
 
 ## Using Docker
+We recommend you complete at least the first two parts of the official [Get Started](https://docs.docker.com/get-started/) tutorial to familiarize yourself with docker.
+
+### Docker Registry Info
+We have a docker registry integrated into this repository on `ada` and one hosted publicly on [Docker Hub](https://hub.docker.com/r/rhneuroprocessor/). The public registry isn't being used anymore for two main reasons:
+1. Since `ada` is on-campus, downloading large docker images from it on-campus won't contribute to your monitored bandwidth usage
+2. The public registry has one set of credentials for the team to share while each member has their own credentials for the `ada` hosted regisry.
+
 ### Registry login
 If you want to use one of the docker images hosted in this repository's registry, you must first login:
 ```bash

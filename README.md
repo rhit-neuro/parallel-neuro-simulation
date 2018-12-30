@@ -30,48 +30,9 @@ Parallel Neuro-Simulation
 #### Using Docker
 We recommend developing the project with Docker, as it guarantees the same environment is used for both development and testing.
 
-Installation on [Windows](https://docs.docker.com/docker-for-windows/install/) and [macOS](https://docs.docker.com/docker-for-mac/install/)
-is as simple as running an installer in the host OS. (Except on Windows, you will need to install additional components provided by Microsoft)
-For [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/), both apt repo and a convenience installation script are provided.
-But [additional steps](https://docs.docker.com/install/linux/linux-postinstall/) needs to be taken in order to run docker without sudo.
-There are various instructions available for other Linux variants too.
-
-###### Docker Repo Info
-
-The image is hosted publicly on [Docker Hub](https://hub.docker.com/r/rhneuroprocessor/neuro-simulation-env/).
-You don't need to log in to use this image, but if you want to push new ones, you will need to obtain the account credentials.
+See the `README.md` in the [docker/](docker/) directory for details on installing and using docker.
 
 ###### Workflow
-
-We recommend you complete at least the first two parts of the official [Get Started](https://docs.docker.com/get-started/) tutorial.
-
-Assuming you have cd'ed into this root directory of the project folder and are using a UNIX terminal, here are some short-cut commands you can use
-
-To pull the latest version of the image (not always necessary):
-
-```bash
-docker pull rhneuroprocessor/neuro-simulation-env:latest # Or use a specific tag
-```
-   
-To run the image in a container for the first time:
-
-```bash
-docker run -it -v $(pwd):/project --name nsenv rhneuroprocessor/neuro-simulation-env:latest bash
-```
-
-To stop the container:
-
-```bash
-docker stop nsenv
-```
-
-To start the container after you restart the computer, or stop the container manually:
-
-```bash
-docker start nsenv
-docker exec -it nsenv bash
-```
-
 Within the container, you can use the terminal to run CMake and Make commands.
 The overall CMake workflow is the following:
   - Generate Makefiles using CMakeLists.txt (Therefore, whenever you make changes to CMakeLists.txt, you will have to rerun this step)
@@ -171,3 +132,12 @@ your own setup. Therefore, if you don't use the Docker image, consider supplying
 
 ## Running the Project
 For details on running the project, see [sample-configs/README.md](sample-configs/README.md).
+
+### Using spike
+To launch the Spike simulator to run riscv64 Linux, run the following command:
+```bash
+# Inside the container
+# Replace <rootfs name> with something like buildroot-neuro
+spike +disk=/project/resources/<rootfs name>.rootfs.ext2 /project/resources/bbl
+```
+Then when you see the `riscv64 login:` prompt, type `root` and press enter.
