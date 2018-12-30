@@ -61,5 +61,5 @@ To build this image, run the following command:
 ```bash
 # cd into this folder first
 # Make sure to replace <version> with your version number for the image you're building
-docker build . -t docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/riscv-poky-build::<version>
+docker build . -t docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/riscv-poky-build:<version>
 ```
