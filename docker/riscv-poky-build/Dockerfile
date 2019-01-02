@@ -1,4 +1,4 @@
-# Dockerfile for tag rhneuroprocessor/riscv-poky-build:2.0.0
+# Dockerfile for tag docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/riscv-poky-build:2.0.0
 # Contains dependencies required for building riscv-poky
 FROM ubuntu:xenial
 

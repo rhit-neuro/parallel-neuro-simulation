@@ -1,5 +1,4 @@
 # Dockerfile for tag docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/rocket-chip-env:1.0.1
-# docker build . -t docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/rocket-chip-env:1.0.1
 FROM ubuntu:artful as install-vivado
 
 COPY install_config.txt /
