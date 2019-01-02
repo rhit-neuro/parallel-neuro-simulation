@@ -1,5 +1,5 @@
-# Dockerfile for tag docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/rocket-chip-env:1.0.0
-# docker build . -t docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/rocket-chip-env:1.0.0
+# Dockerfile for tag docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/rocket-chip-env:1.0.1
+# docker build . -t docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/rocket-chip-env:1.0.1
 FROM ubuntu:artful as install-vivado
 
 COPY install_config.txt /
@@ -104,6 +104,11 @@ RUN \
 COPY --from=install-vivado /opt/Xilinx /opt/Xilinx
 # Source Vivado's settings in rose user's bashrc
 RUN echo "source /opt/Xilinx/Vivado/2016.2/settings64.sh" >> /home/rose/.bashrc
+
+# Fixes 'GLIBCXX_3.4.20 not found' error when running spike
+RUN cd /opt/Xilinx/Vivado/2016.2/lib/lnx64.o && \
+    mv libstdc++.so.6 libstdc++.so.6.orig && \
+    ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6  libstdc++.so.6
 
 VOLUME /project
 WORKDIR /project
