@@ -1,22 +1,84 @@
 Dockerfiles
 =========
 
-There are currently two docker images we use:
-* neuro-simulation-env
-* riscv-poky-build
+There are currently three docker images we use:
+* [neuro-simulation-env](neuro-simulation-env/)
+* [riscv-poky-build](riscv-poky-build/)
+* [rocket-chip-env](rocket-chip-env/)
 
-## Making New Images
-
-The commands to build the image and push them to Docker Hub are the following:
-
+## Setting up Docker
+First, you'll want to install docker:
 ```bash
-docker build . -t rhneuroprocessor/<image name>:latest
-docker tag rhneuroprocessor/<image name>:latest rhneuroprocessor/<image name>:mx.my.mz # mx.my.mz is your new version number
-docker push rhneuroprocessor/<image name>:latest
-docker push rhneuroprocessor/<image name>:mx.my.mz
+sudo apt install docker
+```
+Now you need to add your user to the `docker` group so that you don't need to be root to run docker commands:
+```bash
+sudo groupadd docker
+# replace <username> with your username below
+sudo usermod -aG docker <username>
+```
+Now logout and log back in for your group membership to be re-evaluated. Now you can start up the docker daemon with:
+```bash
+sudo systemctl start docker
+```
+docker can be stopped similarly with:
+```bash
+sudo systemctl stop docker
 ```
 
-We use [Semantic Versioning/SemVer](https://semver.org/) scheme to bump the version of the container.
+## Using Docker
+We recommend you complete at least the first two parts of the official [Get Started](https://docs.docker.com/get-started/) tutorial to familiarize yourself with docker.
+
+### Docker Registry Info
+We have a docker registry integrated into this repository on `ada` and one hosted publicly on [Docker Hub](https://hub.docker.com/r/rhneuroprocessor/). The public registry isn't being used anymore for two main reasons:
+1. Since `ada` is on-campus, downloading large docker images from it on-campus won't contribute to your monitored bandwidth usage
+2. The public registry has one set of credentials for the team to share while each member has their own credentials for the `ada` hosted regisry.
+
+### Registry login
+If you want to use one of the docker images hosted in this repository's registry, you must first login:
+```bash
+docker login docker.csse.rose-hulman.edu
+```
+note: you only need to login one time
+
+### Download images
+To download a docker image:
+```bash
+# replace <image name> with something like rocket-chip-env
+docker pull docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/<image name>:latest
+```
+### Upload images
+You can push built docker images to this repository's registry with the following:
+```bash
+docker push docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/<image name>:<image tag>
+```
+
+### Running a container for the first time
+See this directory's sub-directories for specific instructions for each image on running containers for the first time.
+
+### Running container's subsequent times
+Once you've created a container, you can start it with:
+```bash
+docker start <container name>
+```
+To open start a shell in a running container, run:
+```bash
+docker exec -it <container name> bash
+```
+To stop a running container:
+```bash
+docker stop <container name>
+```
+
+### Tagging images
+Tagging is the way you associate a version number with a docker image. You can change the version or tag of a docker image with the following:
+```bash
+docker tag <image name>:<original tag> <image name>:<new tag>
+```
+
+## Making New Images
+### Versioning
+We use [Semantic Versioning/SemVer](https://semver.org/) scheme to bump the version of docker images. Version numbers look like `<major>.<minor>.<patch>`.
 The rules of thumb to bump the version are:
   - If the new image only has new versions of secondary dependencies (dependencies except gcc, Boost, and Protobuf), bump patch
   - If the new image has new versions of primary dependencies (gcc, Boost, and Protobuf, their versions are hardcoded), bump the version according to their version change (if they bump major, we bump major, and so on)
@@ -26,76 +88,7 @@ The rules of thumb to bump the version are:
 Make sure you update the version in the first line of `Dockerfile` and `.gitlab-ci.yml` too.
 We use specific versions in `.gitlab-ci.yml` to prevent mistakes like forgetting to push the image which leads to inconsistent environment.
 
-## neuro-simulation-env
-This is the environment that you want to develop the code with.
-It has the toolchain for x86_64 and riscv64 built and ready to use.
-To launch the Spike simulator to run riscv64 Linux, run the following command:
-```bash
-# Inside the container
-spike +disk=/project/resources/core-image-riscv-riscv64-20180503081258.rootfs.ext2 /project/resources/bbl
-```
-Then when you see the `riscv64 login:` prompt, type `root` and press enter.
+#### Versioning while developing a new image
+While developing a new docker image, you should take a slightly different approach to version numbering. Let's look at an example to see a good way to handle versioning.
 
-To run the project, refer to the `README.md` file in the root directory.
-
-To build this image, run the following commands:
-```bash
-# cd into this folder first
-cd neuro-simulation-env
-docker build . -t rhneuroprocessor/neuro-simulation-env:some_tag
-```
-
-## riscv-poky-build
-This is the Docker image for building `riscv-poky`.
-It takes significant amount of space to build and run the image. Building the
-reference version of `riscv-poky` uses around 120 GB disk space while a trimmed
-down version only uses around 50 GB. Therefore, we only build it
-to extract the rootfs and bbl for use with the Spike simulator.
-A built copy is in /resources folder. 
-
-### Building riscv-poky
-If you need to add any programs to the `riscv-poky`, you will need to re-build
-`riscv-poky`. If you keep all the files produced while building `riscv-poky`,
-subsequent builts will take much less time than the original build. In order
-to build `riscv-poky`, you must first download `riscv-poky`'s build files:
-```bash
-# cd into a location with ample disk space (e.g. external hard drive)
-git clone https://github.com/heidecjj/riscv-poky.git
-# the neurosim branch has the right configuration files for building poky for this project
-git checkout neurosim
-```
-Then you must build this docker image or pull it from
-the docker hub.
-To build this image, run the following commands:
-```bash
-# cd into this folder first
-docker build . -t rhneuroprocessor/riscv-poky-build:some_tag
-```
-Or you can pull the image from the docker hub:
-```bash
-docker pull rhneuroprocessor/riscv-poky-build:latest
-```
-Then to run the image for the first time:
-```bash
-# <riscv-poky repo location> is where you cloned the riscv-poky repo
-docker run -it -v <riscv-poky repo location>:/riscv-poky --name build-poky rhneuroprocessor/riscv-poky-build:latest bash
-```
-It is best to build `riscv-poky` as a non-root user. If your bash terminal shows `root@<numbers>` instead of `riscv_poky_user@<numbers>` then run:
-```bash
-su riscv_poky_user
-```
-Then to start building `riscv-poky` run the following commands:
-```bash
-cd /riscv-poky
-source oe-init-build-env
-# the above command should move you into the build dir
-bitbake core-image-riscv
-```
-Note: I had problems with bitbake not being able to start when the hard drive I built
-`riscv-poky` on was formatted with exFAT. Reformatting this drive to ext4 fixed my problems.
-
-When `riscv-poky` finishes building, you can find the rootfs and bbl at:
-```
-ROOTFS: /riscv-poky/build/tmp/deploy/images/riscv64/core-image-riscv-riscv64-<build date and time>.rootfs.ext2
-BBL: /riscv-poky/build/tmp/work/riscv64-poky-linux/riscv-pk/1.0-r0/build/bbl
-```
+Let's say `neuro-simulation-env` is currently at version `2.3.1` and we want to add a new primary dependency which would bump our verision number to `3.0.0`. While you are experimenting with building this new image, start with version number `3.0.0_dev01`. If the changes you tried didn't actually work, then you just need to bump the dev number (`3.0.0_dev02`) for your next attept at building your new image. Once you get a dev image to work, you can change its version number to your target version number of `3.0.0`.

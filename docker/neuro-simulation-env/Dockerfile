@@ -1,4 +1,4 @@
-# Dockerfile for tag rhneuroprocessor/neuro-simulation-env:2.0.0
+# Dockerfile for tag docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/neuro-simulation-env:2.2.0
 FROM ubuntu:artful
 
 # Install dependencies
@@ -45,8 +45,12 @@ RUN \
   # Build dependencies
   git cmake \
   # Utilities
-  htop && \
-  rm -rf /var/lib/apt/lists/*
+  htop \
+  sudo && \
+  rm -rf /var/lib/apt/lists/* && \
+  useradd -ms /bin/bash rose && \
+  usermod -aG sudo rose && \
+  echo "rose:Docker!" | chpasswd
 
 # Set up RISC-V Toolchain environment variables and directory
 ENV TOP /
@@ -158,5 +162,7 @@ RUN \
 
 VOLUME /project
 WORKDIR /project
+
+USER rose
 
 CMD bash
