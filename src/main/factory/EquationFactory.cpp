@@ -9,7 +9,7 @@ sequential::ode_system_function * factory::equation::getEquation(po::variables_m
   }
 #endif
 #if INCLUDE_LUT_SUPPORT
-  const bool use_lut = vm["use-lut"].as<bool>();
+  const bool use_lut = vm.count("use-lut") > 0;
   if (use_lut) {
     return &ode::hodgkinhuxley_lut::calculateNextState;
   }
