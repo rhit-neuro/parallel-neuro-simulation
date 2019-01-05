@@ -15,6 +15,16 @@ namespace argparser {
    * @return true if valid options are collected; false otherwise
    */
   bool parse(int argc, char **argv, po::variables_map &vm);
+
+  /**
+   * Specifies that opt1 and opt2 are conflicting options.
+   * Throws a logic_error if both are specified in vm.
+   * @param vm Variable map to check
+   * @param opt1 First option as a string
+   * @param opt2 Second option as a string
+   */
+  void conflicting_options(const po::variables_map& vm,
+                         const char* opt1, const char* opt2);
 };
 
 

@@ -21,6 +21,7 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
     ("output-precision,op", po::value<int>()->default_value(7), "number of decimal points to be displayed/written to output")
 #if INCLUDE_LUT_SUPPORT
     ("use-lut,lut", po::value<bool>()->default_value(false), "whether to use LUT during computation")
+    ("use-soft-lut,s", "whether to use software LUT during computation")
 #endif
     ("verbose-level,vl", po::value<int>()->default_value(1), "set verbose level printed to output stream (1 - 3, default 1)")
   ;
@@ -45,6 +46,9 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
     po::store(po::parse_config_file(configIStream, desc), vm);
   }
 
+  // Check for conflicting options
+  argparser::conflicting_options(vm, "use-lut", "use-soft-lut");
+
   try {
     // Call notify(vm) to validate options
     po::notify(vm);
@@ -55,4 +59,16 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
   }
 
   return true;
+}
+
+/* Sourced from https://stackoverflow.com/questions/15577107/sets-of-mutually-exclusive-options-in-boost-program-options
+   Function used to check that 'opt1' and 'opt2' are not specified
+   at the same time. */
+void argparser::conflicting_options(const po::variables_map& vm,
+                         const char* opt1, const char* opt2) {
+  if (vm.count(opt1) && !vm[opt1].defaulted()
+      && vm.count(opt2) && !vm[opt2].defaulted()) {
+    throw logic_error(string("Conflicting options '")
+                      + opt1 + "' and '" + opt2 + "'.");
+    }
 }
