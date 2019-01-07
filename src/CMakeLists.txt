@@ -38,12 +38,15 @@ set(
   main/logging/ResultLogger.h
   main/logging/TimeLogger.cpp
   main/logging/TimeLogger.h
+  main/math/HardLUT.cpp
   main/math/HodgkinHuxley.cpp
   main/math/HodgkinHuxleyCurrent.cpp
   main/math/HodgkinHuxleyCurve.cpp
   main/math/HodgkinHuxleyLUT.cpp
   main/math/HodgkinHuxleyLUTCurve.cpp
+  main/math/LUT.h
   main/math/ODE.h
+  main/math/SoftLUT.cpp
   main/util/ArgParser.cpp
   main/util/ArgParser.h
   main/util/JsonToProtobufConfigConverter.cpp

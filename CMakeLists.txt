@@ -32,14 +32,23 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   message("Configuring for dev build")
 endif()
 
-# Whether to use hardcoded variables for build RISC-V targets in Docker
-option(USE_RISCV_DOCKER_PRESETS
+# Targeting RISC-V
+option(
+  RISCV
+  "Whether to target the RISC-V architecture"
+  FALSE
+  )
+option(
+  USE_RISCV_DOCKER_PRESETS
   "Whether to use hardcoded variables for build RISC-V targets in Docker"
   FALSE
   )
 if (USE_RISCV_DOCKER_PRESETS)
   set(CMAKE_PREFIX_PATH /riscv)
 endif (USE_RISCV_DOCKER_PRESETS)
+if (USE_RISCV_DOCKER_PRESETS OR RISCV)
+  add_definitions(-DRISCV)
+endif (USE_RISCV_DOCKER_PRESETS OR RISCV)
 
 # Whether to use OpenMP
 option(

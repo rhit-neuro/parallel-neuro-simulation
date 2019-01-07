@@ -1,5 +1,10 @@
 #include "Factory.h"
+#include "../math/LUT.h"
 
+#if INCLUDE_LUT_SUPPORT
+  // global variable for a single lookup table object
+  lut::LUT *lutSingleton;
+#endif //INCLUDE_LUT_SUPPORT
 
 sequential::ode_system_function * factory::equation::getEquation(po::variables_map &vm) {
 #if USE_OPENMP
@@ -9,8 +14,19 @@ sequential::ode_system_function * factory::equation::getEquation(po::variables_m
   }
 #endif
 #if INCLUDE_LUT_SUPPORT
-  const bool use_lut = vm.count("use-lut") > 0;
-  if (use_lut) {
+  #if RISCV
+    const bool use_lut = vm.count("use-lut") > 0;
+    if (use_lut){
+      static lut::HardLUTROM hardLUT;
+      lutSingleton = &hardLUT;
+      return &ode::hodgkinhuxley_lut::calculateNextState;
+    }
+  #endif //RISCV
+
+  const bool use_soft_lut = vm.count("use-soft-lut") > 0;
+  if (use_soft_lut) {
+    static lut::SoftLUT softLUT;
+    lutSingleton = &softLUT;
     return &ode::hodgkinhuxley_lut::calculateNextState;
   }
 #endif
