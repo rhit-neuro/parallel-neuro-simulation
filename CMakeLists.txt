@@ -54,7 +54,7 @@ endif (USE_RISCV_DOCKER_PRESETS OR RISCV)
 option(
   USE_OPENMP
   "Whether OpenMP should be used in this project"
-  TRUE
+  FALSE
 )
 if (USE_OPENMP)
   add_definitions(-DUSE_OPENMP)
