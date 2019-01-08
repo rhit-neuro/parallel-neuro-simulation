@@ -25,11 +25,19 @@ build-x86_64:
     - make ${MAIN_NAME}
     - src/${MAIN_NAME} --help
     - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
+    - make ${MAIN_NAME}
+    - src/${MAIN_NAME} --help
+    - rm -rf *
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
     - make ${MAIN_NAME}
     - src/${MAIN_NAME} --help
     - rm -rf *
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}
+    - src/${MAIN_NAME} --help
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
     - make ${MAIN_NAME}
     - src/${MAIN_NAME} --help
     - rm -rf *
@@ -86,11 +94,19 @@ test: # Statically linked ${MAIN_NAME}${TEST_SUFFIX} has segmentation fault
     - make ${MAIN_NAME}${TEST_SUFFIX}
     - src/${MAIN_NAME}${TEST_SUFFIX}
     - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
+    - make ${MAIN_NAME}${TEST_SUFFIX}
+    - src/${MAIN_NAME}${TEST_SUFFIX}
+    - rm -rf *
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
     - make ${MAIN_NAME}${TEST_SUFFIX}
     - src/${MAIN_NAME}${TEST_SUFFIX}
     - rm -rf *
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
+    - make ${MAIN_NAME}${TEST_SUFFIX}
+    - src/${MAIN_NAME}${TEST_SUFFIX}
+    - rm -rf *
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
     - make ${MAIN_NAME}${TEST_SUFFIX}
     - src/${MAIN_NAME}${TEST_SUFFIX}
     - rm -rf *
