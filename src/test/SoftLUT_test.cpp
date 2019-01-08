@@ -1,3 +1,4 @@
+#if INCLUDE_LUT_SUPPORT
 #include "gmock/gmock.h"
 #include "../main/math/LUT.h"
 
@@ -94,3 +95,5 @@ TEST_F(LutTest, AfterLast) {
   expected = calcExpected(expectedSlope, expectedOffset, storedVMem, vMem);
   EXPECT_EQ(expected, actual);
 }
+
+#endif //INCLUDE_LUT_SUPPORT
