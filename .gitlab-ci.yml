@@ -88,27 +88,39 @@ test: # Statically linked ${MAIN_NAME}${TEST_SUFFIX} has segmentation fault
     - cd build_test
     - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
     - make -j ${MAIN_NAME}${TEST_SUFFIX}
+    - cd src
     - src/${MAIN_NAME}${TEST_SUFFIX}
+    - cd ..
     - rm -rf *
     - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
     - make -j ${MAIN_NAME}${TEST_SUFFIX}
+    - cd src
     - src/${MAIN_NAME}${TEST_SUFFIX}
+    - cd ..
     - rm -rf *
     - cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
     - make -j ${MAIN_NAME}${TEST_SUFFIX}
+    - cd src
     - src/${MAIN_NAME}${TEST_SUFFIX}
+    - cd ..
     - rm -rf *
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=OFF
     - make -j ${MAIN_NAME}${TEST_SUFFIX}
+    - cd src
     - src/${MAIN_NAME}${TEST_SUFFIX}
+    - cd ..
     - rm -rf *
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
     - make -j ${MAIN_NAME}${TEST_SUFFIX}
+    - cd src
     - src/${MAIN_NAME}${TEST_SUFFIX}
+    - cd ..
     - rm -rf *
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=OFF -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=ON
     - make -j ${MAIN_NAME}${TEST_SUFFIX}
+    - cd src
     - src/${MAIN_NAME}${TEST_SUFFIX}
+    - cd ..
     - rm -rf *
   tags:
     - kubernetes
