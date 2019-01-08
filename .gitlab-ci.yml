@@ -43,8 +43,6 @@ build-riscv:
   script:
     - mkdir build
     - cd build
-    - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=ON
-    - make ${MAIN_NAME}
     # Cannot run the binary yet because it is built for a different target
 #    - src/${MAIN_NAME} --help
     - rm -rf *
@@ -57,10 +55,6 @@ build-riscv:
 #    - src/${MAIN_NAME} --help
     - rm -rf *
     - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=OFF -DINCLUDE_LUT_SUPPORT=OFF
-    - make ${MAIN_NAME}
-#    - src/${MAIN_NAME} --help
-    - rm -rf *
-    - CC=/riscv/bin/riscv64-unknown-linux-gnu-gcc CXX=/riscv/bin/riscv64-unknown-linux-gnu-g++ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_RISCV_DOCKER_PRESETS=ON -DUSE_OPENMP=ON -DINCLUDE_LUT_SUPPORT=ON
     - make ${MAIN_NAME}
 #    - src/${MAIN_NAME} --help
     - rm -rf *

@@ -70,6 +70,10 @@ if (INCLUDE_LUT_SUPPORT)
   add_definitions(-DINCLUDE_LUT_SUPPORT)
 endif()
 
+
+if (INCLUDE_LUT_SUPPORT AND USE_OPENMP)
+  message( FATAL_ERROR "You cannot use -DINCLUDE_LUT_SUPPORT and -DUSE_OPENMP together")
+endif()
 #######################
 # Project Setup
 #######################
