@@ -28,7 +28,7 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
 
   po::store(po::parse_command_line(argc, reinterpret_cast<const char * const *>(argv), desc), vm);
   // If "help" exists, then help message should be printed, and the rest of the program should be aborted
-  if (vm.count("help")) {
+  if (vm.count("help") || argc == 1) {
     cout << desc << "\n";
     return false;
   }
