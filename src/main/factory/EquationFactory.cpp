@@ -1,5 +1,11 @@
+#if INCLUDE_LUT_SUPPORT
+#include <string>
+#endif //INCLUDE_LUT_SUPPORT
+
 #include "Factory.h"
 #include "../math/LUT.h"
+
+using namespace std;
 
 #if INCLUDE_LUT_SUPPORT
   // global variable for a single lookup table object
@@ -25,7 +31,8 @@ sequential::ode_system_function * factory::equation::getEquation(po::variables_m
 
   const bool use_soft_lut = vm.count("use-soft-lut") > 0;
   if (use_soft_lut) {
-    static lut::SoftLUT softLUT;
+    const auto &lut_file = vm["lut-file"].as<string>();
+    static lut::SoftLUT softLUT(lut_file);
     lutSingleton = &softLUT;
     return &ode::hodgkinhuxley_lut::calculateNextState;
   }

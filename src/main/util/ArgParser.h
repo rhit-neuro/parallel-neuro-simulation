@@ -25,6 +25,16 @@ namespace argparser {
    */
   void conflicting_options(const po::variables_map& vm,
                          const char* opt1, const char* opt2);
+
+  /**
+   * Specifies that required_option is required for for_what.
+   * Throws a logic_error if for_what exists without required_option.
+   * @param vm Variable map to check
+   * @param for_what option with a dependency
+   * @param required_option opiton for_what depends on
+   */
+  void option_dependency(const po::variables_map& vm,
+                        const char* for_what, const char* required_option);
 };
 
 

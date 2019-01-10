@@ -3,6 +3,7 @@
 #define PARALLEL_NEURON_SIMULATION_LUT_H
 
 #include <vector>
+#include <string>
 
 namespace lut {
   enum CurveSelect {
@@ -44,13 +45,13 @@ namespace lut {
 
   class SoftLUT : public lut::LUT {
     public:
-      SoftLUT() {
-        initialize();
+      SoftLUT(const std::string& fileName) {
+        initialize(fileName);
       }
       double interpolate(double vMem, CurveSelect curveSelect);
 
     private:
-      void initialize();
+      void initialize(const std::string& fileName);
       std::vector<float> vMemss[NUM_CURVES];
       std::vector<float> slopess[NUM_CURVES];
       std::vector<float> offsetss[NUM_CURVES];

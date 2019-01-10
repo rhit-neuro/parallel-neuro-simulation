@@ -6,9 +6,9 @@
 
 #include "LUT.h"
 
-void lut::SoftLUT::initialize() {
+void lut::SoftLUT::initialize(const std::string& fileName) {
   // Load file with LUT constants
-  std::ifstream lutFile("/project/resources/32pointsM.csv");
+  std::ifstream lutFile(fileName);
 
   if (lutFile.is_open()) {
     std::string line;

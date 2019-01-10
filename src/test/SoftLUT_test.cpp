@@ -6,7 +6,7 @@ using namespace lut;
 
 class LutTest : public ::testing::Test {
   protected:
-    SoftLUT softlut;
+    SoftLUT softlut = SoftLUT("../../resources/32pointsM.csv");
     float expected, actual, vMem;
     float expectedSlope, expectedOffset, storedVMem;
 };

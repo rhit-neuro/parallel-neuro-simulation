@@ -13,6 +13,9 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
     ("input-file,i", po::value<string>()->required(), "input file location")
     ("input-format,f", po::value<string>()->default_value("JSON"), "input file format (JSON, default JSON)")
     ("logging-config,g", po::value<string>(), "logging configuration file location")
+#if INCLUDE_LUT_SUPPORT
+    ("lut-file,u", po::value<string>(), "LUT points file location")
+#endif    
 #if USE_OPENMP
     ("num-threads,t", po::value<unsigned int>()->default_value(0), "specify number of threads OpenMP should use. Specify 0 to let OpenMP automatically decide")
 #endif
@@ -46,8 +49,9 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
     po::store(po::parse_config_file(configIStream, desc), vm);
   }
 
-  // Check for conflicting options
+  // Check for conflicting options and options with dependencies
   argparser::conflicting_options(vm, "use-lut", "use-soft-lut");
+  argparser::option_dependency(vm, "use-soft-lut", "lut-file");
 
   try {
     // Call notify(vm) to validate options
@@ -71,4 +75,16 @@ void argparser::conflicting_options(const po::variables_map& vm,
     throw logic_error(string("Conflicting options '")
                       + opt1 + "' and '" + opt2 + "'.");
     }
+}
+
+/* Sourced from https://www.boost.org/doc/libs/1_55_0/libs/program_options/example/real.cpp
+   Function used to check that of 'for_what' is specified, then
+   'required_option' is specified too. */
+void argparser::option_dependency(const po::variables_map& vm,
+                        const char* for_what, const char* required_option)
+{
+    if (vm.count(for_what) && !vm[for_what].defaulted())
+        if (vm.count(required_option) == 0 || vm[required_option].defaulted())
+            throw logic_error(string("Option '") + for_what 
+                              + "' requires option '" + required_option + "'.");
 }
