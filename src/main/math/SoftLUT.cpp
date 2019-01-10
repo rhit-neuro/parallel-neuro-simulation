@@ -61,6 +61,6 @@ double lut::SoftLUT::interpolate(double vMem, lut::CurveSelect curveSelect) {
     }
   }
 
-  return slopes[interpIndex] * (vMem - vMems[interpIndex]) + offsets[interpIndex];
+  return slopes[interpIndex] * vMem + offsets[interpIndex];
 }
 #endif //INCLUDE_LUT_SUPPORT
