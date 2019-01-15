@@ -38,12 +38,15 @@ set(
   main/logging/ResultLogger.h
   main/logging/TimeLogger.cpp
   main/logging/TimeLogger.h
+  main/math/HardLUT.cpp
   main/math/HodgkinHuxley.cpp
   main/math/HodgkinHuxleyCurrent.cpp
   main/math/HodgkinHuxleyCurve.cpp
   main/math/HodgkinHuxleyLUT.cpp
   main/math/HodgkinHuxleyLUTCurve.cpp
+  main/math/LUT.h
   main/math/ODE.h
+  main/math/SoftLUT.cpp
   main/util/ArgParser.cpp
   main/util/ArgParser.h
   main/util/JsonToProtobufConfigConverter.cpp
@@ -59,7 +62,9 @@ target_link_libraries(${MAIN_NAME} proto ${Boost_LIBRARIES} ${Protobuf_LIBRARIES
 #######################
 
 set(TEST_SOURCE
-  test/main_test.cpp
+  test/SoftLUT_test.cpp
+  main/math/SoftLUT.cpp
+  main/math/LUT.h
 )
 
 add_executable(${MAIN_NAME}${TEST_SUFFIX} ${TEST_SOURCE} ${PROTO_HEADER} ${PROTO_SRC})

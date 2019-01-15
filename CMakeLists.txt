@@ -32,20 +32,29 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   message("Configuring for dev build")
 endif()
 
-# Whether to use hardcoded variables for build RISC-V targets in Docker
-option(USE_RISCV_DOCKER_PRESETS
+# Targeting RISC-V
+option(
+  RISCV
+  "Whether to target the RISC-V architecture"
+  FALSE
+  )
+option(
+  USE_RISCV_DOCKER_PRESETS
   "Whether to use hardcoded variables for build RISC-V targets in Docker"
   FALSE
   )
 if (USE_RISCV_DOCKER_PRESETS)
   set(CMAKE_PREFIX_PATH /riscv)
 endif (USE_RISCV_DOCKER_PRESETS)
+if (USE_RISCV_DOCKER_PRESETS OR RISCV)
+  add_definitions(-DRISCV)
+endif (USE_RISCV_DOCKER_PRESETS OR RISCV)
 
 # Whether to use OpenMP
 option(
   USE_OPENMP
   "Whether OpenMP should be used in this project"
-  TRUE
+  FALSE
 )
 if (USE_OPENMP)
   add_definitions(-DUSE_OPENMP)
@@ -61,6 +70,10 @@ if (INCLUDE_LUT_SUPPORT)
   add_definitions(-DINCLUDE_LUT_SUPPORT)
 endif()
 
+
+if (INCLUDE_LUT_SUPPORT AND USE_OPENMP)
+  message( FATAL_ERROR "You cannot use -DINCLUDE_LUT_SUPPORT and -DUSE_OPENMP together")
+endif()
 #######################
 # Project Setup
 #######################

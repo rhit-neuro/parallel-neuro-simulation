@@ -31,21 +31,21 @@ void TimeLogger::recordCalculationEndTime() {
 void TimeLogger::printSummary() {
   std::cout << "Program run: "
             << duration_cast<microseconds>(programEndTime - programStartTime).count()
-            << "ms"
+            << "us"
             << "("
             << duration_cast<seconds>(programEndTime - programStartTime).count()
             << "s)"
             << '\n'
             << "Load config run: "
             << duration_cast<microseconds>(loadConfigEndTime - loadConfigStartTime).count()
-            << "ms"
+            << "us"
             << "("
             << duration_cast<seconds>(loadConfigEndTime - loadConfigStartTime).count()
             << "s)"
             << '\n'
             << "Calculation run: "
             << duration_cast<microseconds>(calculationEndTime - calculationStartTime).count()
-            << "ms"
+            << "us"
             << "("
             << duration_cast<seconds>(calculationEndTime - calculationStartTime).count()
             << "s)"

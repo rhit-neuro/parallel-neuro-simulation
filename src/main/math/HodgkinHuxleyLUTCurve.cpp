@@ -1,102 +1,73 @@
 #if INCLUDE_LUT_SUPPORT
+#include "LUT.h"
 #include "ODE.h"
-#include <lut_support-a7d4c9fa7d6a4c1a5c1494d29d99617b392c8255/lut_support.h>
 
+using namespace lut;
+
+double dCommon(double V, double x, CurveSelect inf, CurveSelect tau) {
+  double finfLookupResult, tauLookupResult;
+  finfLookupResult = lutSingleton->interpolate(V, inf);
+  tauLookupResult = lutSingleton->interpolate(V, tau);
+  return (finfLookupResult - x) / tauLookupResult;
+}
 
 double ode::hodgkinhuxley_lut::curve::dMk2dt(double V, double mk2) {
-  double finfLookupResult, tauLookupResult;
-  findLUTValues(V, finfLookupResult);
-  findLUTValues(V, tauLookupResult);
-  return (finfLookupResult - mk2) / tauLookupResult;
+  return dCommon(V, mk2, M_F_K2, M_T_K2);
 }
 
 double ode::hodgkinhuxley_lut::curve::dMpdt(double V, double mp) {
-  double finfLookupResult, tauLookupResult;
-  findLUTValues(V, finfLookupResult);
-  findLUTValues(V, tauLookupResult);
-  return (finfLookupResult - mp) / tauLookupResult;
+  return dCommon(V, mp, M_F_P, M_T_P);
 }
 
 double ode::hodgkinhuxley_lut::curve::dMnadt(double V, double mna) {
-  double finfLookupResult;
-  findLUTValues(V, finfLookupResult);
-  return (finfLookupResult - mna) / 0.0001;
+  double finfLookupResult, tauLookupResult;
+  finfLookupResult = lutSingleton->interpolate(V, M_F_NA);
+  // tauLookupResult = lutSingleton->interpolate(V, M_T_NA);
+  tauLookupResult = 0.0001;
+  return (finfLookupResult - mna) / tauLookupResult;
 }
 
 double ode::hodgkinhuxley_lut::curve::dHnadt(double V, double hna) {
-  double finfLookupResult, tauLookupResult;
-  findLUTValues(V, finfLookupResult);
-  findLUTValues(V, tauLookupResult);
-  return (finfLookupResult - hna) / tauLookupResult;
+  return dCommon(V, hna, H_F_NA, H_T_NA);
 }
 
 double ode::hodgkinhuxley_lut::curve::dMcafdt(double V, double mcaf) {
-  double finfLookupResult, tauLookupResult;
-  findLUTValues(V, finfLookupResult);
-  findLUTValues(V, tauLookupResult);
-  return (finfLookupResult - mcaf) / tauLookupResult;
+  return dCommon(V, mcaf, M_F_CAF, M_T_CAF);
 }
 
 double ode::hodgkinhuxley_lut::curve::dHcafdt(double V, double hcaf) {
-  double finfLookupResult, tauLookupResult;
-  findLUTValues(V, finfLookupResult);
-  findLUTValues(V, tauLookupResult);
-  return (finfLookupResult - hcaf) / tauLookupResult;
+  return dCommon(V, hcaf, H_F_CAF, H_T_CAF);
 }
 
 double ode::hodgkinhuxley_lut::curve::dMcasdt(double V, double mcas) {
-  double finfLookupResult, tauLookupResult;
-  findLUTValues(V, finfLookupResult);
-  findLUTValues(V, tauLookupResult);
-  return (finfLookupResult - mcas) / tauLookupResult;
+  return dCommon(V, mcas, M_F_CAS, M_T_CAS);
 }
 
 double ode::hodgkinhuxley_lut::curve::dHcasdt(double V, double hcas) {
-  double finfLookupResult, tauLookupResult;
-  findLUTValues(V, finfLookupResult);
-  findLUTValues(V, tauLookupResult);
-  return (finfLookupResult - hcas) / tauLookupResult;
+  return dCommon(V, hcas, H_F_CAS, H_T_CAS);
 }
 
 double ode::hodgkinhuxley_lut::curve::dMk1dt(double V, double mk1) {
-  double finfLookupResult, tauLookupResult;
-  findLUTValues(V, finfLookupResult);
-  findLUTValues(V, tauLookupResult);
-  return (finfLookupResult - mk1) / tauLookupResult;
+  return dCommon(V, mk1, M_F_K1, M_T_K1);
 }
 
 double ode::hodgkinhuxley_lut::curve::dHk1dt(double V, double hk1) {
-  double finfLookupResult, tauLookupResult;
-  findLUTValues(V, finfLookupResult);
-  findLUTValues(V, tauLookupResult);
-  return (finfLookupResult - hk1) / tauLookupResult;
+  return dCommon(V, hk1, H_F_K1, H_T_K1);
 }
 
 double ode::hodgkinhuxley_lut::curve::dMkadt(double V, double mka) {
-  double finfLookupResult, tauLookupResult;
-  findLUTValues(V, finfLookupResult);
-  findLUTValues(V, tauLookupResult);
-  return (finfLookupResult - mka) / tauLookupResult;
+  return dCommon(V, mka, M_F_KA, M_T_KA);
 }
 
 double ode::hodgkinhuxley_lut::curve::dHkadt(double V, double hka) {
-  double finfLookupResult, tauLookupResult;
-  findLUTValues(V, finfLookupResult);
-  findLUTValues(V, tauLookupResult);
-  return (finfLookupResult - hka) / tauLookupResult;
+  return dCommon(V, hka, H_F_KA, H_T_KA);
 }
 
 double ode::hodgkinhuxley_lut::curve::dMkfdt(double V, double mkf) {
-  double finfLookupResult, tauLookupResult;
-  findLUTValues(V, finfLookupResult);
-  findLUTValues(V, tauLookupResult);
-  return (finfLookupResult - mkf) / tauLookupResult;
+  return dCommon(V, mkf, M_F_KF, M_T_KF);
 }
 
 double ode::hodgkinhuxley_lut::curve::dMhdt(double V, double mh) {
-  double finfLookupResult, tauLookupResult;
-  findLUTValues(V, finfLookupResult);
-  findLUTValues(V, tauLookupResult);
-  return (finfLookupResult - mh) / tauLookupResult;
+  return dCommon(V, mh, M_F_H, M_T_H);
 }
 #endif
