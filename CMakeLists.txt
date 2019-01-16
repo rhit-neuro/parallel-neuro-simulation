@@ -44,6 +44,8 @@ option(
   FALSE
   )
 if (USE_RISCV_DOCKER_PRESETS)
+  set(CMAKE_C_COMPILER /riscv/bin/riscv64-unknown-linux-gnu-gcc CACHE STRING "C compiler" FORCE)
+  set(CMAKE_CXX_COMPILER /riscv/bin/riscv64-unknown-linux-gnu-g++ CACHE STRING "C++ compiler" FORCE)
   set(CMAKE_PREFIX_PATH /riscv)
 endif (USE_RISCV_DOCKER_PRESETS)
 if (USE_RISCV_DOCKER_PRESETS OR RISCV)
