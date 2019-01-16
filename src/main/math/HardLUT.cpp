@@ -2,7 +2,7 @@
 #if RISCV
 
 
-#include <lut_support-a7d4c9fa7d6a4c1a5c1494d29d99617b392c8255/lut_support.h>
+#include "../rocc/lut_support.h"
 #include "LUT.h"
 
 double lut::HardLUTROM::interpolate(double vMem, lut::CurveSelect curveSelect) {
