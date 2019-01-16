@@ -8,9 +8,9 @@
 double lut::HardLUTROM::interpolate(double vMem, lut::CurveSelect curveSelect) {
     float m, b;
     // Lookup slope
-    m=0;
+    lookupSlope(m, vMem, curveSelect);
     // Lookup offset
-    b=1;
+    lookupOffset(b, vMem, curveSelect);
 
     return vMem * m + b;
 }
