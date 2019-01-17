@@ -1,12 +1,13 @@
 #if INCLUDE_LUT_SUPPORT
+#if RISCV
 #include "gmock/gmock.h"
 #include "../main/math/LUT.h"
 
 using namespace lut;
 
-class SoftLUT_test : public ::testing::Test {
+class HardLUTROM_test : public ::testing::Test {
   protected:
-    SoftLUT lutut = SoftLUT("../../resources/32pointsConverted.csv");
+    HardLUTROM lutut;
     float expected, actual, vMem;
     float expectedSlope, expectedOffset;
     CurveSelect curve;
@@ -22,7 +23,7 @@ class SoftLUT_test : public ::testing::Test {
 // and expected is less than this number
 const float maxError = 0.00000001;
 
-TEST_F(SoftLUT_test, BeforeFirst) {
+TEST_F(HardLUTROM_test, BeforeFirst) {
   // First curve
   curve = M_F_NA;
   vMem = -0.078;
@@ -33,18 +34,18 @@ TEST_F(SoftLUT_test, BeforeFirst) {
   expected = calcExpected();
   EXPECT_NEAR(expected, actual, maxError);
 
-  // Last curve
-  curve = M_T_KF;
-  vMem = -0.098438;
-  expectedOffset = 1.25227;
-  expectedSlope = -2.4263;
+  // // Last curve
+  // curve = M_T_KF;
+  // vMem = -0.098438;
+  // expectedOffset = 1.25227;
+  // expectedSlope = -2.4263;
 
-  actual = calcActual();
-  expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  // actual = calcActual();
+  // expected = calcExpected();
+  // EXPECT_NEAR(expected, actual, maxError);
 }
 
-TEST_F(SoftLUT_test, ExactlyFirst) {
+TEST_F(HardLUTROM_test, ExactlyFirst) {
   // First curve
   curve = M_F_NA;
   vMem = -0.077915;
@@ -55,18 +56,18 @@ TEST_F(SoftLUT_test, ExactlyFirst) {
   expected = calcExpected();
   EXPECT_NEAR(expected, actual, maxError);
 
-  // Last curve
-  curve = M_T_KF;
-  vMem = -0.098434;
-  expectedOffset = 1.25227;
-  expectedSlope = -2.4263;
+  // // Last curve
+  // curve = M_T_KF;
+  // vMem = -0.098434;
+  // expectedOffset = 1.25227;
+  // expectedSlope = -2.4263;
 
-  actual = calcActual();
-  expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  // actual = calcActual();
+  // expected = calcExpected();
+  // EXPECT_NEAR(expected, actual, maxError);
 }
 
-TEST_F(SoftLUT_test, Middle) {
+TEST_F(HardLUTROM_test, Middle) {
   // First curve
   curve = M_F_NA;
   vMem = -0.04740;
@@ -77,18 +78,18 @@ TEST_F(SoftLUT_test, Middle) {
   expected = calcExpected();
   EXPECT_NEAR(expected, actual, maxError);
 
-  // Last curve
-  curve = M_T_KF;
-  vMem = -0.0054;
-  expectedOffset = 8.672119;
-  expectedSlope = 108.97;
+  // // Last curve
+  // curve = M_T_KF;
+  // vMem = -0.0054;
+  // expectedOffset = 8.672119;
+  // expectedSlope = 108.97;
 
-  actual = calcActual();
-  expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  // actual = calcActual();
+  // expected = calcExpected();
+  // EXPECT_NEAR(expected, actual, maxError);
 }
 
-TEST_F(SoftLUT_test, ExactlyMiddle) {
+TEST_F(HardLUTROM_test, ExactlyMiddle) {
   // First curve
   curve = M_F_NA;
   vMem = -0.019412;
@@ -99,18 +100,18 @@ TEST_F(SoftLUT_test, ExactlyMiddle) {
   expected = calcExpected();
   EXPECT_NEAR(expected, actual, maxError);
 
-  // Last curve
-  curve = M_T_KF;
-  vMem = -0.005409;
-  expectedOffset = 8.672119;
-  expectedSlope = 108.97;
+  // // Last curve
+  // curve = M_T_KF;
+  // vMem = -0.005409;
+  // expectedOffset = 8.672119;
+  // expectedSlope = 108.97;
 
-  actual = calcActual();
-  expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  // actual = calcActual();
+  // expected = calcExpected();
+  // EXPECT_NEAR(expected, actual, maxError);
 }
 
-TEST_F(SoftLUT_test, ExactlyLast) {
+TEST_F(HardLUTROM_test, ExactlyLast) {
   // First curve
   curve = M_F_NA;
   vMem = 0.019917;
@@ -121,18 +122,18 @@ TEST_F(SoftLUT_test, ExactlyLast) {
   expected = calcExpected();
   EXPECT_NEAR(expected, actual, maxError);
 
-  // Last curve
-  curve = M_T_KF;
-  vMem = 0.046882;
-  expectedOffset = 9.4911;
-  expectedSlope = 0;
+  // // Last curve
+  // curve = M_T_KF;
+  // vMem = 0.046882;
+  // expectedOffset = 9.4911;
+  // expectedSlope = 0;
 
-  actual = calcActual();
-  expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  // actual = calcActual();
+  // expected = calcExpected();
+  // EXPECT_NEAR(expected, actual, maxError);
 }
 
-TEST_F(SoftLUT_test, AfterLast) {
+TEST_F(HardLUTROM_test, AfterLast) {
   // First curve
   curve = M_F_NA;
   vMem = 0.019918;
@@ -143,15 +144,16 @@ TEST_F(SoftLUT_test, AfterLast) {
   expected = calcExpected();
   EXPECT_NEAR(expected, actual, maxError);
 
-  // Last curve
-  curve = M_T_KF;
-  vMem = 0.0469;
-  expectedOffset = 9.4911;
-  expectedSlope = 0;
+  // // Last curve
+  // curve = M_T_KF;
+  // vMem = 0.0469;
+  // expectedOffset = 9.4911;
+  // expectedSlope = 0 +1;
 
-  actual = calcActual();
-  expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  // actual = calcActual();
+  // expected = calcExpected();
+  // EXPECT_NEAR(expected, actual, maxError);
 }
 
+#endif //RISCV
 #endif //INCLUDE_LUT_SUPPORT
