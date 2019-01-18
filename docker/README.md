@@ -37,6 +37,7 @@ We have a docker registry integrated into this repository on `ada` and one hoste
 ### Registry login
 If you want to use one of the docker images hosted in this repository's registry, you must first login:
 ```bash
+# The username and password used here are for your account on ada.csse.rose-hulman.edu
 docker login docker.csse.rose-hulman.edu
 ```
 note: you only need to login one time
