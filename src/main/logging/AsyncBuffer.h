@@ -23,7 +23,7 @@ struct thread_data {
 
 class AsyncBuffer {
   public:
-    AsyncBuffer(int size, std::string &output_filename, int precision);
+    AsyncBuffer(int size, std::string &output_filename, int precision, int verbosity);
     ~AsyncBuffer();
     void writeData(const double *data);
 
@@ -40,6 +40,9 @@ class AsyncBuffer {
     int threadRunning;
     int currentBuffer;
     double **buffers;
+    // For handling verbosity
+    float printTimestep;
+    float printAfterTime;
 };
 
 #endif

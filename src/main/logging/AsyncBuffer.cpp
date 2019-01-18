@@ -1,3 +1,5 @@
+#include <limits>
+
 #include "AsyncBuffer.h"
 
 #define NUMBER_OF_BUFFERS 2
@@ -24,7 +26,7 @@ void *printFile(void *arg) {
   pthread_exit(NULL);
 }
 
-AsyncBuffer::AsyncBuffer(int size, std::string &output_filename, int precision) {
+AsyncBuffer::AsyncBuffer(int size, std::string &output_filename, int precision, int verbosity) {
   this->size = size;
   this->decimalPrecision = precision;
   this->td.ofs.open(output_filename);
@@ -40,6 +42,25 @@ AsyncBuffer::AsyncBuffer(int size, std::string &output_filename, int precision) 
   for (int i = 0; i < NUMBER_OF_BUFFERS; i++) {
     this->buffers[i] = (double *) malloc(BUFFER_SPACE * size * sizeof(double));
     this->full[i] = false;
+  }
+
+  // setup verbosity
+  this->printAfterTime = 0;
+  switch (verbosity) {
+    case 0:
+      this->printTimestep = 0;
+      this->printAfterTime = std::numeric_limits<float>::max();
+      break;
+    case 1:
+      this->printTimestep = 10;
+      break;
+    case 2:
+      this->printTimestep = 1;
+      break;
+    case 3:
+    default:
+      this->printTimestep = 0;
+      break;
   }
 }
 
@@ -83,8 +104,13 @@ AsyncBuffer::~AsyncBuffer() {
 }
 
 void AsyncBuffer::writeData(const double *data) {
+  // Control verbosity of prints
+  if (data[0] >= this->printAfterTime) {
+    std::cout << std::setprecision(this->decimalPrecision) << data[0] << std::endl;
+    this->printAfterTime += this->printTimestep;
+  }
+  
   //check if thread is running
-  std::cout << std::setprecision(this->decimalPrecision) << data[0] << std::endl;
   if (this->threadRunning == this->currentBuffer) {
     //check if we have room to write data
     if (this->full[this->currentBuffer]) {
