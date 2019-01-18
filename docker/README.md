@@ -14,7 +14,7 @@ sudo apt install docker
 Now you need to add your user to the `docker` group so that you don't need to be root to run docker commands:
 ```bash
 sudo groupadd docker
-# replace <username> with your username below
+# replace <username> with your computer username below
 sudo usermod -aG docker <username>
 ```
 Now logout and log back in for your group membership to be re-evaluated. Now you can start up the docker daemon with:
@@ -44,7 +44,8 @@ note: you only need to login one time
 ### Download images
 To download a docker image:
 ```bash
-# replace <image name> with something like rocket-chip-env
+# replace <image name> with the name of the image you want to download
+# e.g. rocket-chip-env
 docker pull docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/<image name>:latest
 ```
 ### Upload images
@@ -74,6 +75,32 @@ docker stop <container name>
 Tagging is the way you associate a version number with a docker image. You can change the version or tag of a docker image with the following:
 ```bash
 docker tag <image name>:<original tag> <image name>:<new tag>
+```
+
+### Managing your images and containers
+#### Seeing your containers and images
+If you want to see what images you have downloaded, run:
+```bash
+docker image ls
+```
+If you want to see which containers you have that are running, run:
+```bash
+docker container ls
+```
+If you want to see all your containers, run:
+```docker
+docker container ls -a
+```
+#### Deleting contianers and images
+If you want to delete a container, run:
+```bash
+# Replace containerName with the name of the container to delete
+docker rm containerName
+```
+If you want to delete an image, you first have to delete all containers that use that image and then run:
+```bash
+# Replace imageName with the name of the container to delete
+docker image rm imageName
 ```
 
 ## Making New Images
