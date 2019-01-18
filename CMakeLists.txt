@@ -159,6 +159,9 @@ add_subdirectory(lib/gmock-1.7.0)
 include_directories(lib/gmock-1.7.0/include)
 include_directories(lib/gmock-1.7.0/gtest/include)
 
+# Points file required for software LUT tests
+configure_file(resources/32pointsConverted.csv src/32pointsConverted.csv COPYONLY)
+
 #######################
 # Project Sources
 #######################

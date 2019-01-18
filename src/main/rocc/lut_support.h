@@ -1,4 +1,6 @@
 // See LICENSE for license details.
+#if INCLUDE_LUT_SUPPORT
+#if RISCV
 
 #ifndef LUT_SUPPORT_H
 #define LUT_SUPPORT_H
@@ -17,3 +19,6 @@
   ROCC_INSTRUCTION(0, rocc_rd, rocc_rs1, rocc_rs2, FUNCT_LOOKUPSLOPE)
 
 #endif  // LUT_SUPPORT_H
+
+#endif //INCLUDE_LUT_SUPPORT
+#endif //RISCV

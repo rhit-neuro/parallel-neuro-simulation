@@ -6,7 +6,10 @@ using namespace lut;
 
 class SoftLUT_test : public ::testing::Test {
   protected:
-    SoftLUT lutut = SoftLUT("../../resources/32pointsConverted.csv");
+    // Tests pass as long as the absolute error between acutal
+    // and expected is less than this number
+    const float maxError = 0.00000001;
+    SoftLUT lutut = SoftLUT("32pointsConverted.csv");
     float expected, actual, vMem;
     float expectedSlope, expectedOffset;
     CurveSelect curve;
@@ -16,11 +19,17 @@ class SoftLUT_test : public ::testing::Test {
     float calcExpected() {
       return expectedSlope * vMem + expectedOffset;
     }
+    ::testing::AssertionResult closeEnough() {
+      if (std::abs(actual - expected) < maxError) {
+        return ::testing::AssertionSuccess();
+      } else {
+        return ::testing::AssertionFailure() << "Curve: " << curve 
+            << " vMem: " << vMem << " Expected: " << expected
+            << " Actual: " << actual;
+      }
+    }
 };
 
-// Tests pass as long as the absolute error between acutal
-// and expected is less than this number
-const float maxError = 0.00000001;
 
 TEST_F(SoftLUT_test, BeforeFirst) {
   // First curve
@@ -31,7 +40,7 @@ TEST_F(SoftLUT_test, BeforeFirst) {
 
   actual = calcActual();
   expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  EXPECT_TRUE(closeEnough());
 
   // Last curve
   curve = M_T_KF;
@@ -41,7 +50,7 @@ TEST_F(SoftLUT_test, BeforeFirst) {
 
   actual = calcActual();
   expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  EXPECT_TRUE(closeEnough());
 }
 
 TEST_F(SoftLUT_test, ExactlyFirst) {
@@ -53,7 +62,7 @@ TEST_F(SoftLUT_test, ExactlyFirst) {
 
   actual = calcActual();
   expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  EXPECT_TRUE(closeEnough());
 
   // Last curve
   curve = M_T_KF;
@@ -63,7 +72,7 @@ TEST_F(SoftLUT_test, ExactlyFirst) {
 
   actual = calcActual();
   expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  EXPECT_TRUE(closeEnough());
 }
 
 TEST_F(SoftLUT_test, Middle) {
@@ -75,7 +84,7 @@ TEST_F(SoftLUT_test, Middle) {
 
   actual = calcActual();
   expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  EXPECT_TRUE(closeEnough());
 
   // Last curve
   curve = M_T_KF;
@@ -85,7 +94,7 @@ TEST_F(SoftLUT_test, Middle) {
 
   actual = calcActual();
   expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  EXPECT_TRUE(closeEnough());
 }
 
 TEST_F(SoftLUT_test, ExactlyMiddle) {
@@ -97,7 +106,7 @@ TEST_F(SoftLUT_test, ExactlyMiddle) {
 
   actual = calcActual();
   expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  EXPECT_TRUE(closeEnough());
 
   // Last curve
   curve = M_T_KF;
@@ -107,7 +116,7 @@ TEST_F(SoftLUT_test, ExactlyMiddle) {
 
   actual = calcActual();
   expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  EXPECT_TRUE(closeEnough());
 }
 
 TEST_F(SoftLUT_test, ExactlyLast) {
@@ -119,7 +128,7 @@ TEST_F(SoftLUT_test, ExactlyLast) {
 
   actual = calcActual();
   expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  EXPECT_TRUE(closeEnough());
 
   // Last curve
   curve = M_T_KF;
@@ -129,7 +138,7 @@ TEST_F(SoftLUT_test, ExactlyLast) {
 
   actual = calcActual();
   expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  EXPECT_TRUE(closeEnough());
 }
 
 TEST_F(SoftLUT_test, AfterLast) {
@@ -141,7 +150,7 @@ TEST_F(SoftLUT_test, AfterLast) {
 
   actual = calcActual();
   expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  EXPECT_TRUE(closeEnough());
 
   // Last curve
   curve = M_T_KF;
@@ -151,7 +160,7 @@ TEST_F(SoftLUT_test, AfterLast) {
 
   actual = calcActual();
   expected = calcExpected();
-  EXPECT_NEAR(expected, actual, maxError);
+  EXPECT_TRUE(closeEnough());
 }
 
 #endif //INCLUDE_LUT_SUPPORT

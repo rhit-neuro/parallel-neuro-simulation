@@ -67,6 +67,7 @@ set(TEST_SOURCE
   main/math/LUT.h
   test/HardLUTROM_test.cpp
   main/math/HardLUT.cpp
+  main/rocc/lut_support.h
 )
 
 add_executable(${MAIN_NAME}${TEST_SUFFIX} ${TEST_SOURCE} ${PROTO_HEADER} ${PROTO_SRC})
