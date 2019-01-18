@@ -4,148 +4,163 @@
 
 using namespace lut;
 
-class LutTest : public ::testing::Test {
+class SoftLUT_test : public ::testing::Test {
   protected:
-    SoftLUT softlut = SoftLUT("../../resources/32pointsConverted.csv");
+    // Tests pass as long as the absolute error between acutal
+    // and expected is less than this number
+    const float maxError = 0.00000001;
+    SoftLUT lutut = SoftLUT("32pointsConverted.csv");
     float expected, actual, vMem;
     float expectedSlope, expectedOffset;
+    CurveSelect curve;
+    float calcActual() {
+      return lutut.interpolate(vMem, curve);
+    }
+    float calcExpected() {
+      return expectedSlope * vMem + expectedOffset;
+    }
+    ::testing::AssertionResult closeEnough() {
+      if (std::abs(actual - expected) < maxError) {
+        return ::testing::AssertionSuccess();
+      } else {
+        return ::testing::AssertionFailure() << "Curve: " << curve 
+            << " vMem: " << vMem << " Expected: " << expected
+            << " Actual: " << actual;
+      }
+    }
 };
 
-float calcActual(SoftLUT softlut, float vMem, CurveSelect curve) {
-  return softlut.interpolate(vMem, curve);
-}
 
-float calcExpected(float expectedSlope, float expectedOffset, float vMem) {
-  return expectedSlope * vMem + expectedOffset;
-}
-
-// Returns percent difference between acutal and expected
-float pDiff(float expected, float actual) {
-  return std::abs((expected - actual)/expected) * 100;
-}
-
-// Tests pass as long as the percent difference between acutal
-// and expected is less than this number
-const float maxError = 0.001;
-
-TEST_F(LutTest, BeforeFirst) {
+TEST_F(SoftLUT_test, BeforeFirst) {
   // First curve
+  curve = M_F_NA;
   vMem = -0.078;
   expectedOffset = 0.021288;
   expectedSlope = 0.26487;
 
-  actual = calcActual(softlut, vMem, M_F_NA);
-  expected = calcExpected(expectedSlope, expectedOffset, vMem);
-  EXPECT_LE(pDiff(expected, actual), maxError);
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 
   // Last curve
+  curve = M_T_KF;
   vMem = -0.098438;
   expectedOffset = 1.25227;
   expectedSlope = -2.4263;
 
-  actual = calcActual(softlut, vMem, M_T_KF);
-  expected = calcExpected(expectedSlope, expectedOffset, vMem);
-  EXPECT_LE(pDiff(expected, actual), maxError);
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 }
 
-TEST_F(LutTest, ExactlyFirst) {
+TEST_F(SoftLUT_test, ExactlyFirst) {
   // First curve
+  curve = M_F_NA;
   vMem = -0.077915;
   expectedOffset = 0.021288;
   expectedSlope = 0.26487;
 
-  actual = calcActual(softlut, vMem, M_F_NA);
-  expected = calcExpected(expectedSlope, expectedOffset, vMem);
-  EXPECT_LE(pDiff(expected, actual), maxError);
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 
   // Last curve
+  curve = M_T_KF;
   vMem = -0.098434;
   expectedOffset = 1.25227;
   expectedSlope = -2.4263;
 
-  actual = calcActual(softlut, vMem, M_T_KF);
-  expected = calcExpected(expectedSlope, expectedOffset, vMem);
-  EXPECT_LE(pDiff(expected, actual), maxError);
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 }
 
-TEST_F(LutTest, Middle) {
+TEST_F(SoftLUT_test, Middle) {
   // First curve
+  curve = M_F_NA;
   vMem = -0.04740;
   expectedOffset = 0.515109;
   expectedSlope = 9.6112;
 
-  actual = calcActual(softlut, vMem, M_F_NA);
-  expected = calcExpected(expectedSlope, expectedOffset, vMem);
-  EXPECT_LE(pDiff(expected, actual), maxError);
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 
   // Last curve
+  curve = M_T_KF;
   vMem = -0.0054;
   expectedOffset = 8.672119;
   expectedSlope = 108.97;
 
-  actual = calcActual(softlut, vMem, M_T_KF);
-  expected = calcExpected(expectedSlope, expectedOffset, vMem);
-  EXPECT_LE(pDiff(expected, actual), maxError);
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 }
 
-TEST_F(LutTest, ExactlyMiddle) {
+TEST_F(SoftLUT_test, ExactlyMiddle) {
   // First curve
+  curve = M_F_NA;
   vMem = -0.019412;
   expectedOffset = 1.227207;
   expectedSlope = 21.586;
 
-  actual = calcActual(softlut, vMem, M_F_NA);
-  expected = calcExpected(expectedSlope, expectedOffset, vMem);
-  EXPECT_LE(pDiff(expected, actual), maxError);
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 
   // Last curve
+  curve = M_T_KF;
   vMem = -0.005409;
   expectedOffset = 8.672119;
   expectedSlope = 108.97;
 
-  actual = calcActual(softlut, vMem, M_T_KF);
-  expected = calcExpected(expectedSlope, expectedOffset, vMem);
-  EXPECT_LE(pDiff(expected, actual), maxError);
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 }
 
-TEST_F(LutTest, ExactlyLast) {
+TEST_F(SoftLUT_test, ExactlyLast) {
   // First curve
+  curve = M_F_NA;
   vMem = 0.019917;
   expectedOffset = 0.99935;
   expectedSlope = 0;
 
-  actual = calcActual(softlut, vMem, M_F_NA);
-  expected = calcExpected(expectedSlope, expectedOffset, vMem);
-  EXPECT_LE(pDiff(expected, actual), maxError);
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 
   // Last curve
+  curve = M_T_KF;
   vMem = 0.046882;
   expectedOffset = 9.4911;
   expectedSlope = 0;
 
-  actual = calcActual(softlut, vMem, M_T_KF);
-  expected = calcExpected(expectedSlope, expectedOffset, vMem);
-  EXPECT_LE(pDiff(expected, actual), maxError);
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 }
 
-TEST_F(LutTest, AfterLast) {
+TEST_F(SoftLUT_test, AfterLast) {
   // First curve
+  curve = M_F_NA;
   vMem = 0.019918;
   expectedOffset = 0.99935;
   expectedSlope = 0;
 
-  actual = calcActual(softlut, vMem, M_F_NA);
-  expected = calcExpected(expectedSlope, expectedOffset, vMem);
-  EXPECT_LE(pDiff(expected, actual), maxError);
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 
   // Last curve
+  curve = M_T_KF;
   vMem = 0.0469;
   expectedOffset = 9.4911;
   expectedSlope = 0;
 
-  actual = calcActual(softlut, vMem, M_T_KF);
-  expected = calcExpected(expectedSlope, expectedOffset, vMem);
-  EXPECT_LE(pDiff(expected, actual), maxError);
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 }
 
 #endif //INCLUDE_LUT_SUPPORT
