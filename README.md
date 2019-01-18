@@ -60,7 +60,7 @@ When running `make`, you can specify number of tasks available to run in paralle
 
 The `.gitlab-ci.yml` records the configuration for GitLab CI/CD Pipeline on Ada.
 Currently, there is a Kubernetes cluster that manages Docker runners for Ada,
-and we are using `kubernetes-staging` tag to point to their staging runners. This tag might change in the future.
+and we are using `kubernetes` tag to point to their staging runners. This tag might change in the future.
 
 #### Manual setup
 
@@ -97,7 +97,34 @@ brew install protobuf --build-from-source # Same here, you can add --cc=gcc-7
 
 You can simply run the commands in the Dockerfile to get the same dependencies installed, except you will have to use sudo for `apt-get`, `make install`, and `ldconfig`
 
-## Project Configuration Options
+## Building the Project
+First, make a build directory
+```bash
+mkdir build
+cd build
+```
+Now use `cmake` to configure how the project will build
+```bash
+# Example configuration to build a static binary for x86 with LUTs enabled
+# See Project Configuration Options below for more details on these options
+cmake .. -DCMAKE_BUILD_TYPE=Release -DINCLUDE_LUT_SUPPORT=ON
+```
+Now you can build the main application with:
+```bash
+make -j parallel-neuro-sim
+```
+You can build the tests with:
+```bash
+make -j parallel-neuro-sim_test
+```
+Or you can build the main application and tests at the same time with:
+```bash
+make -j
+```
+
+The resultant binary will be located in the `build/src/` directory
+
+### Project Configuration Options
 
 For each of the configuration options below, if it applies to CMake, you can apply the change by calling
 ```bash
@@ -119,7 +146,7 @@ This variable determines whether LUT-related library/code while be compiled duri
 to use a RISC-V toolchain before turning this on.
 
 #### USE_OPENMP
-Currently, the project by default builds with OpenMP support, to disable it, configure CMake with `USE_OPENMP=FALSE`
+Currently, the project by default builds without OpenMP support, to enable it, configure CMake with `USE_OPENMP=ON`
 
 #### USE_RISCV_DOCKER_PRESETS
 When this option is set to true, CMake will use hardcoded variables for the following:
@@ -130,14 +157,22 @@ When this option is set to true, CMake will use hardcoded variables for the foll
 These variables are consistent with the setup in the Docker image, but not necessary with 
 your own setup. Therefore, if you don't use the Docker image, consider supplying these variables yourself
 
+#### RISCV
+Use this option to enable certain RISC-V only features (such as hardware LUTs) when not using USE_RISCV_DOCKER_PRESETS. If you use USE_RISCV_DOCKER_PRESETS, you do not need to specify this option.
+
 ## Running the Project
 For details on running the project, see [sample-configs/README.md](sample-configs/README.md).
+
+## Running the Tests
+Running the tests is pretty simple. After building the tests, go into the `build/src` directory and run:
+```bash
+./parallel-neuro-sim_test
+```
 
 ### Using spike
 To launch the Spike simulator to run riscv64 Linux, run the following command:
 ```bash
 # Inside the container
-# Replace <rootfs name> with something like buildroot-neuro
-spike +disk=/project/resources/<rootfs name>.rootfs.ext2 /project/resources/bbl
+spike +disk=/project/resources/buildroot-neuro.rootfs.ext2 /project/resources/bbl
 ```
-Then when you see the `riscv64 login:` prompt, type `root` and press enter.
+Then when you see the `riscv64 login:` prompt, use `root` as the username and `sifive` as the password.
