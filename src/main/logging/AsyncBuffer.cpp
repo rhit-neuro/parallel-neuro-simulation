@@ -1,4 +1,5 @@
 #include <limits>
+#include <cmath>
 
 #include "AsyncBuffer.h"
 
@@ -46,21 +47,11 @@ AsyncBuffer::AsyncBuffer(int size, std::string &output_filename, int precision, 
 
   // setup verbosity
   this->printAfterTime = 0;
-  switch (verbosity) {
-    case 0:
-      this->printTimestep = 0;
-      this->printAfterTime = std::numeric_limits<float>::max();
-      break;
-    case 1:
-      this->printTimestep = 10;
-      break;
-    case 2:
-      this->printTimestep = 1;
-      break;
-    case 3:
-    default:
-      this->printTimestep = 0;
-      break;
+  this->printTimestep = 0;
+  if (verbosity <= 0) {
+    this->printAfterTime = std::numeric_limits<float>::max();
+  } else if (verbosity <= 6) {
+    this->printTimestep = std::pow(10, 2 - verbosity);
   }
 }
 

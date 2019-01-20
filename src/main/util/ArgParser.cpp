@@ -28,7 +28,7 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
 #endif
     ("use-soft-lut,s", "whether to use software LUT during computation")
 #endif
-    ("verbose-level,v", po::value<int>()->default_value(1), "set verbose level printed to output stream (0 - 3, default 1)")
+    ("verbose-level,v", po::value<int>()->default_value(4), "set verbose level printed to output stream (0 - 7)")
   ;
 
   po::store(po::parse_command_line(argc, reinterpret_cast<const char * const *>(argv), desc), vm);
