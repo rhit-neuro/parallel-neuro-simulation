@@ -1,4 +1,4 @@
-# Dockerfile for tag docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/riscv-poky-build:2.0.0
+# Dockerfile for tag docker.csse.rose-hulman.edu/neuroprocessor-group/parallel-neuro-simulation/riscv-poky-build:2.1.0
 # Contains dependencies required for building riscv-poky
 FROM ubuntu:xenial
 
@@ -8,26 +8,40 @@ ENV LC_ALL=en_US.UTF-8
 # Install dependencies
 RUN apt-get update && \
     apt-get install -y \
+    bzip2 \
+    chrpath \
+    cpio \
+    cpp \
+    diffstat \
+    g++ \
+    gawk \
+    gcc \
     git \
-    # python is python 2
-    python \
-    python3 \
-    locales \
-    bzip2 chrpath cpio cpp diffstat g++ gawk gcc make wget \
-    # texinfo for makeinfo
-    texinfo \
     # iproute2 for ip
     iproute2 \
     # iputils-ping for ping
     iputils-ping \
+    locales \
+    make \
+    python \
+    python3 \
+    repo \
+    # texinfo for makeinfo
+    texinfo \
+    wget \
     && \
     rm -rf /var/lib/apt/lists/* && \
     locale-gen en_US.UTF-8 && \
     locale && \
-    useradd -ms /bin/bash riscv_poky_user 
+    useradd -ms /bin/bash rose && \
+    usermod -aG sudo rose && \
+    echo "rose:Docker!" | chpasswd
+
+VOLUME /project
+WORKDIR /project
 
 # Switch to non-root user as bitbake prefers to be run by
 # non-root user
-USER riscv_poky_user
+USER rose
 
 CMD bash
