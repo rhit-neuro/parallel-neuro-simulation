@@ -61,6 +61,8 @@ namespace lut {
   class HardLUTROM : public lut::LUT {
     public:
       double interpolate(double vMem, CurveSelect curveSelect);
+      float getSlope(float vMem, CurveSelect curveSelect);
+      float getOffset(float vMem, CurveSelect curveSelect);
   };
 #endif //RISCV
 }
