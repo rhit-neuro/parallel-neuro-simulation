@@ -21,8 +21,8 @@ sequential::ode_system_function * factory::equation::getEquation(po::variables_m
 #endif
 #if INCLUDE_LUT_SUPPORT
   #if RISCV
-    const bool use_lut = vm.count("use-lut") > 0;
-    if (use_lut){
+    const bool use_hard_lut = vm.count("use-hard-lut") > 0;
+    if (use_hard_lut){
       static lut::HardLUTROM hardLUT;
       lutSingleton = &hardLUT;
       return &ode::hodgkinhuxley_lut::calculateNextState;
