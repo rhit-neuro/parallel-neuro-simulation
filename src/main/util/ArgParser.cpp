@@ -15,7 +15,7 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
     ("logging-config,g", po::value<string>(), "logging configuration file location")
 #if INCLUDE_LUT_SUPPORT
     ("lut-file,u", po::value<string>(), "LUT points file location")
-#endif    
+#endif
 #if USE_OPENMP
     ("num-threads,t", po::value<unsigned int>()->default_value(0), "specify number of threads OpenMP should use. Specify 0 to let OpenMP automatically decide")
 #endif
@@ -87,6 +87,6 @@ void argparser::option_dependency(const po::variables_map& vm,
 {
     if (vm.count(for_what) && !vm[for_what].defaulted())
         if (vm.count(required_option) == 0 || vm[required_option].defaulted())
-            throw logic_error(string("Option '") + for_what 
+            throw logic_error(string("Option '") + for_what
                               + "' requires option '" + required_option + "'.");
 }

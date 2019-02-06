@@ -6,13 +6,19 @@
 #include "LUT.h"
 
 double lut::HardLUTROM::interpolate(double vMem, lut::CurveSelect curveSelect) {
-    float m, b;
-    // Lookup slope
-    lookupSlope(m, vMem, curveSelect);
-    // Lookup offset
-    lookupOffset(b, vMem, curveSelect);
+    return vMem * getSlope(vMem, curveSelect) + getOffset(vMem, curveSelect);
+}
 
-    return vMem * m + b;
+float lut::HardLUTROM::getSlope(float vMem, lut::CurveSelect curveSelect) {
+    uint slope;
+    lookupSlope(slope, *(uint *)&vMem, curveSelect);
+    return *(float *)&slope;
+}
+
+float lut::HardLUTROM::getOffset(float vMem, lut::CurveSelect curveSelect) {
+    uint offset;
+    lookupOffset(offset, *(uint *)&vMem, curveSelect);
+    return *(float *)&offset;
 }
 
 #endif //RISCV

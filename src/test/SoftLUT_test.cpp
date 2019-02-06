@@ -23,7 +23,7 @@ class SoftLUT_test : public ::testing::Test {
       if (std::abs(actual - expected) < maxError) {
         return ::testing::AssertionSuccess();
       } else {
-        return ::testing::AssertionFailure() << "Curve: " << curve 
+        return ::testing::AssertionFailure() << "Curve: " << curve
             << " vMem: " << vMem << " Expected: " << expected
             << " Actual: " << actual;
       }

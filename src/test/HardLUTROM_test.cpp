@@ -19,21 +19,22 @@ class HardLUTROM_test : public ::testing::Test {
       return lutut.interpolate(vMem, curve);
     }
     float calcActualSlope() {
-      lookupSlope(actual, vMem, curve);
-      return actual;
+      return lutut.getSlope(vMem, curve);
     }
     float calcActualOffset() {
-      lookupOffset(actual, vMem, curve);
-      return actual;
+      return lutut.getOffset(vMem, curve);
     }
     float calcExpected() {
       return expectedSlope * vMem + expectedOffset;
     }
     ::testing::AssertionResult closeEnough() {
-      if (std::abs(actual - expected) < maxError) {
+      return closeEnough(maxError);
+    }
+    ::testing::AssertionResult closeEnough(float maxDiff) {
+      if (std::abs(actual - expected) < maxDiff) {
         return ::testing::AssertionSuccess();
       } else {
-        return ::testing::AssertionFailure() << "Curve: " << curve 
+        return ::testing::AssertionFailure() << "Curve: " << curve
             << " vMem: " << vMem << " Expected: " << expected
             << " Actual: " << actual;
       }
@@ -88,7 +89,7 @@ TEST_F(HardLUTROM_test, M_F_NA_Offset) {
   EXPECT_TRUE(closeEnough());
 
 
-  vMem = -0.022537;
+  vMem = -0.02253;
   expected = 1.362176;
 
   actual = calcActualOffset();
@@ -113,15 +114,15 @@ TEST_F(HardLUTROM_test, BeforeFirst) {
   expected = calcExpected();
   EXPECT_TRUE(closeEnough());
 
-  // // Last curve
-  // curve = M_T_KF;
-  // vMem = -0.098438;
-  // expectedOffset = 1.25227;
-  // expectedSlope = -2.4263;
+  // Last curve
+  curve = M_T_KF;
+  vMem = -0.098438;
+  expectedOffset = 1.25227;
+  expectedSlope = -2.4263;
 
-  // actual = calcActual();
-  // expected = calcExpected();
-  // EXPECT_TRUE(closeEnough());
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 }
 
 TEST_F(HardLUTROM_test, ExactlyFirst) {
@@ -135,15 +136,15 @@ TEST_F(HardLUTROM_test, ExactlyFirst) {
   expected = calcExpected();
   EXPECT_TRUE(closeEnough());
 
-  // // Last curve
-  // curve = M_T_KF;
-  // vMem = -0.098434;
-  // expectedOffset = 1.25227;
-  // expectedSlope = -2.4263;
+  // Last curve
+  curve = M_T_KF;
+  vMem = -0.098434;
+  expectedOffset = 1.25227;
+  expectedSlope = -2.4263;
 
-  // actual = calcActual();
-  // expected = calcExpected();
-  // EXPECT_TRUE(closeEnough());
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 }
 
 TEST_F(HardLUTROM_test, Middle) {
@@ -157,15 +158,15 @@ TEST_F(HardLUTROM_test, Middle) {
   expected = calcExpected();
   EXPECT_TRUE(closeEnough());
 
-  // // Last curve
-  // curve = M_T_KF;
-  // vMem = -0.0054;
-  // expectedOffset = 8.672119;
-  // expectedSlope = 108.97;
+  // Last curve
+  curve = M_T_KF;
+  vMem = -0.0054;
+  expectedOffset = 8.672119;
+  expectedSlope = 108.97;
 
-  // actual = calcActual();
-  // expected = calcExpected();
-  // EXPECT_TRUE(closeEnough());
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 }
 
 TEST_F(HardLUTROM_test, ExactlyMiddle) {
@@ -177,17 +178,17 @@ TEST_F(HardLUTROM_test, ExactlyMiddle) {
 
   actual = calcActual();
   expected = calcExpected();
-  EXPECT_TRUE(closeEnough());
+  EXPECT_TRUE(closeEnough(0.000005));
 
-  // // Last curve
-  // curve = M_T_KF;
-  // vMem = -0.005409;
-  // expectedOffset = 8.672119;
-  // expectedSlope = 108.97;
+  // Last curve
+  curve = M_T_KF;
+  vMem = -0.005409;
+  expectedOffset = 8.672119;
+  expectedSlope = 108.97;
 
-  // actual = calcActual();
-  // expected = calcExpected();
-  // EXPECT_TRUE(closeEnough());
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough(0.00001));
 }
 
 TEST_F(HardLUTROM_test, ExactlyLast) {
@@ -201,15 +202,15 @@ TEST_F(HardLUTROM_test, ExactlyLast) {
   expected = calcExpected();
   EXPECT_TRUE(closeEnough());
 
-  // // Last curve
-  // curve = M_T_KF;
-  // vMem = 0.046882;
-  // expectedOffset = 9.4911;
-  // expectedSlope = 0;
+  // Last curve
+  curve = M_T_KF;
+  vMem = 0.046882;
+  expectedOffset = 9.4911;
+  expectedSlope = 0;
 
-  // actual = calcActual();
-  // expected = calcExpected();
-  // EXPECT_TRUE(closeEnough());
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 }
 
 TEST_F(HardLUTROM_test, AfterLast) {
@@ -223,15 +224,15 @@ TEST_F(HardLUTROM_test, AfterLast) {
   expected = calcExpected();
   EXPECT_TRUE(closeEnough());
 
-  // // Last curve
-  // curve = M_T_KF;
-  // vMem = 0.0469;
-  // expectedOffset = 9.4911;
-  // expectedSlope = 0 +1;
+  // Last curve
+  curve = M_T_KF;
+  vMem = 0.0469;
+  expectedOffset = 9.4911;
+  expectedSlope = 0;
 
-  // actual = calcActual();
-  // expected = calcExpected();
-  // EXPECT_TRUE(closeEnough());
+  actual = calcActual();
+  expected = calcExpected();
+  EXPECT_TRUE(closeEnough());
 }
 
 #endif //RISCV
