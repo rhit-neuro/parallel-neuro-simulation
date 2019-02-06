@@ -53,14 +53,18 @@ double lut::SoftLUT::interpolate(double vMem, lut::CurveSelect curveSelect) {
   std::vector<float> offsets = offsetss[curveSelect];
 
   // Find where vMem indexes in LUT
-  // TODO: Change to binary search or interpolation search
-  int interpIndex;
-  for (interpIndex = 0; interpIndex < vMems.size() - 1; interpIndex++) {
-    if (vMem < vMems[interpIndex + 1]) {
-      break;
+  int leftBound = 0;
+  int rightBound = vMems.size() - 1;
+  int checkIndex;
+  while (leftBound < rightBound) {
+    checkIndex = (rightBound + leftBound) / 2 + 1;
+    if (vMem < vMems[checkIndex]) {
+      rightBound = checkIndex - 1;
+    } else {
+      leftBound = checkIndex;
     }
   }
 
-  return slopes[interpIndex] * vMem + offsets[interpIndex];
+  return slopes[leftBound] * vMem + offsets[leftBound];
 }
 #endif //INCLUDE_LUT_SUPPORT
