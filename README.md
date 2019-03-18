@@ -1,4 +1,4 @@
-Parallel Neuro-Simulation 
+Parallel Neuro-Simulation
 =========
 
 **Rewritten neuro-simulation project that aims to optimize using parallelization.**
@@ -30,7 +30,7 @@ Parallel Neuro-Simulation
 #### Using Docker
 We recommend developing the project with Docker, as it guarantees the same environment is used for both development and testing.
 
-See the `README.md` in the [docker/](docker/) directory for details on installing and using docker.
+See the `README.md` in the [deca-docker](https://ada.csse.rose-hulman.edu/neuroprocessor-group/deca-docker) repository for details on installing and using docker.
 
 ###### Workflow
 Within the container, you can use the terminal to run CMake and Make commands.
@@ -153,8 +153,8 @@ When this option is set to true, CMake will use hardcoded variables for the foll
   - `CMAKE_C_COMPILER` - Path to C compiler, comparable to the `CC` environment variable
   - `CMAKE_CXX_COMPILER` - Path to C++ compiler, comparable to the `CXX` environment variable
   - `CMAKE_PREFIX_PATH` - Library path prefix used when searching for libraries
-  
-These variables are consistent with the setup in the Docker image, but not necessary with 
+
+These variables are consistent with the setup in the Docker image, but not necessary with
 your own setup. Therefore, if you don't use the Docker image, consider supplying these variables yourself
 
 #### RISCV
