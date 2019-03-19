@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
   sequential::ode_system_function *equation = factory::equation::getEquation(vm);
 
   tLogger.recordCalculationStartTime();
-  integrate_adaptive(
+  integrate_const(
     make_controlled(
       c.absoluteError,
       c.relativeError,
@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
     c.getInitialStateValues(),
     c.startTime,
     c.endTime,
-    0.1,
+    0.00025,
     [&](const storage_type &x, const double t) {
       storage_type toWrite(bufferSize);
       toWrite[0] = t;
