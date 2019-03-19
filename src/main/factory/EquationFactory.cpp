@@ -31,7 +31,7 @@ sequential::ode_system_function * factory::equation::getEquation(po::variables_m
 
   const bool use_soft_lut = vm.count("use-soft-lut") > 0;
   if (use_soft_lut) {
-    const auto &lut_file = vm["lut-file"].as<string>();
+    const auto &lut_file = vm["use-soft-lut"].as<string>();
     static lut::SoftLUT softLUT(lut_file);
     lutSingleton = &softLUT;
     return &ode::hodgkinhuxley_lut::calculateNextState;

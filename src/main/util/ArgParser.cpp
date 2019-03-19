@@ -13,9 +13,6 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
     ("input-file,i", po::value<string>()->required(), "input file location")
     ("input-format,f", po::value<string>()->default_value("JSON"), "input file format (JSON, default JSON)")
     ("logging-config,g", po::value<string>(), "logging configuration file location")
-#if INCLUDE_LUT_SUPPORT
-    ("lut-file,u", po::value<string>(), "LUT points file location")
-#endif
 #if USE_OPENMP
     ("num-threads,t", po::value<unsigned int>()->default_value(0), "specify number of threads OpenMP should use. Specify 0 to let OpenMP automatically decide")
 #endif
@@ -26,7 +23,7 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
 #if RISCV
     ("use-hard-lut,l", "whether to use hardware LUT during computation")
 #endif
-    ("use-soft-lut,s", "whether to use software LUT during computation")
+    ("use-soft-lut,s", po::value<string>(), "specify LUT points file location and use software LUT during computation")
 #endif
     ("verbose-level,v", po::value<int>()->default_value(4), "set verbose level printed to output stream (0 - 7)")
   ;
@@ -53,7 +50,6 @@ bool argparser::parse(int argc, char **argv, po::variables_map &vm) {
 
   // Check for conflicting options and options with dependencies
   argparser::conflicting_options(vm, "use-lut", "use-soft-lut");
-  argparser::option_dependency(vm, "use-soft-lut", "lut-file");
 
   try {
     // Call notify(vm) to validate options
