@@ -30,7 +30,7 @@ Parallel Neuro-Simulation
 #### Using Docker
 We recommend developing the project with Docker, as it guarantees the same environment is used for both development and testing.
 
-See the `README.md` in the [deca-docker](https://ada.csse.rose-hulman.edu/neuroprocessor-group/deca-docker) repository for details on installing and using docker.
+See the `README.md` in the [deca-docker](https://github.com/rhit-neuro/deca-docker) repository for details on installing and using docker.
 
 ###### Workflow
 Within the container, you can use the terminal to run CMake and Make commands.
