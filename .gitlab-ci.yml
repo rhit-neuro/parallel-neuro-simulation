@@ -1,4 +1,4 @@
-image: docker.csse.rose-hulman.edu/neuroprocessor-group/deca-docker/neuro-simulation-env:2.2.1
+image: rhitdeca/neuro-simulation-env:2.2.1
 
 variables:
     MAIN_NAME: "parallel-neuro-sim"
