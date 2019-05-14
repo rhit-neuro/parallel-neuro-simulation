@@ -42,7 +42,7 @@ build-x86_64:
     - src/${MAIN_NAME} --help
     - rm -rf *
   tags:
-    - kubernetes
+    - docker
 
 build-riscv:
   stage: build
@@ -79,7 +79,7 @@ build-riscv:
 #    - src/${MAIN_NAME} --help
     - rm -rf *
   tags:
-    - kubernetes
+    - docker
 
 test: # Statically linked ${MAIN_NAME}${TEST_SUFFIX} has segmentation fault
   stage: test
@@ -123,7 +123,7 @@ test: # Statically linked ${MAIN_NAME}${TEST_SUFFIX} has segmentation fault
     - cd ..
     - rm -rf *
   tags:
-    - kubernetes
+    - docker
 
 deploy:
   stage: deploy
@@ -167,6 +167,6 @@ deploy:
     paths:
       - release
   tags:
-    - kubernetes
+    - docker
   only:
     - tags
