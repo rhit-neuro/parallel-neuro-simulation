@@ -12,6 +12,7 @@ stages:
 build-x86_64:
   stage: build
   variables:
+    GIT_STRATEGY: clone
     GIT_SUBMODULE_STRATEGY: recursive
   script:
     - mkdir build
@@ -47,6 +48,7 @@ build-x86_64:
 build-riscv:
   stage: build
   variables:
+    GIT_STRATEGY: clone
     GIT_SUBMODULE_STRATEGY: recursive
   script:
     - mkdir build
@@ -128,6 +130,7 @@ test: # Statically linked ${MAIN_NAME}${TEST_SUFFIX} has segmentation fault
 deploy:
   stage: deploy
   variables:
+    GIT_STRATEGY: clone
     GIT_SUBMODULE_STRATEGY: recursive
   script:
     - mkdir build
