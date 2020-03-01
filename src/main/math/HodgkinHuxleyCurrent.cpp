@@ -68,11 +68,8 @@ double ode::hodgkinhuxley::current::isyns(double V, double *arrP, double *arrM, 
     const double g = arrG[synapseIndex];
     const double P3 = pow(P, 3);
     double isyng = gbarsyng * P3 * (V - Esyn) / (cGraded + P3);
-    // TODO Investigate: magic number t0
-    const double t0 = 0;
-    const double tPeak = t0 + (tauDecay * tauRise * log(tauDecay/tauRise)) / (tauDecay - tauRise);
-    // TODO Investigate: why
-    const double fsyns = 1 / (exp(-(tPeak - t0)/tauDecay) + exp(-(tPeak - t0)/tauRise));
+
+    const double fsyns = s.fsyns;
     const double isyns = (V - Esyn) * M * gbarsyns * g * fsyns;
     result += (isyng + isyns);
   }

@@ -108,6 +108,11 @@ void ProgramConfig::initializeSynapseConstantProperties() {
     synapsePtr->tauDecay = protoSynapse.taudecay();
     synapsePtr->tauRise = protoSynapse.taurise();
     synapsePtr->cGraded = protoSynapse.cgraded();
+
+    const double tauDecay = synapsePtr->tauDecay;
+    const double tauRise =  synapsePtr->tauRise;
+    const double tPeak = (tauDecay * tauRise * log(tauDecay/tauRise)) / (tauDecay - tauRise);
+    synapsePtr->fsyns = 1 / (exp(-(tPeak)/tauDecay) + exp(-(tPeak)/tauRise));
   }
 }
 
