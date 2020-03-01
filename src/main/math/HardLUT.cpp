@@ -6,7 +6,13 @@
 #include "LUT.h"
 
 double lut::HardLUTROM::interpolate(double vMem, lut::CurveSelect curveSelect) {
-    return getSlope(vMem, curveSelect) * vMem + getOffset(vMem, curveSelect);
+    return getSlope(vMem, curveSelect) * getScaledVmem(vMem, curveSelect) + getOffset(vMem, curveSelect);
+}
+
+float lut::HardLUTROM::getScaledVmem(float vMem, lut::CurveSelect curveSelect) {
+    uint scaled;
+    lookupVmem(scaled, *(uint *)&vMem, curveSelect);
+    return *(float *)&scaled;
 }
 
 float lut::HardLUTROM::getSlope(float vMem, lut::CurveSelect curveSelect) {
