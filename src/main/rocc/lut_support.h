@@ -9,6 +9,7 @@
 
 #define FUNCT_LOOKUPOFFSET 0
 #define FUNCT_LOOKUPSLOPE 1
+#define FUNCT_LOOKUPVMEM 4
 
 #define XCUSTOM_ACC 0
 
@@ -17,6 +18,9 @@
 
 #define lookupSlope(rocc_rd, rocc_rs1, rocc_rs2) \
   ROCC_INSTRUCTION(0, rocc_rd, rocc_rs1, rocc_rs2, FUNCT_LOOKUPSLOPE)
+
+#define lookupVmem(rocc_rd, rocc_rs1, rocc_rs2) \
+  ROCC_INSTRUCTION(0, rocc_rd, rocc_rs1, rocc_rs2, FUNCT_LOOKUPVMEM)
 
 #endif  // LUT_SUPPORT_H
 
