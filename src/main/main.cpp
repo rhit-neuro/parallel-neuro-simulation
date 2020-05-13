@@ -11,17 +11,19 @@
 #include "util/JsonToProtobufConfigConverter.h"
 #include "logging/AsyncBuffer.h"
 
+#if RISCV
 #include "logging/hpm_counters.cxx"
 #include "rocc/lut_support.h"
+#endif
 
 using namespace global_definitions;
 using namespace boost::numeric::odeint;
 using namespace std;
 
 #if RISCV
-unsigned long accCalls() //this has to be its own function otherwise it just gives us 0
+unsigned long accCalls() //This has to be its own function; otherwise it just gives us 0
 {
-  unsigned long retVal; // probably register versus stack versus heap allocation bugs
+  unsigned long retVal; // Probably register versus stack versus heap allocation differences...
   getCount(retVal);
   return retVal;
 }
