@@ -41,6 +41,7 @@ namespace config {
     double tauDecay;
     double tauRise;
     double cGraded;
+	double fsyns;
   } SynapseConstants;
 
   namespace offsets {
