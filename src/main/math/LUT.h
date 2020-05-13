@@ -41,12 +41,12 @@ namespace lut {
     Mkf_TAU,      // -100, 0.022    //23
     Mh_TAU,       // -100, 0.073    //24
 
-    // --- Curve 1: 1/cosh. Leela calls it INVCOS or ICOS depending on the day. --- //
+    // --- Curve 2: 1/cosh. Leela calls it INVCOS or ICOS depending on the day. --- //
     Hna_ICOS,     //  300, 0.027    //25
     Mkf_ICOS,     //  100, 0.04     //26
     Mcaf_ICOS,    // -330, 0.0467   //27
 
-    // --- Curve 2: Demented sigmoid --- //
+    // --- Curve 1: Demented sigmoid --- //
     FHINF,        //  180, 0.047    //28
 
     NUM_CURVES
