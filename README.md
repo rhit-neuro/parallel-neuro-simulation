@@ -1,7 +1,9 @@
 Parallel Neuro-Simulation
 =========
 
-**Rewritten neuro-simulation project that aims to optimize using parallelization.**
+**Neuron Simulation using the Hodgkin-Huxley Model**
+This project is a single-threaded implementation of the Hodgkin-Huxley neuron model that allows for the use of hardware- and software-based lookup tables.  
+Hardware-based lookup tables are only supported on a custom RISC-V processor.
 
 ## Platforms Supported:
  - Linux
