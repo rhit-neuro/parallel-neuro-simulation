@@ -56,6 +56,8 @@ namespace ode {
 //      double isyns(double x, NeuronConstants &n, SynapseConstants &s, int synapseIndex);
     }
 
+    extern unsigned long long numSteps;
+
     class HodgkinHuxleyEquation {
       public:
         HodgkinHuxleyEquation();
