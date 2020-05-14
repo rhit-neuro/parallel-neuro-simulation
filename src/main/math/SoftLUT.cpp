@@ -130,7 +130,6 @@ double lut::SoftLUT::interpolate(double vMem, lut::CurveSelect curveSelect) {
             threeCurveSel = 2;
    } else {
             threeCurveSel = 0;
-            //aSel = -aSel;
    }
 
    vMem = aSel * vMem + bSel;

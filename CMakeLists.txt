@@ -161,6 +161,7 @@ include_directories(lib/gmock-1.7.0/gtest/include)
 
 # Points file required for software LUT tests
 configure_file(resources/32pointsConverted.csv src/32pointsConverted.csv COPYONLY)
+configure_file(resources/3Curve32Point.csv src/3Curve32Point.csv COPYONLY)
 
 #######################
 # Project Sources
