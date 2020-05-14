@@ -11,15 +11,19 @@
 #include "util/JsonToProtobufConfigConverter.h"
 #include "logging/AsyncBuffer.h"
 
+// CMake will create NDEBUG when we're not in a Debug CMAKE_RELEASE_TYPE
+#ifndef NDEBUG
 #if RISCV
 #include "logging/hpm_counters.cxx"
 #include "rocc/lut_support.h"
+#endif
 #endif
 
 using namespace global_definitions;
 using namespace boost::numeric::odeint;
 using namespace std;
 
+#ifndef NDEBUG
 #if RISCV
 unsigned long accCalls() //This has to be its own function; otherwise it just gives us 0
 {
@@ -27,6 +31,7 @@ unsigned long accCalls() //This has to be its own function; otherwise it just gi
   getCount(retVal);
   return retVal;
 }
+#endif
 #endif
 
 // This function is basically apeing Boost's integrate_const program logic, but flattened, with fewer
@@ -43,9 +48,11 @@ inline void integrate_controlled(config::ProgramConfig &c, sequential::ode_syste
   timeData[0] = c.startTime;
   timeData[1] = observerStep;
 
+  #ifndef NDEBUG
   #if RISCV
   resetCount();
   handle_stats(INIT);
+  #endif
   #endif
 
   tLogger.recordCalculationStartTime();
@@ -81,12 +88,14 @@ inline void integrate_controlled(config::ProgramConfig &c, sequential::ode_syste
 
   tLogger.recordCalculationEndTime();
   
+  #ifndef NDEBUG
   #if RISCV
   handle_stats(FINISH);
   printf("%lu LUT instructions called\n", accCalls());
   #endif
 
   printf("%llu calculateNextState calls\n", ode::hodgkinhuxley::numSteps);
+  #endif
 
   delete timeData;
 }
