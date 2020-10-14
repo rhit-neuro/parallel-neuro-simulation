@@ -58,54 +58,6 @@ inline void integrate_controlled(config::ProgramConfig &c, sequential::ode_syste
   tLogger.recordCalculationStartTime();
 
   int steps = 0;
-  double step_size = 0.0001;
-  double half_step_size = step_size / 2.0;
-  double step_size_div6 = step_size / 6.0;
-  storage_type dx1 = storage_type(static_cast<unsigned long>(x.size()));
-  storage_type dx2 = storage_type(static_cast<unsigned long>(x.size()));
-  storage_type dx3 = storage_type(static_cast<unsigned long>(x.size()));
-  storage_type dx4 = storage_type(static_cast<unsigned long>(x.size()));
-  storage_type x_temp = storage_type(static_cast<unsigned long>(x.size()));
-  
-  while (timeData[0] < c.endTime){
-  
-  	observer(x, timeData[0]);
-  	
-  	//k1
-  	equation(x, dx1, timeData[0]);
-  	
-  	//k2
-  	for (int i = 0; i < x.size(); i++){
-  		
-  		x_temp[i] = x[i] + half_step_size * dx1[i];
-  	}
-  	equation(x_temp, dx2, timeData[0] + half_step_size);
-  	
-  	//k3
-  	for (int i = 0; i < x.size(); i++){
-  		
-  		x_temp[i] = x[i] + half_step_size * dx2[i];
-  	}
-  	equation(x_temp, dx3, timeData[0] + half_step_size);
-  	
-  	//k4
-  	for (int i = 0; i < x.size(); i++){
-  		
-  		x_temp[i] = x[i] + step_size * dx3[i];
-  	}
-  	equation(x_temp, dx4, timeData[0] + step_size);
-  	
-  	//x_n+1
-  	for (int i = 0; i < x.size(); i++){
-  	
-  		x[i] += step_size_div6 * (dx1[i] + 2 * dx2[i] + 2 * dx3[i] + dx4[i]);
-  	}
-  	
-  	steps++;
-  	timeData[0] = c.startTime + static_cast<double>(steps)*step_size;
-  }
-  
-  /*
   while ((timeData[0]+observerStep) <= c.endTime)
   {
     observer(x, timeData[0]);
@@ -124,7 +76,6 @@ inline void integrate_controlled(config::ProgramConfig &c, sequential::ode_syste
         result = myStepper.try_step(equation, x, timeData[0], timeData[1]);
       } while (result == fail);
     }
-    
 
     // We do this rather than keeping the timeData[0] values that is set by try_step
     // upon a successful completion of a step because that may compound floating-point error.
@@ -132,7 +83,6 @@ inline void integrate_controlled(config::ProgramConfig &c, sequential::ode_syste
     steps++;
     timeData[0] = c.startTime + static_cast<double>(steps)*observerStep;
   }
-  */
   // Make an observation at t=c.endTime
   observer(x, timeData[0]);
 
