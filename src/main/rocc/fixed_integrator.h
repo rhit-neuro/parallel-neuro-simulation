@@ -3,8 +3,8 @@
 
 #include "../../include/rocc-software/src/xcustom.h"
 
-#define FUNCT_WHOLE_STEP 0
-#define FUNCT_HALF_STEP 1
+#define FUNCT_WHOLE_STEP 5
+#define FUNCT_HALF_STEP 6
 
 #define XCUSTOM_ACC 0
 
