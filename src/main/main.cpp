@@ -16,6 +16,7 @@
 #if RISCV
 #include "logging/hpm_counters.cxx"
 #include "rocc/lut_support.h"
+#include "rocc/fixed_integrator.h"
 #endif
 #endif
 
@@ -58,7 +59,7 @@ inline void integrate_controlled(config::ProgramConfig &c, sequential::ode_syste
   tLogger.recordCalculationStartTime();
 
   int steps = 0;
-  double step_size = 0.0001;
+  double step_size = 0.00025;
   double half_step_size = step_size / 2.0;
   double step_size_div6 = step_size / 6.0;
   storage_type dx1 = storage_type(static_cast<unsigned long>(x.size()));
@@ -66,6 +67,7 @@ inline void integrate_controlled(config::ProgramConfig &c, sequential::ode_syste
   storage_type dx3 = storage_type(static_cast<unsigned long>(x.size()));
   storage_type dx4 = storage_type(static_cast<unsigned long>(x.size()));
   storage_type x_temp = storage_type(static_cast<unsigned long>(x.size()));
+  uint result;
   
   while (timeData[0] < c.endTime){
   
@@ -76,22 +78,37 @@ inline void integrate_controlled(config::ProgramConfig &c, sequential::ode_syste
   	
   	//k2
   	for (int i = 0; i < x.size(); i++){
-  		
+  
+  		#if RISCV
+  		integrateHalfStep(result, *(uint *)&dx1[i], *(uint *)&x[i]);
+  		x_temp[i] = *(float *)&result;
+  		#else
   		x_temp[i] = x[i] + half_step_size * dx1[i];
+  		#endif
   	}
   	equation(x_temp, dx2, timeData[0] + half_step_size);
   	
   	//k3
   	for (int i = 0; i < x.size(); i++){
   		
+  		#if RISCV
+  		integrateHalfStep(result, *(uint *)&dx2[i], *(uint *)&x[i]);
+  		x_temp[i] = *(float *)&result;
+  		#else 
   		x_temp[i] = x[i] + half_step_size * dx2[i];
+  		#endif
   	}
   	equation(x_temp, dx3, timeData[0] + half_step_size);
   	
   	//k4
   	for (int i = 0; i < x.size(); i++){
   		
+  		#if RISCV
+  		integrateWholeStep(result, *(uint *)&dx3[i], *(uint *)&x[i]);
+  		x_temp[i] = *(float *)&result;
+  		#else
   		x_temp[i] = x[i] + step_size * dx3[i];
+  		#endif
   	}
   	equation(x_temp, dx4, timeData[0] + step_size);
   	
